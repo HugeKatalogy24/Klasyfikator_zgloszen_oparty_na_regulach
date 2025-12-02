@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Panel Administratora - Logowanie{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-shield-alt me-2"></i>
+                        Panel Administratora
+                    </h4>
+                </div>
+                <div class="card-body">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{% if category == 'error' %}danger{% else %}{{ category|e }}{% endif %} alert-dismissible fade show" role="alert">
+                                    {{ message|e }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <form method="POST" action="{{ url_for('admin_login') }}" id="adminLoginForm">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        
+                        <div class="mb-3">
+                            <label for="username" class="form-label">
+                                <i class="fas fa-user me-1"></i>
+                                Nazwa użytkownika
+                            </label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="username" 
+                                   name="username" 
+                                   required
+                                   autocomplete="username"
+                                   maxlength="50">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label">
+                                <i class="fas fa-lock me-1"></i>
+                                Hasło
+                            </label>
+                            <input type="password" 
+                                   class="form-control" 
+                                   id="password" 
+                                   name="password" 
+                                   required
+                                   autocomplete="current-password"
+                                   maxlength="200">
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt me-2"></i>
+                                Zaloguj się
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <hr class="my-4">
+                    
+                    <div class="text-center">
+                        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>
+                            Powrót do strony głównej
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script nonce="{{ csp_nonce }}">
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('adminLoginForm');
+    const submitBtn = form.querySelector('button[type="submit"]');
+    
+    // Nie blokuj przycisku submit - pozwól na nieskończone próby
+    form.addEventListener('submit', function(e) {
+        // Bardzo krótka blokada tylko wizualnie
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Logowanie...';
+        
+        // Szybko przywróć przycisk
+        setTimeout(function() {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Zaloguj się';
+        }, 1000);  // Tylko 1 sekunda
+    });
+    
+    // Clear error messages when typing
+    const inputs = form.querySelectorAll('input');
+    inputs.forEach(input => {
+        input.addEventListener('input', function() {
+            const alerts = document.querySelectorAll('.alert-danger');
+            alerts.forEach(alert => {
+                alert.style.opacity = '0.5';
+            });
+        });
+    });
+    
+    // Dodatkowe zabezpieczenie - przywróć przycisk co sekundę jeśli jest zablokowany
+    setInterval(function() {
+        if (submitBtn.disabled) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Zaloguj się';
+        }
+    }, 1000);
+});
+</script>
+{% endblock %}

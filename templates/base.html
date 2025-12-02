@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pl-PL">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Analizator wolumenu problemów - automatyczna klasyfikacja zgłoszeń Jira">
+    <meta name="author" content="IT Team">
+    <meta http-equiv="Content-Language" content="pl-PL">
+    <meta name="locale" content="pl_PL">
+    <title>{% block title %}Analizator Problemów Jira{% endblock %}</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS Files - loaded directly to avoid @import issues -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/buttons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cards.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style_new.css') }}">
+    
+    <!-- Plotly.js for charts -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    
+    <!-- Favicon - lupka podobna do emoji 🔍 -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='emoji_favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='emoji_favicon_32.png') }}">
+    <link rel="icon" type="image/png" sizes="48x48" href="{{ url_for('static', filename='emoji_favicon_48.png') }}">
+    <link rel="icon" type="image/png" sizes="64x64" href="{{ url_for('static', filename='emoji_favicon_64.png') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='emoji_favicon.svg') }}">
+    
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" sizes="64x64" href="{{ url_for('static', filename='emoji_favicon_64.png') }}">
+    
+    <!-- Manifest for PWA support (optional) -->
+    <meta name="theme-color" content="#1a1a1a">
+    
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category|e }}">
+                        <span class="flash-icon">
+                            {% if category == 'error' %}
+                                ⚠️
+                            {% elif category == 'warning' %}
+                                ⚡
+                            {% elif category == 'success' %}
+                                ✅
+                            {% else %}
+                                ℹ️
+                            {% endif %}
+                        </span>
+                        <span class="flash-text">{{ message|e }}</span>
+                        <button class="flash-close" onclick="this.parentElement.style.display='none'">×</button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    
+    <!-- Main Content -->
+    <main class="main-container">
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='charts.js') }}"></script>
+    
+    <!-- Additional Scripts -->
+    <script nonce="{{ csp_nonce }}">
+        // Udostępnij token CSRF globalnie dla JavaScript
+        window.csrfToken = '{{ csrf_token }}';
+        
+        // Auto-hide flash messages after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(function(message) {
+                setTimeout(function() {
+                    message.style.opacity = '0';
+                    setTimeout(function() {
+                        if (message.parentElement) {
+                            message.parentElement.removeChild(message);
+                        }
+                    }, 300);
+                }, 5000);
+            });
+        });
+        
+        // Add loading states for forms
+        document.addEventListener('DOMContentLoaded', function() {
+            const forms = document.querySelectorAll('form');
+            forms.forEach(function(form) {
+                form.addEventListener('submit', function(e) {
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        const originalText = submitBtn.textContent;
+                        submitBtn.innerHTML = '<span class="loading-spinner">⏳</span> Przetwarzanie...';
+                        
+                        // Re-enable button after 30 seconds as fallback
+                        setTimeout(function() {
+                            submitBtn.disabled = false;
+                            submitBtn.textContent = originalText;
+                        }, 30000);
+                    }
+                });
+            });
+        });
+    </script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,91 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+
+# SSL/TLS Certificates and Private Keys - NIGDY nie commituj kluczy prywatnych!
+ssl/*.key
+ssl/*.pem
+ssl/*.p12
+ssl/*.pfx
+*.key
+*.pem
+*.p12
+*.pfx
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+logs/
+*.log
+
+# Data files (keep structure but ignore content)
+data/*.csv
+data/models/*
+!data/models/.gitkeep
+
+# Backups (keep only recent ones)
+backups/*.backup
+
+# Flask
+instance/
+.webassets-cache
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Security
+*.key
+*.pem
+*.crt

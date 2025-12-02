@@ -1,0 +1,662 @@
+{% extends "base.html" %}
+
+{% block title %}Wyniki Analizy - {{ start_date }} do {{ end_date }}{% endblock %}
+
+{% block content %}
+<style>
+.refresh-progress-container {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px;
+    margin: -20px -20px 20px -20px;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.refresh-progress-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.refresh-progress-container .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.refresh-progress-container .progress-header h3 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.refresh-progress-container .progress-bar {
+    background: rgba(255,255,255,0.3);
+    border-radius: 10px;
+    height: 8px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.refresh-progress-container .progress-fill {
+    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+.refresh-progress-container .progress-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    opacity: 0.9;
+}
+</style>
+
+<div class="results-container">
+    <!-- Header z nawigacją i akcjami -->
+    <div class="results-header">
+        <div class="header-info">
+            <h1>Wyniki Analizy</h1>
+            <p class="analysis-period">Okres: {{ start_date }} - {{ end_date }}</p>
+            <nav class="breadcrumbs">
+                <a href="{{ url_for('index') }}" class="breadcrumb-link">🏠 Strona główna</a>
+                <span class="breadcrumb-separator">→</span>
+                <span class="breadcrumb-current">Wyniki analizy</span>
+            </nav>
+        </div>
+        <div class="header-actions">
+            <div class="action-buttons">
+                <a href="{{ url_for('export_csv') }}" class="export-btn">
+                    📊 Eksportuj CSV
+                </a>
+                <button onclick="refreshData()" class="refresh-btn">
+                    🔄 Odśwież dane
+                </button>
+                <a href="{{ url_for('index') }}" class="back-link">
+                    ← Nowa analiza
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pasek postępu odświeżania (ukryty początkowo) -->
+    <div id="refreshProgressContainer" class="refresh-progress-container" style="display: none;">
+        <div class="refresh-progress-content">
+            <div class="progress-header">
+                <h3>🔄 Odświeżanie danych z Jira</h3>
+                <span id="refreshProgressText">Przygotowywanie...</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="refreshProgressFill"></div>
+            </div>
+            <div class="progress-details">
+                <span id="refreshProgressPercentage">0%</span>
+                <span id="refreshProgressEta">Szacowany czas: obliczanie...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Główne statystyki - CSS Grid Cards -->
+    <div class="stats-section">
+        <h2>📈 Dashboard Podsumowanie</h2>
+        <div class="stats-grid">
+            <div class="stat-card primary">
+                <div class="stat-icon">📊</div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ stats.total_issues }}</div>
+                    <div class="stat-label">Łączna ilość zgłoszeń</div>
+                    <div class="stat-subtitle">Bez "telefon do" i "it buddy"</div>
+                </div>
+            </div>
+
+            <div class="stat-card success">
+                <div class="stat-icon">✅</div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ stats.classified_count }}</div>
+                    <div class="stat-label">Sklasyfikowane</div>
+                    <div class="stat-subtitle">Automatycznie rozpoznane</div>
+                </div>
+            </div>
+
+            <div class="stat-card success">
+                <div class="stat-icon">📈</div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ "%.1f"|format(stats.classification_rate) }}%</div>
+                    <div class="stat-label">Pokrycie klasyfikacji</div>
+                    <div class="stat-subtitle">Procent sklasyfikowanych</div>
+                </div>
+            </div>
+
+            <!-- Karta z czasem analizy -->
+            <div class="stat-card accent">
+                <div class="stat-icon">📅</div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ ((end_date | to_datetime) - (start_date | to_datetime)).days + 1 }}</div>
+                    <div class="stat-label">Dni analizy</div>
+                    <div class="stat-subtitle">{{ start_date }} - {{ end_date }}</div>
+                </div>
+            </div>
+
+            <!-- Karta ze średnią dzienną -->
+            <div class="stat-card info">
+                <div class="stat-icon">📈</div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ "%.1f"|format(stats.total_issues / stats.actual_days) }}</div>
+                    <div class="stat-label">Średnia dzienna</div>
+                    <div class="stat-subtitle">Zgłoszeń na dzień ({{ stats.actual_days }} dni)</div>
+                </div>
+            </div>
+
+            <!-- Karta z zgłoszeniami "Telefon do" -->
+            <div class="stat-card warning">
+                <div class="stat-icon">📞</div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ stats.telefon_do_count }}</div>
+                    <div class="stat-label">Telefon do zgłoszenia</div>
+                    <div class="stat-subtitle">Zgłoszenia z "telefon do" w tytule</div>
+                </div>
+            </div>
+
+            <!-- Karta z zgłoszeniami "IT Buddy" -->
+            <div class="stat-card secondary">
+                <div class="stat-icon">💻</div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ stats.it_buddy_count }}</div>
+                    <div class="stat-label">IT Buddy</div>
+                    <div class="stat-subtitle">Zgłoszenia z "it buddy" w tytule</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sekcja typów zgłoszeń -->
+    <div class="issue-types-section">
+        <h2>📋 Typy Zgłoszeń</h2>
+        <div class="issue-types-grid">
+            {% for issue_type, count in stats.issue_type_stats.items() %}
+            <div class="issue-type-card">
+                <div class="issue-type-content">
+                    <div class="issue-type-name">{{ issue_type }}</div>
+                    <div class="issue-type-count">{{ count }}</div>
+                    <div class="issue-type-percentage">{{ "%.1f"|format((count / stats.total_issues) * 100) }}%</div>
+                </div>
+                <div class="issue-type-bar">
+                    <div class="issue-type-progress" style="width: {{ (count / stats.total_issues) * 100 }}%"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Główna zawartość - tabela problemów -->
+    <div class="content-section">
+        <div class="problems-section">
+            <div class="card">
+                <div class="card-header">
+                    <h3>🔥 Top Problemy</h3>
+                    <p class="card-subtitle">Ranking najczęstszych kategorii problemów</p>
+                </div>
+                
+                <div class="table-container">
+                    <table class="problems-table">
+                        <thead>
+                            <tr>
+                                <th>Pozycja</th>
+                                <th>Kategoria problemu</th>
+                                <th>Dominujący typ</th>
+                                <th>Ilość zgłoszeń</th>
+                                <th>Procent całości</th>
+                                <th>Udział w sklasyfikowanych</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set ns = namespace(rank=1) %}
+                            {% for category, count in stats.top_problems.items() %}
+                            {% if category != 'inne' and count > 0 %}
+                            <tr class="problem-row">
+                                <td class="rank-cell">
+                                    <span class="rank-badge {% if ns.rank <= 3 %}rank-top{% endif %}">{{ ns.rank }}</span>
+                                </td>
+                                <td class="category-cell">
+                                    <div class="category-name">{{ category|e }}</div>
+                                </td>
+                                <td class="issue-type-cell">
+                                    <div class="issue-type-info">
+                                        <span class="issue-type-name">{{ stats.category_dominant_types.get(category, 'Unknown')|e }}</span>
+                                    </div>
+                                </td>
+                                <td class="count-cell">
+                                    <span class="count-number">{{ count }}</span>
+                                </td>
+                                <td class="percent-cell">
+                                    <span class="percent-number">{{ "%.1f"|format((count / stats.total_issues) * 100) }}%</span>
+                                </td>
+                                <td class="classified-percent-cell">
+                                    <span class="classified-percent">{{ "%.1f"|format((count / stats.classified_count) * 100) }}%</span>
+                                    <div class="mini-progress">
+                                        <div class="mini-progress-bar" style="width: {{ (count / stats.classified_count) * 100 }}%"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% set ns.rank = ns.rank + 1 %}
+                            {% endif %}
+                            {% endfor %}
+                            
+                            <!-- Wiersz dla "inne" na końcu -->
+                            {% if 'inne' in stats.top_problems and stats.top_problems['inne'] > 0 %}
+                            <tr class="problem-row other-row">
+                                <td class="rank-cell">
+                                    <span class="rank-badge other">-</span>
+                                </td>
+                                <td class="category-cell">
+                                    <div class="category-name other">Inne (niesklasyfikowane)</div>
+                                </td>
+                                <td class="issue-type-cell">
+                                    <div class="issue-type-info">
+                                        <span class="issue-type-name">Różne</span>
+                                    </div>
+                                </td>
+                                <td class="count-cell">
+                                    <span class="count-number">{{ stats.top_problems['inne'] }}</span>
+                                </td>
+                                <td class="percent-cell">
+                                    <span class="percent-number">{{ "%.1f"|format((stats.top_problems['inne'] / stats.total_issues) * 100) }}%</span>
+                                </td>
+                                <td class="classified-percent-cell">
+                                    <span class="classified-percent">-</span>
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sekcja restauracji -->
+    <div class="content-section">
+        <div class="sites-section">
+            <div class="card">
+                <div class="card-header">
+                    <h3>🏪 Najczęściej zgłaszające restauracje</h3>
+                    <p class="card-subtitle">Ranking lokalizacji z największą liczbą zgłoszeń w wybranym okresie</p>
+                </div>
+                
+                <div class="table-container">
+                    <table class="sites-table">
+                        <thead>
+                            <tr>
+                                <th title="Pozycja w rankingu" class="sortable" data-sort="position">
+                                    Pozycja <span class="sort-indicator">↕</span>
+                                </th>
+                                <th title="Numer restauracji wyciągnięty z pola reporter" class="sortable" data-sort="number">
+                                    Numer restauracji <span class="sort-indicator">↕</span>
+                                </th>
+                                <th title="Nazwa restauracji wyciągnięta z pola reporter" class="sortable" data-sort="name">
+                                    Nazwa restauracji <span class="sort-indicator">↕</span>
+                                </th>
+                                <th title="Liczba zgłoszeń typu Incydent" class="sortable" data-sort="incidents">
+                                    Ilość incydentów <span class="sort-indicator">↕</span>
+                                </th>
+                                <th title="Liczba zgłoszeń typu Usługa" class="sortable" data-sort="services">
+                                    Ilość usług <span class="sort-indicator">↕</span>
+                                </th>
+                                <th title="Liczba zgłoszeń typu Poważny Incydent" class="sortable" data-sort="critical">
+                                    Ilość poważnych incydentów <span class="sort-indicator">↕</span>
+                                </th>
+                                <th title="Całkowita liczba zgłoszeń z tej restauracji" class="sortable" data-sort="count">
+                                    Ilość zgłoszeń <span class="sort-indicator">↕</span>
+                                </th>
+                                <th title="Procent względem wszystkich zgłoszeń w analizowanym okresie" class="sortable" data-sort="percent">
+                                    Procent wszystkich zgłoszeń <span class="sort-indicator">↕</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set ns = namespace(rank=1) %}
+                            {% for site, info in stats.top_sites.items() %}
+                            {% if site != 'Inne restauracje' and info.count > 0 %}
+                            <tr class="site-row">
+                                <td class="rank-cell">
+                                    <span class="rank-badge {% if ns.rank <= 3 %}rank-top{% endif %}">{{ ns.rank }}</span>
+                                </td>
+                                <td class="site-cell">
+                                    <div class="site-name">{{ site }}</div>
+                                </td>
+                                <td class="site-cell">
+                                    <div class="site-name">{{ info.name }}</div>
+                                </td>
+                                <td class="count-cell">
+                                    <span class="count-number incidents">{{ info.incidents }}</span>
+                                </td>
+                                <td class="count-cell">
+                                    <span class="count-number services">{{ info.services }}</span>
+                                </td>
+                                <td class="count-cell">
+                                    <span class="count-number critical">{{ info.critical_incidents }}</span>
+                                </td>
+                                <td class="count-cell">
+                                    <span class="count-number">{{ info.count }}</span>
+                                </td>
+                                <td class="percent-cell">
+                                    <span class="percent-number">{{ "%.1f"|format((info.count / stats.total_issues) * 100) }}%</span>
+                                </td>
+                            </tr>
+                            {% set ns.rank = ns.rank + 1 %}
+                            {% endif %}
+                            {% endfor %}
+                            
+                            <!-- Wiersz dla "inne restauracje" na końcu -->
+                            {% if 'Inne restauracje' in stats.top_sites and stats.top_sites['Inne restauracje'].count > 0 %}
+                            <tr class="site-row other-row">
+                                <td class="rank-cell">
+                                    <span class="rank-badge other">-</span>
+                                </td>
+                                <td class="site-cell">
+                                    <div class="site-name other">-</div>
+                                </td>
+                                <td class="site-cell">
+                                    <div class="site-name other">Inne restauracje</div>
+                                </td>
+                                <td class="count-cell">
+                                    <span class="count-number incidents">{{ stats.top_sites['Inne restauracje'].incidents }}</span>
+                                </td>
+                                <td class="count-cell">
+                                    <span class="count-number services">{{ stats.top_sites['Inne restauracje'].services }}</span>
+                                </td>
+                                <td class="count-cell">
+                                    <span class="count-number critical">{{ stats.top_sites['Inne restauracje'].critical_incidents }}</span>
+                                </td>
+                                <td class="count-cell">
+                                    <span class="count-number">{{ stats.top_sites['Inne restauracje'].count }}</span>
+                                </td>
+                                <td class="percent-cell">
+                                    <span class="percent-number">{{ "%.1f"|format((stats.top_sites['Inne restauracje'].count / stats.total_issues) * 100) }}%</span>
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- JavaScript dla interakcji -->
+<script nonce="{{ csp_nonce }}">
+// Globalna zmienna do śledzenia stanu odświeżania
+let refreshInProgress = false;
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Animacja liczników statystyk
+    const statNumbers = document.querySelectorAll('.stat-number');
+    statNumbers.forEach(element => {
+        const finalValue = element.textContent;
+        if (!isNaN(finalValue) && !finalValue.includes('%')) {
+            animateCounter(element, 0, parseInt(finalValue), 1000);
+        }
+    });
+
+    // Hover effects dla wierszy tabeli
+    const problemRows = document.querySelectorAll('.problem-row');
+    problemRows.forEach(row => {
+        row.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateX(5px)';
+        });
+        row.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateX(0)';
+        });
+    });
+
+    // Sortowanie tabeli restauracji
+    const sortableHeaders = document.querySelectorAll('.sites-table .sortable');
+    sortableHeaders.forEach(header => {
+        header.addEventListener('click', function() {
+            const sortType = this.dataset.sort;
+            const table = this.closest('table');
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr:not(.other-row)'));
+            const otherRow = tbody.querySelector('.other-row');
+            
+            // Determine sort direction
+            const currentIndicator = this.querySelector('.sort-indicator');
+            const isAscending = currentIndicator.textContent === '↕' || currentIndicator.textContent === '↓';
+            
+            // Clear all indicators
+            sortableHeaders.forEach(h => h.querySelector('.sort-indicator').textContent = '↕');
+            
+            // Sort rows
+            rows.sort((a, b) => {
+                let aValue, bValue;
+                
+                switch(sortType) {
+                    case 'position':
+                        aValue = parseInt(a.querySelector('.rank-badge').textContent);
+                        bValue = parseInt(b.querySelector('.rank-badge').textContent);
+                        break;
+                    case 'name':
+                        aValue = a.querySelector('.site-name').textContent.toLowerCase();
+                        bValue = b.querySelector('.site-name').textContent.toLowerCase();
+                        break;
+                    case 'count':
+                        aValue = parseInt(a.querySelector('.count-number').textContent);
+                        bValue = parseInt(b.querySelector('.count-number').textContent);
+                        break;
+                    case 'percent':
+                        aValue = parseFloat(a.querySelector('.percent-number').textContent.replace('%', ''));
+                        bValue = parseFloat(b.querySelector('.percent-number').textContent.replace('%', ''));
+                        break;
+                }
+                
+                if (typeof aValue === 'string') {
+                    return isAscending ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+                } else {
+                    return isAscending ? aValue - bValue : bValue - aValue;
+                }
+            });
+            
+            // Update indicator
+            currentIndicator.textContent = isAscending ? '↑' : '↓';
+            
+            // Re-append sorted rows
+            rows.forEach(row => tbody.appendChild(row));
+            
+            // Keep "other" row at the end
+            if (otherRow) {
+                tbody.appendChild(otherRow);
+            }
+        });
+    });
+});
+
+function animateCounter(element, start, end, duration) {
+    const range = end - start;
+    const startTime = Date.now();
+    
+    function updateCounter() {
+        const now = Date.now();
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easeOutProgress = 1 - Math.pow(1 - progress, 3);
+        const current = Math.round(start + (range * easeOutProgress));
+        
+        element.textContent = current.toLocaleString();
+        
+        if (progress < 1) {
+            requestAnimationFrame(updateCounter);
+        } else {
+            element.textContent = end.toLocaleString();
+        }
+    }
+    
+    updateCounter();
+}
+
+function refreshData() {
+    console.log('🔄 Rozpoczynanie odświeżania danych...');
+    
+    if (typeof refreshInProgress !== 'undefined' && refreshInProgress) {
+        alert('Odświeżanie już trwa. Proszę poczekać.');
+        return;
+    }
+    
+    if (confirm('Czy na pewno chcesz odświeżyć dane z Jira? To może potrwać kilka minut.')) {
+        refreshInProgress = true;
+        showRefreshProgress();
+        
+        // Wyślij żądanie AJAX do endpoint'u /analyze
+        const formData = new FormData();
+        formData.append('start_date', '{{ start_date }}');
+        formData.append('end_date', '{{ end_date }}');
+        formData.append('refresh_data', 'on');
+        formData.append('csrf_token', window.csrfToken || '{{ csrf_token }}');
+        
+        console.log('📤 Wysyłanie żądania do /analyze...');
+        
+        fetch('{{ url_for("analyze") }}', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            console.log('📥 Otrzymano odpowiedź:', response.status);
+            return response.json();
+        })
+        .then(data => {
+            console.log('📊 Dane z serwera:', data);
+            
+            if (data.success) {
+                console.log('✅ Analiza uruchomiona, ID:', data.analysis_id);
+                // Rozpocznij śledzenie postępu analizy
+                trackAnalysisProgress(data.analysis_id);
+            } else {
+                throw new Error(data.errors ? data.errors.join(', ') : 'Nieznany błąd');
+            }
+        })
+        .catch(error => {
+            console.error('❌ Błąd podczas uruchamiania analizy:', error);
+            alert('Błąd podczas uruchamiania analizy: ' + error.message);
+            refreshInProgress = false;
+            hideRefreshProgress();
+        });
+    }
+}
+
+// Funkcja śledzenia postępu analizy
+function trackAnalysisProgress(analysisId) {
+    console.log('📊 Rozpoczynanie śledzenia postępu dla:', analysisId);
+    
+    const checkProgress = () => {
+        console.log('🔍 Sprawdzanie postępu...');
+        
+        fetch(`/api/analysis-progress/${analysisId}`)
+            .then(response => {
+                console.log('📡 Status odpowiedzi:', response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log('📈 Dane postępu:', data);
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                // Aktualizuj pasek postępu
+                updateRefreshProgress(
+                    data.progress,
+                    data.status,
+                    data.eta_seconds > 0 ? `Pozostało: ${data.eta_seconds}s` : 'Końcowe operacje...'
+                );
+                
+                if (data.completed) {
+                    console.log('✅ Analiza zakończona!');
+                    if (data.redirect_url) {
+                        console.log('🔗 Przekierowanie do:', data.redirect_url);
+                        // Przekieruj do wyników
+                        setTimeout(() => {
+                            window.location.href = data.redirect_url;
+                        }, 1000);
+                    } else {
+                        throw new Error('Analiza zakończona, ale brak URL przekierowania');
+                    }
+                } else {
+                    // Kontynuuj śledzenie co sekundę
+                    setTimeout(checkProgress, 1000);
+                }
+            })
+            .catch(error => {
+                console.error('❌ Błąd podczas śledzenia postępu:', error);
+                alert('Błąd podczas analizy: ' + error.message);
+                refreshInProgress = false;
+                hideRefreshProgress();
+            });
+    };
+    
+    // Rozpocznij śledzenie
+    checkProgress();
+}
+
+function hideRefreshProgress() {
+    const progressContainer = document.getElementById('refreshProgressContainer');
+    if (progressContainer) {
+        progressContainer.style.display = 'none';
+    }
+}
+
+function showRefreshProgress() {
+    const progressContainer = document.getElementById('refreshProgressContainer');
+    if (progressContainer) {
+        progressContainer.style.display = 'block';
+        // Przewiń na górę żeby pasek był widoczny
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+function updateRefreshProgress(percentage, statusText, etaText) {
+    const progressFill = document.getElementById('refreshProgressFill');
+    const progressText = document.getElementById('refreshProgressText');
+    const progressPercentage = document.getElementById('refreshProgressPercentage');
+    const progressEta = document.getElementById('refreshProgressEta');
+    
+    if (progressFill) progressFill.style.width = percentage + '%';
+    if (progressText) progressText.textContent = statusText;
+    if (progressPercentage) progressPercentage.textContent = Math.round(percentage) + '%';
+    if (progressEta) progressEta.textContent = etaText;
+}
+
+async function simulateRefreshProgress() {
+    // Oblicz czas na podstawie zakresu dat
+    const startDate = new Date('{{ start_date }}');
+    const endDate = new Date('{{ end_date }}');
+    const timeDiff = Math.abs(endDate - startDate);
+    const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+    // 8 sekund na dzień, minimum 15 sekund, maksimum 540 sekund
+    let totalTime = Math.max(15, Math.min(daysDiff * 8, 540));
+    
+    const steps = [
+        { percent: 20, text: 'Łączenie z API Jira...', duration: 0.15 },
+        { percent: 45, text: 'Pobieranie zaktualizowanych zgłoszeń...', duration: 0.35 },
+        { percent: 70, text: 'Ponowna klasyfikacja problemów...', duration: 0.25 },
+        { percent: 90, text: 'Aktualizacja statystyk...', duration: 0.15 },
+        { percent: 100, text: 'Przekierowanie do wyników...', duration: 0.1 }
+    ];
+    
+    let totalElapsed = 0;
+    
+    for (let i = 0; i < steps.length; i++) {
+        const step = steps[i];
+        const stepTime = totalTime * step.duration;
+        const remainingTime = Math.max(0, totalTime - totalElapsed);
+        const etaText = remainingTime > 0 ? `Pozostało: ${Math.ceil(remainingTime)}s` : 'Zakończenie...';
+        
+        updateRefreshProgress(step.percent, step.text, etaText);
+        
+        await new Promise(resolve => setTimeout(resolve, stepTime * 1000));
+        totalElapsed += stepTime;
+    }
+}
+</script>
+{% endblock %}

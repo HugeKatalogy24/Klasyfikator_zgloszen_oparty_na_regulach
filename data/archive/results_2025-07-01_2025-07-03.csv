@@ -1,0 +1,891 @@
+key,title,created,issue_type,title_clean,title_lower,category,confidence
+SD-164341,Brak możliwości wyboru wprowadzania inwentaryzacji: Dzienna/Tygodniowa/Miesięczna,2025-07-02 23:59:04.838000+02:00,Incydent,Brak możliwości wyboru wprowadzania inwentaryzacji: Dzienna/Tygodniowa/Miesięczna,brak możliwości wyboru wprowadzania inwentaryzacji: dzienna/tygodniowa/miesięczna,inne,0.5
+SD-164340,Zamiana DT rest pyta czy można zatrzymać aktualizacje,2025-07-02 23:56:43.070000+02:00,Incydent,Zamiana DT rest pyta czy można zatrzymać aktualizacje,zamiana dt rest pyta czy można zatrzymać aktualizacje,inne,0.5
+SD-164339,Pytanie na temat wdrożenia nowej wersji Sesame,2025-07-02 23:56:34.610000+02:00,Incydent,Pytanie na temat wdrożenia nowej wersji Sesame,pytanie na temat wdrożenia nowej wersji sesame,inne,0.5
+SD-164338,Zapytanie na temat aktualizacji ,2025-07-02 23:51:37.070000+02:00,Incydent,Zapytanie na temat aktualizacji,zapytanie na temat aktualizacji,inne,0.5
+SD-164337,Zamiana linii na DT.,2025-07-02 23:51:30.387000+02:00,Incydent,Zamiana linii na DT.,zamiana linii na dt.,inne,0.5
+SD-164336,Pytanie o aktualizacje sesame ,2025-07-02 23:50:00.488000+02:00,Usługa,Pytanie o aktualizacje sesame,pytanie o aktualizacje sesame,inne,0.5
+SD-164334,Problem z otwarciem dnia.,2025-07-02 23:45:54.306000+02:00,Incydent,Problem z otwarciem dnia.,problem z otwarciem dnia.,inne,0.5
+SD-164333,"POS20 - Admin logon, nie moze sie uruchomic ",2025-07-02 23:45:00.473000+02:00,Incydent,"POS20 - Admin logon, nie moze sie uruchomic","pos20 - admin logon, nie moze sie uruchomic",inne,0.5
+SD-164332,Rest zgłasza przygotowanie do wdrożenia aktualizacji sesame.,2025-07-02 23:41:04.454000+02:00,Usługa,Rest zgłasza przygotowanie do wdrożenia aktualizacji sesame.,rest zgłasza przygotowanie do wdrożenia aktualizacji sesame.,inne,0.5
+SD-164330,Waystation - Nieprawidłowy dzień biznesowy,2025-07-02 23:31:01.405000+02:00,Incydent,Waystation - Nieprawidłowy dzień biznesowy,waystation - nieprawidłowy dzień biznesowy,Waystation – Nieprawidłowy dzień biznesowy,0.9
+SD-164329,Prośba o zablokowanie MOP.,2025-07-02 23:30:04.197000+02:00,Usługa,Prośba o zablokowanie MOP.,prośba o zablokowanie mop.,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-164328,Terminal POS03 - nie uruchamia się,2025-07-02 23:21:58.359000+02:00,Incydent,Terminal POS03 - nie uruchamia się,terminal pos03 - nie uruchamia się,inne,0.5
+SD-164327,"Problem z zamknięciem POS06 - nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 23:17:14.427000+02:00,Incydent,"Problem z zamknięciem POS06 - nie przeszło na kasie, z której był zamykany dzień.","problem z zamknięciem pos06 - nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-164326,Newpos - CSO26 loading medias,2025-07-02 23:17:05.433000+02:00,Incydent,Newpos - CSO26 loading medias,newpos - cso26 loading medias,inne,0.5
+SD-164325,Mop - prośba o wyłączenie usługi ,2025-07-02 23:15:56.972000+02:00,Poważny Incydent,Mop - prośba o wyłączenie usługi,mop - prośba o wyłączenie usługi,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-164324,POS i CSO - DF przestały odpowiadać,2025-07-02 23:15:25.495000+02:00,Incydent,POS i CSO - DF przestały odpowiadać,pos i cso - df przestały odpowiadać,inne,0.5
+SD-164322,Dzień biznesowy niedostępny,2025-07-02 23:11:24.084000+02:00,Incydent,Dzień biznesowy niedostępny,dzień biznesowy niedostępny,Waystation – Nieprawidłowy dzień biznesowy,0.9
+SD-164321,CSO28 - terminal niebieskie tło,2025-07-02 23:10:26.108000+02:00,Incydent,CSO28 - terminal niebieskie tło,cso28 - terminal niebieskie tło,inne,0.5
+SD-164320,MS9 - Nie przechodzi zamknięcie w MS.,2025-07-02 23:10:19.985000+02:00,Incydent,MS9 - Nie przechodzi zamknięcie w MS.,ms9 - nie przechodzi zamknięcie w ms.,inne,0.5
+SD-164319,"Problem z zamknięciem POS06 - nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 23:07:21.421000+02:00,Incydent,"Problem z zamknięciem POS06 - nie przeszło na kasie, z której był zamykany dzień.","problem z zamknięciem pos06 - nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-164318,MyStore - Prośba o pomoc w edycji odbić czasowych,2025-07-02 23:07:00.110000+02:00,Usługa,MyStore - Prośba o pomoc w edycji odbić czasowych,mystore - prośba o pomoc w edycji odbić czasowych,MyStore – Prośba o pomoc w edycji odbić czasowych,0.9
+SD-164316,KVS17 - Drukarka grillowa nie drukuje zamówień ,2025-07-02 23:00:50.182000+02:00,Incydent,KVS17 - Drukarka grillowa nie drukuje zamówień,kvs17 - drukarka grillowa nie drukuje zamówień,inne,0.5
+SD-164315,Korekta błędnie wbitych strat,2025-07-02 22:59:02.458000+02:00,Usługa,Korekta błędnie wbitych strat,korekta błędnie wbitych strat,inne,0.5
+SD-164314,Pytanie odnośnie aktualizacji sesame ,2025-07-02 22:55:25.735000+02:00,Usługa,Pytanie odnośnie aktualizacji sesame,pytanie odnośnie aktualizacji sesame,inne,0.5
+SD-164313,Zapytanie na temat zmiany linii drive ,2025-07-02 22:49:58.439000+02:00,Incydent,Zapytanie na temat zmiany linii drive,zapytanie na temat zmiany linii drive,inne,0.5
+SD-164311,"Problem z zamknięciem POS24 - nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 22:46:35.035000+02:00,Incydent,"Problem z zamknięciem POS24 - nie przeszło na kasie, z której był zamykany dzień.","problem z zamknięciem pos24 - nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-164310,MS9 - Nie można ustawić inwentaryzacji dziennej.,2025-07-02 22:45:01.802000+02:00,Incydent,MS9 - Nie można ustawić inwentaryzacji dziennej.,ms9 - nie można ustawić inwentaryzacji dziennej.,inne,0.5
+SD-164309,Uszkodzona drukarka fiskalna przy POS 7,2025-07-02 22:44:41.193000+02:00,Incydent,Uszkodzona drukarka fiskalna przy POS 7,uszkodzona drukarka fiskalna przy pos 7,inne,0.5
+SD-164308,Minus na inwentaryzacji frytek,2025-07-02 22:43:38.198000+02:00,Usługa,Minus na inwentaryzacji frytek,minus na inwentaryzacji frytek,inne,0.5
+SD-164307,Mop - prośba o wyłączenie usługi ,2025-07-02 22:42:04.128000+02:00,Incydent,Mop - prośba o wyłączenie usługi,mop - prośba o wyłączenie usługi,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-164306,Błędna rozdzielczość ekranu ORB01 ,2025-07-02 22:40:23.039000+02:00,Incydent,Błędna rozdzielczość ekranu ORB01,błędna rozdzielczość ekranu orb01,inne,0.5
+SD-164305,TR - Zablokowany Tr Nie przechodzi zamkniecie dnia biznesowego ,2025-07-02 22:32:03.282000+02:00,Incydent,TR - Zablokowany Tr Nie przechodzi zamkniecie dnia biznesowego,tr - zablokowany tr nie przechodzi zamkniecie dnia biznesowego,inne,0.5
+SD-164304,POS07 - Kasa będzie usuwana fizycznie z rest.,2025-07-02 22:26:07.199000+02:00,Incydent,POS07 - Kasa będzie usuwana fizycznie z rest.,pos07 - kasa będzie usuwana fizycznie z rest.,inne,0.5
+SD-164303,Pytanie o tryb 24 na kasie ,2025-07-02 22:25:19.931000+02:00,Usługa,Pytanie o tryb 24 na kasie,pytanie o tryb 24 na kasie,inne,0.5
+SD-164302,MyStore - Prośba o pomoc w edycji odbić czasowych,2025-07-02 22:24:59.338000+02:00,Incydent,MyStore - Prośba o pomoc w edycji odbić czasowych,mystore - prośba o pomoc w edycji odbić czasowych,MyStore – Prośba o pomoc w edycji odbić czasowych,0.9
+SD-164301,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 22:22:41.245000+02:00,Incydent,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.","newpos - zamknięcie nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-164300,Zapytanie o aktualizacje rfm - kiedy będzie,2025-07-02 22:22:21.403000+02:00,Incydent,Zapytanie o aktualizacje rfm - kiedy będzie,zapytanie o aktualizacje rfm - kiedy będzie,inne,0.5
+SD-164299,POS06 - skaner nie skanuje ,2025-07-02 22:22:21.159000+02:00,Incydent,POS06 - skaner nie skanuje,pos06 - skaner nie skanuje,inne,0.5
+SD-164298,migracja sesame,2025-07-02 22:16:25.278000+02:00,Incydent,migracja sesame,migracja sesame,inne,0.5
+SD-164297,MyStore - Prośba o pomoc w edycji odbić czasowych,2025-07-02 22:15:44.842000+02:00,Usługa,MyStore - Prośba o pomoc w edycji odbić czasowych,mystore - prośba o pomoc w edycji odbić czasowych,MyStore – Prośba o pomoc w edycji odbić czasowych,0.9
+SD-164296,POS06 - df nie pinguje ,2025-07-02 22:12:38.064000+02:00,Incydent,POS06 - df nie pinguje,pos06 - df nie pinguje,inne,0.5
+SD-164295,"Problem z zamknięciem POS24 - nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 22:11:42.854000+02:00,Incydent,"Problem z zamknięciem POS24 - nie przeszło na kasie, z której był zamykany dzień.","problem z zamknięciem pos24 - nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-164294,Problem z produktem ,2025-07-02 22:10:33.119000+02:00,Incydent,Problem z produktem,problem z produktem,inne,0.5
+SD-164292,Prośba o wyłączenie MOP.,2025-07-02 22:03:08.585000+02:00,Usługa,Prośba o wyłączenie MOP.,prośba o wyłączenie mop.,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-164291,CSO25 - prośba o odłączenie,2025-07-02 21:59:04.529000+02:00,Incydent,CSO25 - prośba o odłączenie,cso25 - prośba o odłączenie,inne,0.5
+SD-164290,Cashrecycler -  zawieszona aplikacja ,2025-07-02 21:58:35.833000+02:00,Incydent,Cashrecycler -  zawieszona aplikacja,cashrecycler -  zawieszona aplikacja,inne,0.5
+SD-164288,MS9 - nie można uruchomić ,2025-07-02 21:49:08.538000+02:00,Incydent,MS9 - nie można uruchomić,ms9 - nie można uruchomić,inne,0.5
+SD-164287,Mystore - brak uprawnień na koncie do zarządzania listami inwentaryzacyjnymi itp. ,2025-07-02 21:48:13.698000+02:00,Incydent,Mystore - brak uprawnień na koncie do zarządzania listami inwentaryzacyjnymi itp.,mystore - brak uprawnień na koncie do zarządzania listami inwentaryzacyjnymi itp.,inne,0.5
+SD-164286,MyStore - Prośba o pomoc w edycji odbić czasowych,2025-07-02 21:38:26.323000+02:00,Incydent,MyStore - Prośba o pomoc w edycji odbić czasowych,mystore - prośba o pomoc w edycji odbić czasowych,MyStore – Prośba o pomoc w edycji odbić czasowych,0.9
+SD-164285,CSO26 - Nie pinguje,2025-07-02 21:31:46.383000+02:00,Incydent,CSO26 - Nie pinguje,cso26 - nie pinguje,inne,0.5
+SD-164284,CSO26 - niedostępny,2025-07-02 21:31:32.675000+02:00,Incydent,CSO26 - niedostępny,cso26 - niedostępny,CSOxx – niedostępny,0.9
+SD-164283,MOP - Prośba o wyłączenie,2025-07-02 21:30:31.224000+02:00,Usługa,MOP - Prośba o wyłączenie,mop - prośba o wyłączenie,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-164280,Pytanie o aktualizację sesame ,2025-07-02 21:26:28.369000+02:00,Incydent,Pytanie o aktualizację sesame,pytanie o aktualizację sesame,inne,0.5
+SD-164279,"POS24 - nie działa skaner, brak wiązki",2025-07-02 21:23:02.355000+02:00,Incydent,"POS24 - nie działa skaner, brak wiązki","pos24 - nie działa skaner, brak wiązki",inne,0.5
+SD-164278,COD - Skaner Brak wiązki,2025-07-02 21:19:38.637000+02:00,Incydent,COD - Skaner Brak wiązki,cod - skaner brak wiązki,inne,0.5
+SD-164276,[Telefon serwisowy] - prośba o zmianę nagłówka DF,2025-07-02 21:17:01.883000+02:00,Incydent,[Telefon serwisowy] - prośba o zmianę nagłówka DF,[telefon serwisowy] - prośba o zmianę nagłówka df,inne,0.5
+SD-164275,CSO26 - nie pinguje,2025-07-02 21:16:27.446000+02:00,Incydent,CSO26 - nie pinguje,cso26 - nie pinguje,inne,0.5
+SD-164274,CSO25 - Pośba o detach - Kiosk sam się wyłącza,2025-07-02 21:12:19.358000+02:00,Incydent,CSO25 - Pośba o detach - Kiosk sam się wyłącza,cso25 - pośba o detach - kiosk sam się wyłącza,inne,0.5
+SD-164273,RHS01 - Wyłączył się,2025-07-02 21:10:52.154000+02:00,Incydent,RHS01 - Wyłączył się,rhs01 - wyłączył się,inne,0.5
+SD-164270,Drukarka fiskalna - CSO25 nie ucina papieru ,2025-07-02 21:04:57.693000+02:00,Incydent,Drukarka fiskalna - CSO25 nie ucina papieru,drukarka fiskalna - cso25 nie ucina papieru,inne,0.5
+SD-164269,MOP - odrzucane zamówienia,2025-07-02 21:01:50.327000+02:00,Incydent,MOP - odrzucane zamówienia,mop - odrzucane zamówienia,inne,0.5
+SD-164267,CFS  - brak obrazu ,2025-07-02 20:54:35.907000+02:00,Incydent,CFS  - brak obrazu,cfs  - brak obrazu,inne,0.5
+SD-164266,MOP - Prośba o wyłączenie zamówień mobilnych,2025-07-02 20:52:12.825000+02:00,Usługa,MOP - Prośba o wyłączenie zamówień mobilnych,mop - prośba o wyłączenie zamówień mobilnych,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-164265,POS01 - błędne kolejność pojazdów i zamówień,2025-07-02 20:50:17.370000+02:00,Incydent,POS01 - błędne kolejność pojazdów i zamówień,pos01 - błędne kolejność pojazdów i zamówień,inne,0.5
+SD-164264,Rest zgłasza problem z słuchawkami na Drive Thro,2025-07-02 20:33:27.153000+02:00,Usługa,Rest zgłasza problem z słuchawkami na Drive Thro,rest zgłasza problem z słuchawkami na drive thro,inne,0.5
+SD-164262,MOP - włączenie usługi,2025-07-02 20:27:06.625000+02:00,Usługa,MOP - włączenie usługi,mop - włączenie usługi,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-164261,Mystore - problem z uruchomieniem aplikacji ,2025-07-02 20:17:26.336000+02:00,Incydent,Mystore - problem z uruchomieniem aplikacji,mystore - problem z uruchomieniem aplikacji,inne,0.5
+SD-164260,RHS - Prośba o włączenie urządzeń po awarii prądu,2025-07-02 20:01:30.255000+02:00,Incydent,RHS - Prośba o włączenie urządzeń po awarii prądu,rhs - prośba o włączenie urządzeń po awarii prądu,inne,0.5
+SD-164259,MOP - włączenie usługi,2025-07-02 19:55:10.927000+02:00,Usługa,MOP - włączenie usługi,mop - włączenie usługi,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-164257,Problem z monitorami po awarii prądu ,2025-07-02 19:40:07.824000+02:00,Incydent,Problem z monitorami po awarii prądu,problem z monitorami po awarii prądu,inne,0.5
+SD-164256,"Nie zgodności  ceny aby nabić vouchery gastro, które powinny wynosić 16 zlre",2025-07-02 19:33:31.798000+02:00,Incydent,"Nie zgodności  ceny aby nabić vouchery gastro, które powinny wynosić 16 zlre","nie zgodności  ceny aby nabić vouchery gastro, które powinny wynosić 16 zlre",inne,0.5
+SD-164239,POS24 - drukarka offline,2025-07-02 19:16:32.443000+02:00,Incydent,POS24 - drukarka offline,pos24 - drukarka offline,inne,0.5
+SD-164238,CFS - zamiana podsumowań na ekranach,2025-07-02 19:15:13.417000+02:00,Incydent,CFS - zamiana podsumowań na ekranach,cfs - zamiana podsumowań na ekranach,inne,0.5
+SD-164237,Problem z kuponem (promocja lokalna dla galerii) ,2025-07-02 19:09:10.968000+02:00,Incydent,Problem z kuponem (promocja lokalna dla galerii),problem z kuponem (promocja lokalna dla galerii),inne,0.5
+SD-164235,RE: McDonald's Poland Coates Support Case 00370771 Acknowledgment,2025-07-02 19:05:51.742000+02:00,Usługa,RE: McDonald's Poland Coates Support Case 00370771 Acknowledgment,re: mcdonald's poland coates support case 00370771 acknowledgment,inne,0.5
+SD-164218,MOP - wyłączenie usługi,2025-07-02 18:48:31.299000+02:00,Usługa,MOP - wyłączenie usługi,mop - wyłączenie usługi,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-164217,"błąd drukarki, wyskakuje cały czas komunikat ""brak papieru:",2025-07-02 18:42:38.686000+02:00,Incydent,"błąd drukarki, wyskakuje cały czas komunikat ""brak papieru:","błąd drukarki, wyskakuje cały czas komunikat ""brak papieru:",inne,0.5
+SD-164216,POS24 - nie reaguje kasa ,2025-07-02 18:36:43.607000+02:00,Incydent,POS24 - nie reaguje kasa,pos24 - nie reaguje kasa,inne,0.5
+SD-164215,"""Brak zainstalowanych drukarek""",2025-07-02 18:31:29.933000+02:00,Incydent,"""Brak zainstalowanych drukarek""","""brak zainstalowanych drukarek""",inne,0.5
+SD-164214,Problem ze zużyciem - rozbieżności na większości produktów ,2025-07-02 18:25:41.095000+02:00,Usługa,Problem ze zużyciem - rozbieżności na większości produktów,problem ze zużyciem - rozbieżności na większości produktów,inne,0.5
+SD-164213,CSO25 - niedostępny,2025-07-02 18:07:56.495000+02:00,Incydent,CSO25 - niedostępny,cso25 - niedostępny,CSOxx – niedostępny,0.9
+SD-164212,Czcionka DT monitor 34,2025-07-02 18:05:23.851000+02:00,Incydent,Czcionka DT monitor 34,czcionka dt monitor 34,inne,0.5
+SD-164210,czasy obsługi mystore,2025-07-02 17:51:56.765000+02:00,Incydent,czasy obsługi mystore,czasy obsługi mystore,inne,0.5
+SD-164209,Włączenie usługi MOP ,2025-07-02 17:50:57.357000+02:00,Incydent,Włączenie usługi MOP,włączenie usługi mop,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-164208,POS01 - newpos zawieszona kasa nie reaguje na dotyk,2025-07-02 17:50:07.983000+02:00,Incydent,POS01 - newpos zawieszona kasa nie reaguje na dotyk,pos01 - newpos zawieszona kasa nie reaguje na dotyk,inne,0.5
+SD-164207,Głuchy telefon,2025-07-02 17:48:54.283000+02:00,Incydent,Głuchy telefon,głuchy telefon,inne,0.5
+SD-164205,Laptop kierownika - Rest pyta czy może dostać zdalny dostęp do pików na BackOffice,2025-07-02 17:43:38.096000+02:00,Usługa,Laptop kierownika - Rest pyta czy może dostać zdalny dostęp do pików na BackOffice,laptop kierownika - rest pyta czy może dostać zdalny dostęp do pików na backoffice,inne,0.5
+SD-164204,Problem z zalogowaniem,2025-07-02 17:37:34.512000+02:00,Incydent,Problem z zalogowaniem,problem z zalogowaniem,inne,0.5
+SD-164203,POS01 - Waystatio offline - błąd DF,2025-07-02 17:25:27.164000+02:00,Incydent,POS01 - Waystatio offline - błąd DF,pos01 - waystatio offline - błąd df,inne,0.5
+SD-164201,Proszę o zmniejszenie czcionki na monitorze runner DT ,2025-07-02 17:16:54.925000+02:00,Incydent,Proszę o zmniejszenie czcionki na monitorze runner DT,proszę o zmniejszenie czcionki na monitorze runner dt,inne,0.5
+SD-164200,KVS22 - Rest widzi czarny ekran,2025-07-02 17:06:30.847000+02:00,Incydent,KVS22 - Rest widzi czarny ekran,kvs22 - rest widzi czarny ekran,inne,0.5
+SD-164199,KVSy (większość) - nie uruchamiają się po awarii prądu,2025-07-02 17:01:07.429000+02:00,Incydent,KVSy (większość) - nie uruchamiają się po awarii prądu,kvsy (większość) - nie uruchamiają się po awarii prądu,inne,0.5
+SD-164198,Po Awarii prądu - włączenie RHS,2025-07-02 16:57:04.199000+02:00,Incydent,Po Awarii prądu - włączenie RHS,po awarii prądu - włączenie rhs,inne,0.5
+SD-164197,MyStore - Pokazuje się zużycie na  promocyjnych szklankach które powinno pokazywać się dopiero 09.07.2025,2025-07-02 16:51:09.485000+02:00,Usługa,MyStore - Pokazuje się zużycie na  promocyjnych szklankach które powinno pokazywać się dopiero 09.07.2025,mystore - pokazuje się zużycie na  promocyjnych szklankach które powinno pokazywać się dopiero 09.07.2025,inne,0.5
+SD-164196,Nie drukuje opisek,2025-07-02 16:40:48.772000+02:00,Incydent,Nie drukuje opisek,nie drukuje opisek,inne,0.5
+SD-164194,Spadek,2025-07-02 16:34:55.343000+02:00,Incydent,Spadek,spadek,inne,0.5
+SD-164192,Idzie zużycie szklanek których jeszcze nie mamy w ofercie ,2025-07-02 16:30:30.534000+02:00,Incydent,Idzie zużycie szklanek których jeszcze nie mamy w ofercie,idzie zużycie szklanek których jeszcze nie mamy w ofercie,inne,0.5
+SD-164191,CFS Line 2 - brak podglądu na kamery,2025-07-02 16:28:34.527000+02:00,Incydent,CFS Line 2 - brak podglądu na kamery,cfs line 2 - brak podglądu na kamery,inne,0.5
+SD-164190,problem z aplikacja,2025-07-02 16:28:25.241000+02:00,Incydent,problem z aplikacja,problem z aplikacja,inne,0.5
+SD-164188,iDMB FC3 logo Magic Info,2025-07-02 16:24:07.809000+02:00,Incydent,iDMB FC3 logo Magic Info,idmb fc3 logo magic info,inne,0.5
+SD-164187,MOP - Rest prosił o informacje czy zamówienia mobilne działają poprawnie,2025-07-02 16:14:20.702000+02:00,Incydent,MOP - Rest prosił o informacje czy zamówienia mobilne działają poprawnie,mop - rest prosił o informacje czy zamówienia mobilne działają poprawnie,inne,0.5
+SD-164184,Awaria Prądu - Prośba o wyłączenie RHS,2025-07-02 16:10:06.875000+02:00,Poważny Incydent,Awaria Prądu - Prośba o wyłączenie RHS,awaria prądu - prośba o wyłączenie rhs,inne,0.5
+SD-164182,MyStore - Nie można wykonać edycji odbicia czasowych jednego pracownika,2025-07-02 16:02:07.837000+02:00,Usługa,MyStore - Nie można wykonać edycji odbicia czasowych jednego pracownika,mystore - nie można wykonać edycji odbicia czasowych jednego pracownika,MyStore – Prośba o pomoc w edycji odbić czasowych,0.9
+SD-164181,różnica w danych pomiędzy raportem,2025-07-02 15:56:04.994000+02:00,Incydent,różnica w danych pomiędzy raportem,różnica w danych pomiędzy raportem,inne,0.5
+SD-164180,Zamówienia nie wpadają na monitory ,2025-07-02 15:54:12.300000+02:00,Incydent,Zamówienia nie wpadają na monitory,zamówienia nie wpadają na monitory,inne,0.5
+SD-164179,Świeci dioda połączenia z ministerstwem Finansów ,2025-07-02 15:53:31.526000+02:00,Incydent,Świeci dioda połączenia z ministerstwem Finansów,świeci dioda połączenia z ministerstwem finansów,inne,0.5
+SD-164178,RE: McDonald's PL Plock-61600188 Coates Support Case 00370829 Acknowledgment,2025-07-02 15:51:53.474000+02:00,Usługa,RE: McDonald's PL Plock-61600188 Coates Support Case 00370829 Acknowledgment,re: mcdonald's pl plock-61600188 coates support case 00370829 acknowledgment,inne,0.5
+SD-164177,POS06 - nie reaguje,2025-07-02 15:50:56.207000+02:00,Incydent,POS06 - nie reaguje,pos06 - nie reaguje,inne,0.5
+SD-164173,RE: McDonald's PL Czechowice-Dziedzice-61600575 Coates Support Case 00370416 Acknowledgment,2025-07-02 15:44:51.811000+02:00,Usługa,RE: McDonald's PL Czechowice-Dziedzice-61600575 Coates Support Case 00370416 Acknowledgment,re: mcdonald's pl czechowice-dziedzice-61600575 coates support case 00370416 acknowledgment,inne,0.5
+SD-164172,MOP Ceny - nie zgadzają się,2025-07-02 15:44:42.715000+02:00,Poważny Incydent,MOP Ceny - nie zgadzają się,mop ceny - nie zgadzają się,inne,0.5
+SD-164171,Asista,2025-07-02 15:43:17.779000+02:00,Incydent,Asista,asista,inne,0.5
+SD-164170,Wyse.5 - Bardzo wolno działa,2025-07-02 15:43:04.238000+02:00,Incydent,Wyse.5 - Bardzo wolno działa,wyse.5 - bardzo wolno działa,inne,0.5
+SD-164169,Zalana drukarka oraz wypadła czesc i nie mozna jej zamknac,2025-07-02 15:36:53.684000+02:00,Incydent,Zalana drukarka oraz wypadła czesc i nie mozna jej zamknac,zalana drukarka oraz wypadła czesc i nie mozna jej zamknac,inne,0.5
+SD-164168,nieprawidłowe działanie aplikacji GAM,2025-07-02 15:36:47.699000+02:00,Incydent,nieprawidłowe działanie aplikacji GAM,nieprawidłowe działanie aplikacji gam,inne,0.5
+SD-164167,Konto imienne  - restart hasła ,2025-07-02 15:36:25.452000+02:00,Incydent,Konto imienne  - restart hasła,konto imienne  - restart hasła,inne,0.5
+SD-164166,nie dzialaja skanery kodow qr,2025-07-02 15:34:32.875000+02:00,Incydent,nie dzialaja skanery kodow qr,nie dzialaja skanery kodow qr,inne,0.5
+SD-164165,ODMB - Kamera na 1 linii DT wyświetla zielony obraz,2025-07-02 15:32:15.016000+02:00,Incydent,ODMB - Kamera na 1 linii DT wyświetla zielony obraz,odmb - kamera na 1 linii dt wyświetla zielony obraz,inne,0.5
+SD-164164,MCC_2 - czarny ekran - przyciemniony,2025-07-02 15:30:42.010000+02:00,Incydent,MCC_2 - czarny ekran - przyciemniony,mcc_2 - czarny ekran - przyciemniony,inne,0.5
+SD-164163,Dodanie maila do skanera ,2025-07-02 15:24:14.036000+02:00,Incydent,Dodanie maila do skanera,dodanie maila do skanera,inne,0.5
+SD-164161,HWA01 - Nie pinguje,2025-07-02 15:16:40.442000+02:00,Incydent,HWA01 - Nie pinguje,hwa01 - nie pinguje,inne,0.5
+SD-164160,POs08 - fiscal driver is not started ,2025-07-02 15:16:03.084000+02:00,Incydent,POs08 - fiscal driver is not started,pos08 - fiscal driver is not started,inne,0.5
+SD-164159,KVS34 - BumpBar - nie kasuje zamówień,2025-07-02 15:13:07.312000+02:00,Incydent,KVS34 - BumpBar - nie kasuje zamówień,kvs34 - bumpbar - nie kasuje zamówień,inne,0.5
+SD-164158,Skaner nie przesyłka skanów dokumentów na email,2025-07-02 15:11:49.286000+02:00,Incydent,Skaner nie przesyłka skanów dokumentów na email,skaner nie przesyłka skanów dokumentów na email,inne,0.5
+SD-164157,NewPos - Nie załadował się na TAP45,2025-07-02 15:07:44.308000+02:00,Incydent,NewPos - Nie załadował się na TAP45,newpos - nie załadował się na tap45,inne,0.5
+SD-164156,POS01 - problem z terminalem / przyjęciem płatności ,2025-07-02 15:04:48.235000+02:00,Incydent,POS01 - problem z terminalem / przyjęciem płatności,pos01 - problem z terminalem / przyjęciem płatności,inne,0.5
+SD-164155,Raport PMX,2025-07-02 15:00:52.734000+02:00,Incydent,Raport PMX,raport pmx,inne,0.5
+SD-164151,KVS34 - problem z dotykiem - kasowaniem zamówień,2025-07-02 14:48:22.524000+02:00,Incydent,KVS34 - problem z dotykiem - kasowaniem zamówień,kvs34 - problem z dotykiem - kasowaniem zamówień,inne,0.5
+SD-164149,[Telefon serwisowy] Konfiguracja cennika elektronicznego,2025-07-02 14:34:04.465000+02:00,Incydent,[Telefon serwisowy] Konfiguracja cennika elektronicznego,[telefon serwisowy] konfiguracja cennika elektronicznego,inne,0.5
+SD-164147,RHS01 - Maile o przegrzewającym się serwerze,2025-07-02 14:24:46.094000+02:00,Incydent,RHS01 - Maile o przegrzewającym się serwerze,rhs01 - maile o przegrzewającym się serwerze,inne,0.5
+SD-164146,Newpos - błędne ceny produktu,2025-07-02 14:23:51.889000+02:00,Incydent,Newpos - błędne ceny produktu,newpos - błędne ceny produktu,inne,0.5
+SD-164145,HWA01 - nie włącza się,2025-07-02 14:23:50.125000+02:00,Incydent,HWA01 - nie włącza się,hwa01 - nie włącza się,inne,0.5
+SD-164144,Pytanie o wdrożenie SBS,2025-07-02 14:23:34.838000+02:00,Incydent,Pytanie o wdrożenie SBS,pytanie o wdrożenie sbs,inne,0.5
+SD-164143,test,2025-07-02 14:22:25.296000+02:00,Usługa,test,test,inne,0.5
+SD-164142,Zapełnienie pamięci chronionej 90%,2025-07-02 14:22:20.171000+02:00,Incydent,Zapełnienie pamięci chronionej 90%,zapełnienie pamięci chronionej 90%,inne,0.5
+SD-164141,KVS29 - Nie pinguje po zamianie monitora,2025-07-02 14:21:26.881000+02:00,Incydent,KVS29 - Nie pinguje po zamianie monitora,kvs29 - nie pinguje po zamianie monitora,inne,0.5
+SD-164140,HWA01 - po odbiciu pracownika wskakuje dwóch pracowników ,2025-07-02 14:21:06.002000+02:00,Incydent,HWA01 - po odbiciu pracownika wskakuje dwóch pracowników,hwa01 - po odbiciu pracownika wskakuje dwóch pracowników,inne,0.5
+SD-164138,Ustawienie menu do 1:00.,2025-07-02 14:15:42.518000+02:00,Incydent,Ustawienie menu do 1:00.,ustawienie menu do 1:00.,inne,0.5
+SD-164137,drukarka fiskalna nie działa prawidłowo,2025-07-02 14:10:24.596000+02:00,Incydent,drukarka fiskalna nie działa prawidłowo,drukarka fiskalna nie działa prawidłowo,inne,0.5
+SD-164136,McDonald's PL Plock-61600188 Coates Support Case 00370829 Acknowledgment,2025-07-02 14:10:05.885000+02:00,Usługa,McDonald's PL Plock-61600188 Coates Support Case 00370829 Acknowledgment,mcdonald's pl plock-61600188 coates support case 00370829 acknowledgment,inne,0.5
+SD-164130,WEB cockpit nie pojawia się plan sprzedaży,2025-07-02 13:52:57.562000+02:00,Incydent,WEB cockpit nie pojawia się plan sprzedaży,web cockpit nie pojawia się plan sprzedaży,inne,0.5
+SD-164129,KVS09 - Drukarka grill nie drukuje zamówień,2025-07-02 13:50:26.548000+02:00,Incydent,KVS09 - Drukarka grill nie drukuje zamówień,kvs09 - drukarka grill nie drukuje zamówień,inne,0.5
+SD-164128,Problem z Internetem w całej restauracji ,2025-07-02 13:49:06.109000+02:00,Incydent,Problem z Internetem w całej restauracji,problem z internetem w całej restauracji,inne,0.5
+SD-164127,Brak pokazanej projekcji,2025-07-02 13:44:27.985000+02:00,Incydent,Brak pokazanej projekcji,brak pokazanej projekcji,inne,0.5
+SD-164125,POS - Nieprawidłowe ceny ,2025-07-02 13:41:10.881000+02:00,Incydent,POS - Nieprawidłowe ceny,pos - nieprawidłowe ceny,inne,0.5
+SD-164124,MOP - prośba o włączenie / wyłączenie,2025-07-02 13:40:52.576000+02:00,Usługa,MOP - prośba o włączenie / wyłączenie,mop - prośba o włączenie / wyłączenie,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-164123,McDonald's Poland Coates Support Case 00370829 Acknowledgment,2025-07-02 13:40:51.619000+02:00,Usługa,McDonald's Poland Coates Support Case 00370829 Acknowledgment,mcdonald's poland coates support case 00370829 acknowledgment,inne,0.5
+SD-164121,TR - Pokazuje nieprawidłową godzine ,2025-07-02 13:37:48.469000+02:00,Incydent,TR - Pokazuje nieprawidłową godzine,tr - pokazuje nieprawidłową godzine,inne,0.5
+SD-164120,POS01 - nieresponsywna,2025-07-02 13:36:19.791000+02:00,Incydent,POS01 - nieresponsywna,pos01 - nieresponsywna,inne,0.5
+SD-164118,CFS - Brak podglądu kamery linia 1 ,2025-07-02 13:10:33.589000+02:00,Incydent,CFS - Brak podglądu kamery linia 1,cfs - brak podglądu kamery linia 1,inne,0.5
+SD-164117,KVS06 - nie pinguje,2025-07-02 13:09:49.838000+02:00,Incydent,KVS06 - nie pinguje,kvs06 - nie pinguje,inne,0.5
+SD-164116,Problem z odblokowaniem pracowników w CAM,2025-07-02 13:02:11.712000+02:00,Incydent,Problem z odblokowaniem pracowników w CAM,problem z odblokowaniem pracowników w cam,inne,0.5
+SD-164115,Invo2 - Nie włącza się ,2025-07-02 13:00:22.995000+02:00,Usługa,Invo2 - Nie włącza się,invo2 - nie włącza się,inne,0.5
+SD-164112,POS24 - niepoprawny numer kasy na paragonach,2025-07-02 12:56:23.603000+02:00,Incydent,POS24 - niepoprawny numer kasy na paragonach,pos24 - niepoprawny numer kasy na paragonach,inne,0.5
+SD-164111,MyStore - Duże minusy na raporcie zużycia półproduktów ,2025-07-02 12:52:35.456000+02:00,Incydent,MyStore - Duże minusy na raporcie zużycia półproduktów,mystore - duże minusy na raporcie zużycia półproduktów,inne,0.5
+SD-164110,ms9 - brak raportu PMX,2025-07-02 12:50:21.367000+02:00,Incydent,ms9 - brak raportu PMX,ms9 - brak raportu pmx,inne,0.5
+SD-164109,oDMB - skaner COD nie skanuje,2025-07-02 12:48:18.630000+02:00,Incydent,oDMB - skaner COD nie skanuje,odmb - skaner cod nie skanuje,inne,0.5
+SD-164108,CSO27 - Zawijający się papier od drukarki ,2025-07-02 12:43:09.095000+02:00,Incydent,CSO27 - Zawijający się papier od drukarki,cso27 - zawijający się papier od drukarki,inne,0.5
+SD-164107,CFS - Brak podgladu na linie 1,2025-07-02 12:32:45.887000+02:00,Incydent,CFS - Brak podgladu na linie 1,cfs - brak podgladu na linie 1,inne,0.5
+SD-164106,KVS19 - nie zbija zamówień,2025-07-02 12:30:54.729000+02:00,Incydent,KVS19 - nie zbija zamówień,kvs19 - nie zbija zamówień,inne,0.5
+SD-164105,Nóż nie odcina paragonów,2025-07-02 12:28:08.228000+02:00,Incydent,Nóż nie odcina paragonów,nóż nie odcina paragonów,inne,0.5
+SD-164104,Zapytanie o - aktualizacja cen połproduktów w ms9 bez daty aktualizacji,2025-07-02 12:25:39.005000+02:00,Usługa,Zapytanie o - aktualizacja cen połproduktów w ms9 bez daty aktualizacji,zapytanie o - aktualizacja cen połproduktów w ms9 bez daty aktualizacji,inne,0.5
+SD-164103,Problem z dostępem do plików ,2025-07-02 12:25:12.002000+02:00,Incydent,Problem z dostępem do plików,problem z dostępem do plików,inne,0.5
+SD-164102,MOP - Prośba o włączenie,2025-07-02 12:25:06.972000+02:00,Incydent,MOP - Prośba o włączenie,mop - prośba o włączenie,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-164101,CSO28 - niedostępny,2025-07-02 12:23:38.387000+02:00,Incydent,CSO28 - niedostępny,cso28 - niedostępny,CSOxx – niedostępny,0.9
+SD-164100,Monitor mycia rak nie łapie połączenia z internetem ,2025-07-02 12:22:49.527000+02:00,Incydent,Monitor mycia rak nie łapie połączenia z internetem,monitor mycia rak nie łapie połączenia z internetem,inne,0.5
+SD-164097,Prośba o włączenie MOP,2025-07-02 12:20:46.839000+02:00,Usługa,Prośba o włączenie MOP,prośba o włączenie mop,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-164096,NewPOS - Nie wszystkie zamówienia wpadają na kuchnię,2025-07-02 12:19:52.549000+02:00,Incydent,NewPOS - Nie wszystkie zamówienia wpadają na kuchnię,newpos - nie wszystkie zamówienia wpadają na kuchnię,inne,0.5
+SD-164095,Brak danych pmx ,2025-07-02 12:17:39.800000+02:00,Incydent,Brak danych pmx,brak danych pmx,inne,0.5
+SD-164094,MOP - prośba o włączenie / wyłączenie,2025-07-02 12:09:49.226000+02:00,Usługa,MOP - prośba o włączenie / wyłączenie,mop - prośba o włączenie / wyłączenie,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-164093,POS - Nieprawidłowe ceny ,2025-07-02 12:07:44.271000+02:00,Incydent,POS - Nieprawidłowe ceny,pos - nieprawidłowe ceny,inne,0.5
+SD-164091,Problem z logowaniem nowego menadzera,2025-07-02 12:00:04.859000+02:00,Incydent,Problem z logowaniem nowego menadzera,problem z logowaniem nowego menadzera,inne,0.5
+SD-164089,CSO28 - niezalogowany,2025-07-02 11:50:44.692000+02:00,Incydent,CSO28 - niezalogowany,cso28 - niezalogowany,inne,0.5
+SD-164088,DLV - McFlurry ma doliczone nadmiarowe 30 gr za kubek,2025-07-02 11:49:14+02:00,Incydent,DLV - McFlurry ma doliczone nadmiarowe 30 gr za kubek,dlv - mcflurry ma doliczone nadmiarowe 30 gr za kubek,inne,0.5
+SD-164086,ODMB - Brak podsumowania zamówienia,2025-07-02 11:40:43.856000+02:00,Incydent,ODMB - Brak podsumowania zamówienia,odmb - brak podsumowania zamówienia,inne,0.5
+SD-164084,iDMB - FC3 wyłączony,2025-07-02 11:38:52.173000+02:00,Incydent,iDMB - FC3 wyłączony,idmb - fc3 wyłączony,inne,0.5
+SD-164083,brak numeru wrin ,2025-07-02 11:25:34.691000+02:00,Incydent,brak numeru wrin,brak numeru wrin,inne,0.5
+SD-164082,GAM - Prośba o zmianę hasła ,2025-07-02 11:23:44.249000+02:00,Incydent,GAM - Prośba o zmianę hasła,gam - prośba o zmianę hasła,inne,0.5
+SD-164080,Kamera 2 linii drive nie działa,2025-07-02 11:21:13.801000+02:00,Incydent,Kamera 2 linii drive nie działa,kamera 2 linii drive nie działa,inne,0.5
+SD-164079,Szafa serwerowa - Spalona połowa listwy,2025-07-02 11:20:04.988000+02:00,Incydent,Szafa serwerowa - Spalona połowa listwy,szafa serwerowa - spalona połowa listwy,inne,0.5
+SD-164078,KVS - Monitory pokazują 0/0,2025-07-02 11:15:41.788000+02:00,Incydent,KVS - Monitory pokazują 0/0,kvs - monitory pokazują 0/0,inne,0.5
+SD-164077,Kontynuacja zgłoszenia SD-160486 Drukarka nie drukuje slipów,2025-07-02 11:11:05.822000+02:00,Incydent,Kontynuacja zgłoszenia SD-160486 Drukarka nie drukuje slipów,kontynuacja zgłoszenia sd-160486 drukarka nie drukuje slipów,inne,0.5
+SD-164076,GAM - Brak możliwości usunięcia pracowników,2025-07-02 11:10:41.096000+02:00,Incydent,GAM - Brak możliwości usunięcia pracowników,gam - brak możliwości usunięcia pracowników,inne,0.5
+SD-164075,Skaner COD nie działa,2025-07-02 11:08:51.147000+02:00,Incydent,Skaner COD nie działa,skaner cod nie działa,inne,0.5
+SD-164074,iDMB - FC_3 nie uruchamia się,2025-07-02 11:08:20.852000+02:00,Incydent,iDMB - FC_3 nie uruchamia się,idmb - fc_3 nie uruchamia się,inne,0.5
+SD-164073,KVS17 - GPR dalej nie drukuje slipów,2025-07-02 11:05:17.277000+02:00,Incydent,KVS17 - GPR dalej nie drukuje slipów,kvs17 - gpr dalej nie drukuje slipów,inne,0.5
+SD-164072,MyStore - Brak numeru wrin ,2025-07-02 11:04:25.663000+02:00,Incydent,MyStore - Brak numeru wrin,mystore - brak numeru wrin,inne,0.5
+SD-164071,Nieprawidłowe tłumaczenie na kioskach w języku Ukraińskim,2025-07-02 11:04:09.187000+02:00,Incydent,Nieprawidłowe tłumaczenie na kioskach w języku Ukraińskim,nieprawidłowe tłumaczenie na kioskach w języku ukraińskim,inne,0.5
+SD-164067,MFA - na nowym telefonie ,2025-07-02 10:57:04.156000+02:00,Incydent,MFA - na nowym telefonie,mfa - na nowym telefonie,inne,0.5
+SD-164066,[TELEFON SERWISOWY] - Prośba o konfigurację cennika,2025-07-02 10:51:15.501000+02:00,Incydent,[TELEFON SERWISOWY] - Prośba o konfigurację cennika,[telefon serwisowy] - prośba o konfigurację cennika,inne,0.5
+SD-164065,błędne ceny na menubordach idmb,2025-07-02 10:50:49.568000+02:00,Incydent,błędne ceny na menubordach idmb,błędne ceny na menubordach idmb,inne,0.5
+SD-164064,MFA - prośba o wygenerowanie,2025-07-02 10:48:35.989000+02:00,Usługa,MFA - prośba o wygenerowanie,mfa - prośba o wygenerowanie,inne,0.5
+SD-164063,KVS17 - drukuje puste slipy,2025-07-02 10:38:41.924000+02:00,Incydent,KVS17 - drukuje puste slipy,kvs17 - drukuje puste slipy,inne,0.5
+SD-164062,Orb02  - czerwone logo M,2025-07-02 10:38:41.278000+02:00,Incydent,Orb02  - czerwone logo M,orb02  - czerwone logo m,inne,0.5
+SD-164061,brak dostępu do payroll PC i manager pc,2025-07-02 10:33:06.208000+02:00,Incydent,brak dostępu do payroll PC i manager pc,brak dostępu do payroll pc i manager pc,inne,0.5
+SD-164060,[TELEFON SERWISOWY] - KVS11 loguje się na Administratora,2025-07-02 10:32:30.975000+02:00,Incydent,[TELEFON SERWISOWY] - KVS11 loguje się na Administratora,[telefon serwisowy] - kvs11 loguje się na administratora,inne,0.5
+SD-164058,Skanery na speaker post,2025-07-02 10:28:07.441000+02:00,Incydent,Skanery na speaker post,skanery na speaker post,inne,0.5
+SD-164055,POS01 - Brak kafelków ,2025-07-02 10:25:05.494000+02:00,Incydent,POS01 - Brak kafelków,pos01 - brak kafelków,POS – brak kafelków,0.9
+SD-164054,Prośba o włączenie MOP,2025-07-02 10:24:36.822000+02:00,Usługa,Prośba o włączenie MOP,prośba o włączenie mop,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-164052,Słuchawki(niewspierane) - Brak dzwięku na lini dt,2025-07-02 10:19:40.267000+02:00,Usługa,Słuchawki(niewspierane) - Brak dzwięku na lini dt,słuchawki(niewspierane) - brak dzwięku na lini dt,inne,0.5
+SD-164051,drukarka nie drukuje plików z programu Microsoft Excell,2025-07-02 10:19:39.989000+02:00,Incydent,drukarka nie drukuje plików z programu Microsoft Excell,drukarka nie drukuje plików z programu microsoft excell,inne,0.5
+SD-164050,MyStore - Nie pokazuje się dzienne planowanie sprzedaży,2025-07-02 10:17:59.080000+02:00,Incydent,MyStore - Nie pokazuje się dzienne planowanie sprzedaży,mystore - nie pokazuje się dzienne planowanie sprzedaży,inne,0.5
+SD-164049,POS08 - Nie włączyła się prawidłowo,2025-07-02 10:14:09.386000+02:00,Incydent,POS08 - Nie włączyła się prawidłowo,pos08 - nie włączyła się prawidłowo,inne,0.5
+SD-164048,KVS18 - No signal,2025-07-02 10:13:20.931000+02:00,Incydent,KVS18 - No signal,kvs18 - no signal,inne,0.5
+SD-164047,KVS - 0/0,2025-07-02 10:12:43.223000+02:00,Incydent,KVS - 0/0,kvs - 0/0,inne,0.5
+SD-164046,Pos07 - error 65542,2025-07-02 10:11:48.662000+02:00,Incydent,Pos07 - error 65542,pos07 - error 65542,inne,0.5
+SD-164045,COD - Podsumowania na odwrót po zamianie linii,2025-07-02 10:05:38.831000+02:00,Incydent,COD - Podsumowania na odwrót po zamianie linii,cod - podsumowania na odwrót po zamianie linii,inne,0.5
+SD-164044,[TELEFON SERWISOWY] - Site 720 - KVS08 - Admin logon,2025-07-02 10:04:35.389000+02:00,Incydent,[TELEFON SERWISOWY] - Site 720 - KVS08 - Admin logon,[telefon serwisowy] - site 720 - kvs08 - admin logon,inne,0.5
+SD-164043,Wyse.13 - zła rozdzielczość,2025-07-02 10:00:56.744000+02:00,Incydent,Wyse.13 - zła rozdzielczość,wyse.13 - zła rozdzielczość,inne,0.5
+SD-164042,Autorelease - nie wpada automatycznie,2025-07-02 10:00:27.157000+02:00,Incydent,Autorelease - nie wpada automatycznie,autorelease - nie wpada automatycznie,Autorelease – nie wpada automatycznie,0.9
+SD-164041,drukarka fiskalna nieodpowiada,2025-07-02 09:57:34.827000+02:00,Incydent,drukarka fiskalna nieodpowiada,drukarka fiskalna nieodpowiada,inne,0.5
+SD-164040,KVS31 - zacięty na ekranie ładowania,2025-07-02 09:54:47.412000+02:00,Incydent,KVS31 - zacięty na ekranie ładowania,kvs31 - zacięty na ekranie ładowania,inne,0.5
+SD-164039,ORB01 - Czerwone M,2025-07-02 09:46:53.046000+02:00,Incydent,ORB01 - Czerwone M,orb01 - czerwone m,inne,0.5
+SD-164037,RE: McDonald's Poland Coates Support Case 00370771 Acknowledgment,2025-07-02 09:43:52.528000+02:00,Usługa,RE: McDonald's Poland Coates Support Case 00370771 Acknowledgment,re: mcdonald's poland coates support case 00370771 acknowledgment,inne,0.5
+SD-164036,"RHS01 - 100% zużycia CPU, problemy z wykrywaniem df mop",2025-07-02 09:41:48.317000+02:00,Incydent,"RHS01 - 100% zużycia CPU, problemy z wykrywaniem df mop","rhs01 - 100% zużycia cpu, problemy z wykrywaniem df mop",inne,0.5
+SD-164035,KVS11 - Nie działa dotyk,2025-07-02 09:40:12.056000+02:00,Incydent,KVS11 - Nie działa dotyk,kvs11 - nie działa dotyk,inne,0.5
+SD-164034,Excel - zaciął się,2025-07-02 09:36:36.173000+02:00,Incydent,Excel - zaciął się,excel - zaciął się,inne,0.5
+SD-164032,KVS18 - Czerwone M,2025-07-02 09:29:32.494000+02:00,Incydent,KVS18 - Czerwone M,kvs18 - czerwone m,inne,0.5
+SD-164031,Prośba o odblokowanie zamówień MOP,2025-07-02 09:28:24.931000+02:00,Incydent,Prośba o odblokowanie zamówień MOP,prośba o odblokowanie zamówień mop,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-164030,[TELEFON SERWISOWY] - Prośba o wskazanie wolnego portu na MS# dla AMS,2025-07-02 09:23:56.110000+02:00,Incydent,[TELEFON SERWISOWY] - Prośba o wskazanie wolnego portu na MS# dla AMS,[telefon serwisowy] - prośba o wskazanie wolnego portu na ms# dla ams,inne,0.5
+SD-164028,Mystore - brak widocznej dostawy,2025-07-02 09:13:36.162000+02:00,Incydent,Mystore - brak widocznej dostawy,mystore - brak widocznej dostawy,inne,0.5
+SD-164026,MOP - Błąd obcinacza drukarki,2025-07-02 09:12:49.584000+02:00,Incydent,MOP - Błąd obcinacza drukarki,mop - błąd obcinacza drukarki,inne,0.5
+SD-164024,MFA - Wygenerowanie nowych kodów,2025-07-02 09:06:07.614000+02:00,Usługa,MFA - Wygenerowanie nowych kodów,mfa - wygenerowanie nowych kodów,inne,0.5
+SD-164022,RE: Re: RE: RE: RE: Brak danych PMIX 20-21.06,2025-07-02 09:00:52.343000+02:00,Usługa,RE: Re: RE: RE: RE: Brak danych PMIX 20-21.06,re: re: re: re: re: brak danych pmix 20-21.06,inne,0.5
+SD-164020,KVS10 - nie pinguje,2025-07-02 09:00:41.980000+02:00,Incydent,KVS10 - nie pinguje,kvs10 - nie pinguje,inne,0.5
+SD-164019,POS01 - Brak kafelków,2025-07-02 08:59:31.766000+02:00,Incydent,POS01 - Brak kafelków,pos01 - brak kafelków,POS – brak kafelków,0.9
+SD-164018,Zapytanie o zamówienie,2025-07-02 08:53:16.998000+02:00,Incydent,Zapytanie o zamówienie,zapytanie o zamówienie,inne,0.5
+SD-164017,MOP - Prośba o włączenie,2025-07-02 08:48:53.161000+02:00,Incydent,MOP - Prośba o włączenie,mop - prośba o włączenie,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-164016,Spadek,2025-07-02 08:46:27.528000+02:00,Incydent,Spadek,spadek,inne,0.5
+SD-163997,CSO26 i CSO32 - Nieprawidłowy dzień biznesowy ,2025-07-02 08:26:48.747000+02:00,Incydent,CSO26 i CSO32 - Nieprawidłowy dzień biznesowy,cso26 i cso32 - nieprawidłowy dzień biznesowy,inne,0.5
+SD-163996,POS24 - Brak kafelków,2025-07-02 08:26:42.281000+02:00,Incydent,POS24 - Brak kafelków,pos24 - brak kafelków,POS – brak kafelków,0.9
+SD-163995,Nie drukuje ,2025-07-02 08:25:50.186000+02:00,Incydent,Nie drukuje,nie drukuje,inne,0.5
+SD-163994,Pytanie odnośnie włączenia MOP,2025-07-02 08:25:33.940000+02:00,Usługa,Pytanie odnośnie włączenia MOP,pytanie odnośnie włączenia mop,inne,0.5
+SD-163993,KVS19 - nie można wyłączyć Mirrora,2025-07-02 08:25:24.900000+02:00,Incydent,KVS19 - nie można wyłączyć Mirrora,kvs19 - nie można wyłączyć mirrora,inne,0.5
+SD-163992,KVS31 - wyświetla się tylko mięso 10:1,2025-07-02 08:23:26.898000+02:00,Incydent,KVS31 - wyświetla się tylko mięso 10:1,kvs31 - wyświetla się tylko mięso 10:1,inne,0.5
+SD-163989,RE: McDonald's Poland Coates Support Case 00370770 Acknowledgment,2025-07-02 08:12:51.506000+02:00,Usługa,RE: McDonald's Poland Coates Support Case 00370770 Acknowledgment,re: mcdonald's poland coates support case 00370770 acknowledgment,inne,0.5
+SD-163988,"KVS17, KVS18 - zacięte na ekranie ładowania",2025-07-02 08:12:33.905000+02:00,Incydent,"KVS17, KVS18 - zacięte na ekranie ładowania","kvs17, kvs18 - zacięte na ekranie ładowania",inne,0.5
+SD-163987,ePROD - brak projekcji,2025-07-02 08:11:30.006000+02:00,Incydent,ePROD - brak projekcji,eprod - brak projekcji,inne,0.5
+SD-163986,POS03 - brak kafelków,2025-07-02 08:07:55.171000+02:00,Incydent,POS03 - brak kafelków,pos03 - brak kafelków,POS – brak kafelków,0.9
+SD-163984,McDonald's Poland Coates Support Case 00370772 Acknowledgment,2025-07-02 08:01:57.578000+02:00,Usługa,McDonald's Poland Coates Support Case 00370772 Acknowledgment,mcdonald's poland coates support case 00370772 acknowledgment,inne,0.5
+SD-163983,Cennik - brak informacji na temat alergenów paru produktów,2025-07-02 08:01:42.303000+02:00,Incydent,Cennik - brak informacji na temat alergenów paru produktów,cennik - brak informacji na temat alergenów paru produktów,inne,0.5
+SD-163981,"KVS10, KVS12 - nie wyświetlają się czasy",2025-07-02 08:00:04.342000+02:00,Incydent,"KVS10, KVS12 - nie wyświetlają się czasy","kvs10, kvs12 - nie wyświetlają się czasy",inne,0.5
+SD-163980,CSO27 - Smart update,2025-07-02 07:58:10.092000+02:00,Incydent,CSO27 - Smart update,cso27 - smart update,inne,0.5
+SD-163978,McDonald's Poland Coates Support Case 00370771 Acknowledgment,2025-07-02 07:54:51.572000+02:00,Usługa,McDonald's Poland Coates Support Case 00370771 Acknowledgment,mcdonald's poland coates support case 00370771 acknowledgment,inne,0.5
+SD-163977,POS01 - zacięty ekran,2025-07-02 07:54:03.195000+02:00,Incydent,POS01 - zacięty ekran,pos01 - zacięty ekran,inne,0.5
+SD-163976,McDonald's Poland Coates Support Case 00370770 Acknowledgment,2025-07-02 07:53:51.254000+02:00,Usługa,McDonald's Poland Coates Support Case 00370770 Acknowledgment,mcdonald's poland coates support case 00370770 acknowledgment,inne,0.5
+SD-163975,KVS - Zerowe czasy,2025-07-02 07:48:43.471000+02:00,Incydent,KVS - Zerowe czasy,kvs - zerowe czasy,inne,0.5
+SD-163974,McDonald's Poland Coates Support Case 00370772 Acknowledgment,2025-07-02 07:46:51.790000+02:00,Usługa,McDonald's Poland Coates Support Case 00370772 Acknowledgment,mcdonald's poland coates support case 00370772 acknowledgment,inne,0.5
+SD-163973,MFA - Wygenerowanie nowych kodów,2025-07-02 07:44:52.324000+02:00,Usługa,MFA - Wygenerowanie nowych kodów,mfa - wygenerowanie nowych kodów,inne,0.5
+SD-163972,Wyse .13 - problem z uruchomieniem,2025-07-02 07:44:03.703000+02:00,Incydent,Wyse .13 - problem z uruchomieniem,wyse .13 - problem z uruchomieniem,inne,0.5
+SD-163971,"Problem z pocztą MGR, brak przekierowania",2025-07-02 07:43:57.943000+02:00,Incydent,"Problem z pocztą MGR, brak przekierowania","problem z pocztą mgr, brak przekierowania",inne,0.5
+SD-163970,McDonald's Poland Coates Support Case 00370771 Acknowledgment,2025-07-02 07:41:51.332000+02:00,Usługa,McDonald's Poland Coates Support Case 00370771 Acknowledgment,mcdonald's poland coates support case 00370771 acknowledgment,inne,0.5
+SD-163969,"KVS02, KVS03 - Czerwone M",2025-07-02 07:35:49.032000+02:00,Incydent,"KVS02, KVS03 - Czerwone M","kvs02, kvs03 - czerwone m",inne,0.5
+SD-163968,McDonald's Poland Coates Support Case 00370770 Acknowledgment,2025-07-02 07:33:51.259000+02:00,Usługa,McDonald's Poland Coates Support Case 00370770 Acknowledgment,mcdonald's poland coates support case 00370770 acknowledgment,inne,0.5
+SD-163967,POS02 - problem z zalogowaniem,2025-07-02 07:31:10.422000+02:00,Incydent,POS02 - problem z zalogowaniem,pos02 - problem z zalogowaniem,inne,0.5
+SD-163966,Prośba o zablokowanie tostów,2025-07-02 07:30:35.985000+02:00,Usługa,Prośba o zablokowanie tostów,prośba o zablokowanie tostów,inne,0.5
+SD-163964,Kvs17 - nie drukuje,2025-07-02 07:29:04.693000+02:00,Incydent,Kvs17 - nie drukuje,kvs17 - nie drukuje,inne,0.5
+SD-163963,CSO26 - zacięty na ekranie ładowania NP,2025-07-02 07:28:27.859000+02:00,Incydent,CSO26 - zacięty na ekranie ładowania NP,cso26 - zacięty na ekranie ładowania np,inne,0.5
+SD-163961,POS08 - 50%,2025-07-02 07:20:31.368000+02:00,Incydent,POS08 - 50%,pos08 - 50%,inne,0.5
+SD-163960,Braki / aktualny status,2025-07-02 07:19:51.255000+02:00,Usługa,Braki / aktualny status,braki / aktualny status,inne,0.5
+SD-163959,KVS11 - zacięty na ekranie ładowania,2025-07-02 07:15:23.328000+02:00,Incydent,KVS11 - zacięty na ekranie ładowania,kvs11 - zacięty na ekranie ładowania,inne,0.5
+SD-163958,Pos24 - drukarka offline,2025-07-02 07:13:51.004000+02:00,Incydent,Pos24 - drukarka offline,pos24 - drukarka offline,inne,0.5
+SD-163957,"KVS 17,34 - Czerwone M",2025-07-02 07:12:14.883000+02:00,Incydent,"KVS 17,34 - Czerwone M","kvs 17,34 - czerwone m",inne,0.5
+SD-163956, Włączenie/Wyłączenie usługi MOP,2025-07-02 07:10:12.981000+02:00,Usługa,Włączenie/Wyłączenie usługi MOP,włączenie/wyłączenie usługi mop,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163955,Problem z zamknięciem dnia biznesowego,2025-07-02 07:08:42.433000+02:00,Incydent,Problem z zamknięciem dnia biznesowego,problem z zamknięciem dnia biznesowego,inne,0.5
+SD-163954,KVS02 - Czerwona M,2025-07-02 07:07:02.532000+02:00,Incydent,KVS02 - Czerwona M,kvs02 - czerwona m,inne,0.5
+SD-163953,POS19 - Czerwone M,2025-07-02 07:06:56.954000+02:00,Incydent,POS19 - Czerwone M,pos19 - czerwone m,inne,0.5
+SD-163951,POS01 - zacięta na 50% ładowania,2025-07-02 07:05:14.252000+02:00,Incydent,POS01 - zacięta na 50% ładowania,pos01 - zacięta na 50% ładowania,inne,0.5
+SD-163950,CSO - wszystkie kioski wylogowane,2025-07-02 07:04:28.554000+02:00,Incydent,CSO - wszystkie kioski wylogowane,cso - wszystkie kioski wylogowane,inne,0.5
+SD-163949,POS03 - brak kafelków,2025-07-02 07:03:21.422000+02:00,Incydent,POS03 - brak kafelków,pos03 - brak kafelków,POS – brak kafelków,0.9
+SD-163948,"POS01, 02, 06 - Brak kafelków, blokuje zamknięcie dnia",2025-07-02 07:03:20.892000+02:00,Incydent,"POS01, 02, 06 - Brak kafelków, blokuje zamknięcie dnia","pos01, 02, 06 - brak kafelków, blokuje zamknięcie dnia",inne,0.5
+SD-163947,CFS01 Ekran wyświetla czerwone kółko z adresem ip,2025-07-02 07:01:30.469000+02:00,Incydent,CFS01 Ekran wyświetla czerwone kółko z adresem ip,cfs01 ekran wyświetla czerwone kółko z adresem ip,inne,0.5
+SD-163946,Mop - Brak stałego zasilania,2025-07-02 07:00:19.780000+02:00,Incydent,Mop - Brak stałego zasilania,mop - brak stałego zasilania,inne,0.5
+SD-163945,KVS31 - Brak kafelków,2025-07-02 06:56:58.068000+02:00,Incydent,KVS31 - Brak kafelków,kvs31 - brak kafelków,POS – brak kafelków,0.9
+SD-163944,PSO02 - problem z zalogowaniem kasjera,2025-07-02 06:51:58.225000+02:00,Incydent,PSO02 - problem z zalogowaniem kasjera,pso02 - problem z zalogowaniem kasjera,inne,0.5
+SD-163942,FOE63 - nieprawidłowy dzień biznesowy,2025-07-02 06:46:30.001000+02:00,Incydent,FOE63 - nieprawidłowy dzień biznesowy,foe63 - nieprawidłowy dzień biznesowy,inne,0.5
+SD-163941,KVS - nie pingują po awarii prądu,2025-07-02 06:39:31.004000+02:00,Incydent,KVS - nie pingują po awarii prądu,kvs - nie pingują po awarii prądu,inne,0.5
+SD-163939,nie wyświetlą się czasy obsługi z dnia 1.07.2025,2025-07-02 06:38:38.273000+02:00,Incydent,nie wyświetlą się czasy obsługi z dnia 1.07.2025,nie wyświetlą się czasy obsługi z dnia 1.07.2025,inne,0.5
+SD-163938,Brak możliwości zalogowania się na backoffice oraz office,2025-07-02 06:34:32.024000+02:00,Incydent,Brak możliwości zalogowania się na backoffice oraz office,brak możliwości zalogowania się na backoffice oraz office,inne,0.5
+SD-163937,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 06:33:52.160000+02:00,Incydent,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.","newpos - zamknięcie nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-163935,Odmb 2 linia czarne ekrany,2025-07-02 06:32:15.888000+02:00,Incydent,Odmb 2 linia czarne ekrany,odmb 2 linia czarne ekrany,inne,0.5
+SD-163934,COD - Odwrotne przesyłanie zamówień,2025-07-02 06:28:57.269000+02:00,Incydent,COD - Odwrotne przesyłanie zamówień,cod - odwrotne przesyłanie zamówień,inne,0.5
+SD-163929,POS - brak kafelków,2025-07-02 06:25:08.868000+02:00,Incydent,POS - brak kafelków,pos - brak kafelków,POS – brak kafelków,0.9
+SD-163926,iDMB - nie włączyło się po awarii prądu,2025-07-02 06:20:17.089000+02:00,Incydent,iDMB - nie włączyło się po awarii prądu,idmb - nie włączyło się po awarii prądu,inne,0.5
+SD-163922,KVS09 Komunikat MOP nie działa prawidłowo,2025-07-02 06:10:38.461000+02:00,Incydent,KVS09 Komunikat MOP nie działa prawidłowo,kvs09 komunikat mop nie działa prawidłowo,inne,0.5
+SD-163921,Pos19  - kasa sama klika kafelki,2025-07-02 06:10:27.284000+02:00,Incydent,Pos19  - kasa sama klika kafelki,pos19  - kasa sama klika kafelki,POS – brak kafelków,0.9
+SD-163920,POS01 - Brak kafelków,2025-07-02 06:10:17.213000+02:00,Incydent,POS01 - Brak kafelków,pos01 - brak kafelków,POS – brak kafelków,0.9
+SD-163919,Wprowadzenie sprzedaży za dzień 01.07.2025,2025-07-02 06:09:53.010000+02:00,Usługa,Wprowadzenie sprzedaży za dzień 01.07.2025,wprowadzenie sprzedaży za dzień 01.07.2025,inne,0.5
+SD-163918,Skaner COD 1 linia nie skanuje kuponów,2025-07-02 06:06:26.931000+02:00,Incydent,Skaner COD 1 linia nie skanuje kuponów,skaner cod 1 linia nie skanuje kuponów,inne,0.5
+SD-163917,Produkcja Offline,2025-07-02 06:04:24.527000+02:00,Incydent,Produkcja Offline,produkcja offline,inne,0.5
+SD-163916,POS03 - nie pinguje,2025-07-02 06:02:06.298000+02:00,Incydent,POS03 - nie pinguje,pos03 - nie pinguje,inne,0.5
+SD-163915,MOP - Brak fiskalizacji,2025-07-02 06:02:00.977000+02:00,Incydent,MOP - Brak fiskalizacji,mop - brak fiskalizacji,inne,0.5
+SD-163914,POS19 - 50%,2025-07-02 06:01:48.784000+02:00,Incydent,POS19 - 50%,pos19 - 50%,inne,0.5
+SD-163912,Rest rozłączyła się natychmiast,2025-07-02 06:01:03.046000+02:00,Usługa,Rest rozłączyła się natychmiast,rest rozłączyła się natychmiast,inne,0.5
+SD-163911,FOE63 - nie otworzył się dzień,2025-07-02 05:58:46.679000+02:00,Incydent,FOE63 - nie otworzył się dzień,foe63 - nie otworzył się dzień,inne,0.5
+SD-163910,Drukarka OAT nie drukuje ,2025-07-02 05:57:18.913000+02:00,Incydent,Drukarka OAT nie drukuje,drukarka oat nie drukuje,inne,0.5
+SD-163909,KVS31 - Zawiesił się,2025-07-02 05:54:11.381000+02:00,Incydent,KVS31 - Zawiesił się,kvs31 - zawiesił się,inne,0.5
+SD-163908,POS03 - Error 65542.,2025-07-02 05:53:19.860000+02:00,Incydent,POS03 - Error 65542.,pos03 - error 65542.,inne,0.5
+SD-163907,MOP - Prośba o włączenie,2025-07-02 05:47:29.530000+02:00,Incydent,MOP - Prośba o włączenie,mop - prośba o włączenie,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163905,Raport PMX nie ładuje sie ,2025-07-02 05:45:06.887000+02:00,Incydent,Raport PMX nie ładuje sie,raport pmx nie ładuje sie,inne,0.5
+SD-163904,Prośba o odblokowanie MOP.,2025-07-02 05:38:59.552000+02:00,Usługa,Prośba o odblokowanie MOP.,prośba o odblokowanie mop.,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163903,POS06 - Brak kafelków na pos,2025-07-02 05:37:39.263000+02:00,Incydent,POS06 - Brak kafelków na pos,pos06 - brak kafelków na pos,POS – brak kafelków,0.9
+SD-163902,POS19 - nie działa szuflada,2025-07-02 05:35:01.759000+02:00,Incydent,POS19 - nie działa szuflada,pos19 - nie działa szuflada,inne,0.5
+SD-163901,Newpos - POS03 - nie działa połowa dotyku na systemie kasowym.,2025-07-02 05:32:56.979000+02:00,Incydent,Newpos - POS03 - nie działa połowa dotyku na systemie kasowym.,newpos - pos03 - nie działa połowa dotyku na systemie kasowym.,inne,0.5
+SD-163900,POS03 - Brak kafelków.,2025-07-02 05:23:49.286000+02:00,Incydent,POS03 - Brak kafelków.,pos03 - brak kafelków.,POS – brak kafelków,0.9
+SD-163898,pos24 - Brak kafelków na pos,2025-07-02 05:19:16.407000+02:00,Incydent,pos24 - Brak kafelków na pos,pos24 - brak kafelków na pos,POS – brak kafelków,0.9
+SD-163897,POS - brak kafelków,2025-07-02 05:06:17.669000+02:00,Incydent,POS - brak kafelków,pos - brak kafelków,POS – brak kafelków,0.9
+SD-163896,iDMB - monitory nie uruchomiły się,2025-07-02 05:05:30.883000+02:00,Incydent,iDMB - monitory nie uruchomiły się,idmb - monitory nie uruchomiły się,inne,0.5
+SD-163894,KVS08 - zawieszone zamówienie,2025-07-02 04:57:32.168000+02:00,Incydent,KVS08 - zawieszone zamówienie,kvs08 - zawieszone zamówienie,KVSxx – zawieszone zamówienie,0.9
+SD-163893,"Problem z zamknięciem POS01 - nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 04:53:32.051000+02:00,Incydent,"Problem z zamknięciem POS01 - nie przeszło na kasie, z której był zamykany dzień.","problem z zamknięciem pos01 - nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-163892,MOP - Prośba o włączenie/wyłączenie,2025-07-02 04:52:41.153000+02:00,Usługa,MOP - Prośba o włączenie/wyłączenie,mop - prośba o włączenie/wyłączenie,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163891,POS03 - brak kafelków,2025-07-02 04:37:14.133000+02:00,Incydent,POS03 - brak kafelków,pos03 - brak kafelków,POS – brak kafelków,0.9
+SD-163890,CSO30 - Czerwony ekran.,2025-07-02 04:24:41.612000+02:00,Incydent,CSO30 - Czerwony ekran.,cso30 - czerwony ekran.,inne,0.5
+SD-163889,Błędne wydruki na grill slip [ Drukarka podłączona pod monitor nr 10 ] ,2025-07-02 04:22:01.215000+02:00,Incydent,Błędne wydruki na grill slip [ Drukarka podłączona pod monitor nr 10 ],błędne wydruki na grill slip [ drukarka podłączona pod monitor nr 10 ],inne,0.5
+SD-163888,"Problem z zamknięciem POS01 - nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 03:59:06.871000+02:00,Incydent,"Problem z zamknięciem POS01 - nie przeszło na kasie, z której był zamykany dzień.","problem z zamknięciem pos01 - nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-163887,Mystore - zamknięcie POS - problem z produkcją główną,2025-07-02 03:57:33.470000+02:00,Incydent,Mystore - zamknięcie POS - problem z produkcją główną,mystore - zamknięcie pos - problem z produkcją główną,inne,0.5
+SD-163886,POS06 - POS not initalized,2025-07-02 03:56:49.300000+02:00,Incydent,POS06 - POS not initalized,pos06 - pos not initalized,inne,0.5
+SD-163885,Zapytanie jak założyć zgłoszenie na assiste,2025-07-02 03:56:05.085000+02:00,Incydent,Zapytanie jak założyć zgłoszenie na assiste,zapytanie jak założyć zgłoszenie na assiste,inne,0.5
+SD-163884,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 03:55:46.707000+02:00,Incydent,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.","newpos - zamknięcie nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-163883,MyStore - Prośba o pomoc w edycji odbić czasowych,2025-07-02 03:50:53.264000+02:00,Usługa,MyStore - Prośba o pomoc w edycji odbić czasowych,mystore - prośba o pomoc w edycji odbić czasowych,MyStore – Prośba o pomoc w edycji odbić czasowych,0.9
+SD-163882,ODMB- prośbą o zmiane godzin ,2025-07-02 03:38:51.674000+02:00,Incydent,ODMB- prośbą o zmiane godzin,odmb- prośbą o zmiane godzin,inne,0.5
+SD-163881,Zapytanie na temat błedednych godzin na odmb ,2025-07-02 03:27:21.404000+02:00,Incydent,Zapytanie na temat błedednych godzin na odmb,zapytanie na temat błedednych godzin na odmb,inne,0.5
+SD-163880,POS01- POS Not Initialized.,2025-07-02 03:25:42.290000+02:00,Incydent,POS01- POS Not Initialized.,pos01- pos not initialized.,inne,0.5
+SD-163879,MyStore - brak dostawy,2025-07-02 03:23:21.620000+02:00,Incydent,MyStore - brak dostawy,mystore - brak dostawy,inne,0.5
+SD-163878,Zapytanie na temat inventaryzacji ,2025-07-02 03:14:40.585000+02:00,Incydent,Zapytanie na temat inventaryzacji,zapytanie na temat inventaryzacji,inne,0.5
+SD-163876,Terminale - nie działają,2025-07-02 03:08:21.880000+02:00,Incydent,Terminale - nie działają,terminale - nie działają,inne,0.5
+SD-163875,Zamknięcie/Otwarcie POS - Nie przeszło zamknięcie POS.,2025-07-02 03:06:04.027000+02:00,Incydent,Zamknięcie/Otwarcie POS - Nie przeszło zamknięcie POS.,zamknięcie/otwarcie pos - nie przeszło zamknięcie pos.,inne,0.5
+SD-163874,KVS22/34 - Wiszące zamówienie,2025-07-02 03:03:29.762000+02:00,Incydent,KVS22/34 - Wiszące zamówienie,kvs22/34 - wiszące zamówienie,KVSxx – zawieszone zamówienie,0.9
+SD-163873,Pytanie o zamiane skanerow i cfs,2025-07-02 02:57:55.086000+02:00,Usługa,Pytanie o zamiane skanerow i cfs,pytanie o zamiane skanerow i cfs,inne,0.5
+SD-163872,TR - Zegar nie odpowiada w sieci,2025-07-02 02:56:40.448000+02:00,Incydent,TR - Zegar nie odpowiada w sieci,tr - zegar nie odpowiada w sieci,inne,0.5
+SD-163871,Zamknij / otwórz system POS - nie można zamknąć systemu,2025-07-02 02:52:45.925000+02:00,Incydent,Zamknij / otwórz system POS - nie można zamknąć systemu,zamknij / otwórz system pos - nie można zamknąć systemu,inne,0.5
+SD-163870,POS07 - 28.06 jako dzień biznesowy.,2025-07-02 02:50:28.810000+02:00,Incydent,POS07 - 28.06 jako dzień biznesowy.,pos07 - 28.06 jako dzień biznesowy.,inne,0.5
+SD-163869,POS - brak kafelków,2025-07-02 02:49:59.318000+02:00,Incydent,POS - brak kafelków,pos - brak kafelków,POS – brak kafelków,0.9
+SD-163868,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 02:41:18.276000+02:00,Incydent,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.","newpos - zamknięcie nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-163867,Po przepięciu skanerów nabite zamówienia pojawiają się na błędnych monitorach,2025-07-02 02:38:18.697000+02:00,Incydent,Po przepięciu skanerów nabite zamówienia pojawiają się na błędnych monitorach,po przepięciu skanerów nabite zamówienia pojawiają się na błędnych monitorach,inne,0.5
+SD-163866,POS07 - Error komunikacji z Fiscal Adapter.,2025-07-02 02:37:27.989000+02:00,Incydent,POS07 - Error komunikacji z Fiscal Adapter.,pos07 - error komunikacji z fiscal adapter.,inne,0.5
+SD-163865,Prośba o pomoc w połączeniu tabletu testo do sieci ebos ,2025-07-02 02:22:45.771000+02:00,Usługa,Prośba o pomoc w połączeniu tabletu testo do sieci ebos,prośba o pomoc w połączeniu tabletu testo do sieci ebos,inne,0.5
+SD-163863,MyStore - brak dostawy - 01.07,2025-07-02 02:00:57.395000+02:00,Incydent,MyStore - brak dostawy - 01.07,mystore - brak dostawy - 01.07,inne,0.5
+SD-163862,KVS17 - rozkalibrowany dotyk,2025-07-02 02:00:47.781000+02:00,Incydent,KVS17 - rozkalibrowany dotyk,kvs17 - rozkalibrowany dotyk,inne,0.5
+SD-163861,POS - brak kafelków,2025-07-02 02:00:47.503000+02:00,Incydent,POS - brak kafelków,pos - brak kafelków,POS – brak kafelków,0.9
+SD-163860,MAP02 - Drukarka biurowa - Nie można drukować.,2025-07-02 01:59:13.299000+02:00,Incydent,MAP02 - Drukarka biurowa - Nie można drukować.,map02 - drukarka biurowa - nie można drukować.,inne,0.5
+SD-163859,Zamiana Stron na kuchni,2025-07-02 01:58:45.763000+02:00,Incydent,Zamiana Stron na kuchni,zamiana stron na kuchni,inne,0.5
+SD-163858,Zapytanie na tematy zmianie linii na dt ,2025-07-02 01:58:39.014000+02:00,Incydent,Zapytanie na tematy zmianie linii na dt,zapytanie na tematy zmianie linii na dt,inne,0.5
+SD-163857,Zamknięcie/Otwarcie POS - Nie przeszło zamknięcie POS.,2025-07-02 01:40:57.402000+02:00,Incydent,Zamknięcie/Otwarcie POS - Nie przeszło zamknięcie POS.,zamknięcie/otwarcie pos - nie przeszło zamknięcie pos.,inne,0.5
+SD-163854,Wyrównanie godzin na zegarze SOTEC/monitorach.,2025-07-02 01:37:53.605000+02:00,Incydent,Wyrównanie godzin na zegarze SOTEC/monitorach.,wyrównanie godzin na zegarze sotec/monitorach.,inne,0.5
+SD-163853,Drive - zamian stron,2025-07-02 01:37:44.358000+02:00,Incydent,Drive - zamian stron,drive - zamian stron,inne,0.5
+SD-163852,"brak czasów obsługi od godziny 18:00, 01.07",2025-07-02 01:36:16.665000+02:00,Incydent,"brak czasów obsługi od godziny 18:00, 01.07","brak czasów obsługi od godziny 18:00, 01.07",MyStore – brak czasów szybkości obsługi,0.9
+SD-163851,Zapytanie na temat listy invetaryzacyjnej po zamknieciu/otwarciu dnia,2025-07-02 01:34:41.244000+02:00,Incydent,Zapytanie na temat listy invetaryzacyjnej po zamknieciu/otwarciu dnia,zapytanie na temat listy invetaryzacyjnej po zamknieciu/otwarciu dnia,inne,0.5
+SD-163850,MS9 -Prośba o restart hasła.,2025-07-02 01:33:39.461000+02:00,Incydent,MS9 -Prośba o restart hasła.,ms9 -prośba o restart hasła.,inne,0.5
+SD-163849,Skaner COD - problem ze skanowaniem po zamianie kas,2025-07-02 01:32:35.828000+02:00,Incydent,Skaner COD - problem ze skanowaniem po zamianie kas,skaner cod - problem ze skanowaniem po zamianie kas,inne,0.5
+SD-163848,nie działa ,2025-07-02 01:30:00.798000+02:00,Incydent,nie działa,nie działa,inne,0.5
+SD-163847,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 01:29:49.088000+02:00,Incydent,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.","newpos - zamknięcie nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-163846,Zapytanie na temat wgrania aktualizacji rfm,2025-07-02 01:29:43.270000+02:00,Incydent,Zapytanie na temat wgrania aktualizacji rfm,zapytanie na temat wgrania aktualizacji rfm,inne,0.5
+SD-163845,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 01:27:41.869000+02:00,Incydent,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.","newpos - zamknięcie nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-163844,POS08 i POS03 - Utrudnione działanie na kasach.,2025-07-02 01:25:45.127000+02:00,Incydent,POS08 i POS03 - Utrudnione działanie na kasach.,pos08 i pos03 - utrudnione działanie na kasach.,inne,0.5
+SD-163843,MOP - Prośba o włączenie/wyłączenie,2025-07-02 01:24:59.809000+02:00,Usługa,MOP - Prośba o włączenie/wyłączenie,mop - prośba o włączenie/wyłączenie,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163842,MAP01 - Zawiesił się,2025-07-02 01:23:14.480000+02:00,Incydent,MAP01 - Zawiesił się,map01 - zawiesił się,inne,0.5
+SD-163841,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 01:22:02.807000+02:00,Incydent,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.","newpos - zamknięcie nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-163840,Nie można zamknąć dnia przez błąd na kasie,2025-07-02 01:20:09.428000+02:00,Incydent,Nie można zamknąć dnia przez błąd na kasie,nie można zamknąć dnia przez błąd na kasie,inne,0.5
+SD-163839,Zmiana stanu kasowego ,2025-07-02 01:18:29.817000+02:00,Incydent,Zmiana stanu kasowego,zmiana stanu kasowego,inne,0.5
+SD-163836,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 01:12:11.865000+02:00,Incydent,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.","newpos - zamknięcie nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-163835,Zamknięcie/Otwarcie POS - Nie przeszło zamknięcie POS.,2025-07-02 01:10:17.087000+02:00,Incydent,Zamknięcie/Otwarcie POS - Nie przeszło zamknięcie POS.,zamknięcie/otwarcie pos - nie przeszło zamknięcie pos.,inne,0.5
+SD-163834,"Problem z zamknięciem POS24 - nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 01:08:33.789000+02:00,Incydent,"Problem z zamknięciem POS24 - nie przeszło na kasie, z której był zamykany dzień.","problem z zamknięciem pos24 - nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-163833,Zamknij / otwórz system POS - nie można zamknąć systemu,2025-07-02 01:06:34.839000+02:00,Incydent,Zamknij / otwórz system POS - nie można zamknąć systemu,zamknij / otwórz system pos - nie można zamknąć systemu,inne,0.5
+SD-163832,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 01:05:52.866000+02:00,Incydent,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.","newpos - zamknięcie nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-163830,Dodawane odbicia czasowe usuwają się i nie zapisują się w systemie ,2025-07-02 01:01:20.721000+02:00,Usługa,Dodawane odbicia czasowe usuwają się i nie zapisują się w systemie,dodawane odbicia czasowe usuwają się i nie zapisują się w systemie,inne,0.5
+SD-163829,Zamknięcie/Otwarcie POS - Nie przeszło zamknięcie POS.,2025-07-02 00:59:14.191000+02:00,Incydent,Zamknięcie/Otwarcie POS - Nie przeszło zamknięcie POS.,zamknięcie/otwarcie pos - nie przeszło zamknięcie pos.,inne,0.5
+SD-163828,MyStore - zamknięcie/otwarcie - inwentaryzacja wymaga uwagi ,2025-07-02 00:58:25.389000+02:00,Incydent,MyStore - zamknięcie/otwarcie - inwentaryzacja wymaga uwagi,mystore - zamknięcie/otwarcie - inwentaryzacja wymaga uwagi,inne,0.5
+SD-163827,Mystore - Brak raportu operacyjnego ,2025-07-02 00:57:22.813000+02:00,Incydent,Mystore - Brak raportu operacyjnego,mystore - brak raportu operacyjnego,inne,0.5
+SD-163826,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 00:53:26.342000+02:00,Incydent,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.","newpos - zamknięcie nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-163824,Zamknięcie/Otwarcie POS - Nie przeszło zamknięcie POS.,2025-07-02 00:45:52.755000+02:00,Incydent,Zamknięcie/Otwarcie POS - Nie przeszło zamknięcie POS.,zamknięcie/otwarcie pos - nie przeszło zamknięcie pos.,inne,0.5
+SD-163823,"Problem z zamknięciem POS24 - nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 00:39:42.442000+02:00,Incydent,"Problem z zamknięciem POS24 - nie przeszło na kasie, z której był zamykany dzień.","problem z zamknięciem pos24 - nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-163822,Newpos - CSO27 loading medias,2025-07-02 00:39:10.501000+02:00,Incydent,Newpos - CSO27 loading medias,newpos - cso27 loading medias,inne,0.5
+SD-163821,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 00:37:42.439000+02:00,Incydent,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.","newpos - zamknięcie nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-163820,POS03 - Zawiesiła się,2025-07-02 00:34:55.855000+02:00,Incydent,POS03 - Zawiesiła się,pos03 - zawiesiła się,inne,0.5
+SD-163819,MyStore - Prośba o pomoc w edycji odbić czasowych,2025-07-02 00:34:16.677000+02:00,Incydent,MyStore - Prośba o pomoc w edycji odbić czasowych,mystore - prośba o pomoc w edycji odbić czasowych,MyStore – Prośba o pomoc w edycji odbić czasowych,0.9
+SD-163818,CSO25 - niedostępny,2025-07-02 00:31:41.913000+02:00,Incydent,CSO25 - niedostępny,cso25 - niedostępny,CSOxx – niedostępny,0.9
+SD-163817,"Problem z zamknięciem POS02 - nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 00:30:42.514000+02:00,Incydent,"Problem z zamknięciem POS02 - nie przeszło na kasie, z której był zamykany dzień.","problem z zamknięciem pos02 - nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-163816,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 00:27:49.153000+02:00,Incydent,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.","newpos - zamknięcie nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-163813,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.
+
+",2025-07-02 00:23:08.742000+02:00,Incydent,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.","newpos - zamknięcie nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-163812,MyStore - wrin przestawia się automatycznie.,2025-07-02 00:21:09.527000+02:00,Usługa,MyStore - wrin przestawia się automatycznie.,mystore - wrin przestawia się automatycznie.,inne,0.5
+SD-163811,oDMB - błędne godziny otwarcia,2025-07-02 00:19:18.876000+02:00,Incydent,oDMB - błędne godziny otwarcia,odmb - błędne godziny otwarcia,inne,0.5
+SD-163810,wrin 99999/999,2025-07-02 00:17:23.252000+02:00,Incydent,wrin 99999/999,wrin 99999/999,inne,0.5
+SD-163808,CFS - Brak podglądu po przepięciu lini dirve ,2025-07-02 00:16:45.063000+02:00,Incydent,CFS - Brak podglądu po przepięciu lini dirve,cfs - brak podglądu po przepięciu lini dirve,inne,0.5
+SD-163807,POS01 - problem z przyjęciem płatności ,2025-07-02 00:12:32.902000+02:00,Incydent,POS01 - problem z przyjęciem płatności,pos01 - problem z przyjęciem płatności,inne,0.5
+SD-163806,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.",2025-07-02 00:12:11.823000+02:00,Incydent,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.","newpos - zamknięcie nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-163805,w momencie wybrania na panelu kasowym opcji płatności kartą wyskakuje komunikat no response message,2025-07-02 00:12:05.864000+02:00,Incydent,w momencie wybrania na panelu kasowym opcji płatności kartą wyskakuje komunikat no response message,w momencie wybrania na panelu kasowym opcji płatności kartą wyskakuje komunikat no response message,inne,0.5
+SD-163804,oDMB - błędne godziny otwarcia,2025-07-02 00:11:45.848000+02:00,Incydent,oDMB - błędne godziny otwarcia,odmb - błędne godziny otwarcia,inne,0.5
+SD-163803,Zamknięcie/Otwarcie POS - Nie przeszło zamknięcie POS.,2025-07-02 00:09:12.845000+02:00,Incydent,Zamknięcie/Otwarcie POS - Nie przeszło zamknięcie POS.,zamknięcie/otwarcie pos - nie przeszło zamknięcie pos.,inne,0.5
+SD-163802,Pos03 - Prośba o nadanie uprawnien karty złotej dla karty srebrnej,2025-07-02 00:07:06.725000+02:00,Incydent,Pos03 - Prośba o nadanie uprawnien karty złotej dla karty srebrnej,pos03 - prośba o nadanie uprawnien karty złotej dla karty srebrnej,inne,0.5
+SD-163801,Prośba o restart komunikacji ,2025-07-02 00:06:35.841000+02:00,Incydent,Prośba o restart komunikacji,prośba o restart komunikacji,inne,0.5
+SD-163800,MS9 - Zablokowany użytkownik.,2025-07-02 00:03:53.232000+02:00,Incydent,MS9 - Zablokowany użytkownik.,ms9 - zablokowany użytkownik.,inne,0.5
+SD-163799,POS01 - Zawiesiła się,2025-07-02 00:03:20.859000+02:00,Incydent,POS01 - Zawiesiła się,pos01 - zawiesiła się,inne,0.5
+SD-163798,MyStore - Prośba o pomoc w edycji odbić czasowych,2025-07-02 00:00:53.814000+02:00,Usługa,MyStore - Prośba o pomoc w edycji odbić czasowych,mystore - prośba o pomoc w edycji odbić czasowych,MyStore – Prośba o pomoc w edycji odbić czasowych,0.9
+SD-163796,MyStore - raport operacyjny - brak sprzedaży WOLT - 01.07,2025-07-01 23:47:11.308000+02:00,Incydent,MyStore - raport operacyjny - brak sprzedaży WOLT - 01.07,mystore - raport operacyjny - brak sprzedaży wolt - 01.07,inne,0.5
+SD-163795,CR .240 - Zawieszona aplikacja,2025-07-01 23:45:36.515000+02:00,Incydent,CR .240 - Zawieszona aplikacja,cr .240 - zawieszona aplikacja,inne,0.5
+SD-163794,iDMB/oDMB - wyłączyły się monitory,2025-07-01 23:45:04.186000+02:00,Incydent,iDMB/oDMB - wyłączyły się monitory,idmb/odmb - wyłączyły się monitory,inne,0.5
+SD-163793,Zapytanie na temat przepięcia skanerów do patch panelu,2025-07-01 23:44:17.342000+02:00,Incydent,Zapytanie na temat przepięcia skanerów do patch panelu,zapytanie na temat przepięcia skanerów do patch panelu,inne,0.5
+SD-163792,MyStore - Prośba o pomoc w edycji odbić czasowych,2025-07-01 23:39:43.374000+02:00,Usługa,MyStore - Prośba o pomoc w edycji odbić czasowych,mystore - prośba o pomoc w edycji odbić czasowych,MyStore – Prośba o pomoc w edycji odbić czasowych,0.9
+SD-163791,Zamiana roli POS ,2025-07-01 23:36:19.049000+02:00,Usługa,Zamiana roli POS,zamiana roli pos,inne,0.5
+SD-163790,CSO30 - Drukarka fiskalna nie odpowiada,2025-07-01 23:28:56.508000+02:00,Incydent,CSO30 - Drukarka fiskalna nie odpowiada,cso30 - drukarka fiskalna nie odpowiada,inne,0.5
+SD-163789,Pytanie o zamianę skanerów na DT,2025-07-01 23:26:06+02:00,Incydent,Pytanie o zamianę skanerów na DT,pytanie o zamianę skanerów na dt,inne,0.5
+SD-163787,Aplikacja na telefonie nie chce się zalować,2025-07-01 23:19:26.239000+02:00,Incydent,Aplikacja na telefonie nie chce się zalować,aplikacja na telefonie nie chce się zalować,inne,0.5
+SD-163786,"Problem z zamknięciem POS24 - nie przeszło na kasie, z której był zamykany dzień.",2025-07-01 23:19:12.007000+02:00,Incydent,"Problem z zamknięciem POS24 - nie przeszło na kasie, z której był zamykany dzień.","problem z zamknięciem pos24 - nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-163785,Zapytanie o przesłanie przewodu zasilającego do terminala,2025-07-01 23:16:32.072000+02:00,Usługa,Zapytanie o przesłanie przewodu zasilającego do terminala,zapytanie o przesłanie przewodu zasilającego do terminala,inne,0.5
+SD-163783,oDMB - cfs - problem z wyświetlaniem,2025-07-01 23:11:46.673000+02:00,Incydent,oDMB - cfs - problem z wyświetlaniem,odmb - cfs - problem z wyświetlaniem,inne,0.5
+SD-163782,MyStore - prośba o reset hasła,2025-07-01 23:06:50.005000+02:00,Incydent,MyStore - prośba o reset hasła,mystore - prośba o reset hasła,inne,0.5
+SD-163781,Newpos - prośba o detach cso,2025-07-01 23:03:52.973000+02:00,Incydent,Newpos - prośba o detach cso,newpos - prośba o detach cso,inne,0.5
+SD-163780,CSO30 - Zaweisił się,2025-07-01 23:02:30.510000+02:00,Incydent,CSO30 - Zaweisił się,cso30 - zaweisił się,inne,0.5
+SD-163779,"Czarny ekran, nie reaguję na pilota",2025-07-01 23:01:57.445000+02:00,Incydent,"Czarny ekran, nie reaguję na pilota","czarny ekran, nie reaguję na pilota",inne,0.5
+SD-163778,Prośba o detach CSO29.,2025-07-01 22:57:39.301000+02:00,Incydent,Prośba o detach CSO29.,prośba o detach cso29.,inne,0.5
+SD-163777,MOP - Prośba o włączenie/wyłączenie,2025-07-01 22:56:09.065000+02:00,Usługa,MOP - Prośba o włączenie/wyłączenie,mop - prośba o włączenie/wyłączenie,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163776,MyStore - edycja odbić czasowych - błąd podczas wysyłania poprawek odbić czasowych,2025-07-01 22:55:15.921000+02:00,Incydent,MyStore - edycja odbić czasowych - błąd podczas wysyłania poprawek odbić czasowych,mystore - edycja odbić czasowych - błąd podczas wysyłania poprawek odbić czasowych,MyStore – Prośba o pomoc w edycji odbić czasowych,0.9
+SD-163775,MyStore - Prośba o pomoc w edycji odbić czasowych,2025-07-01 22:46:19.603000+02:00,Usługa,MyStore - Prośba o pomoc w edycji odbić czasowych,mystore - prośba o pomoc w edycji odbić czasowych,MyStore – Prośba o pomoc w edycji odbić czasowych,0.9
+SD-163774,TR - Zablokowany Tr Nie przechodzi zamkniecie dnia biznesowego ,2025-07-01 22:42:14.751000+02:00,Incydent,TR - Zablokowany Tr Nie przechodzi zamkniecie dnia biznesowego,tr - zablokowany tr nie przechodzi zamkniecie dnia biznesowego,inne,0.5
+SD-163772,Drukarka Biurowa - nie można wydrukować dokumentu z MAP01,2025-07-01 22:38:27.285000+02:00,Incydent,Drukarka Biurowa - nie można wydrukować dokumentu z MAP01,drukarka biurowa - nie można wydrukować dokumentu z map01,inne,0.5
+SD-163761,MOP - Prośba o wyłączenie,2025-07-01 22:36:37.010000+02:00,Usługa,MOP - Prośba o wyłączenie,mop - prośba o wyłączenie,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163753,Zapytanie na temat przyjazdu trecomu,2025-07-01 22:33:29.440000+02:00,Incydent,Zapytanie na temat przyjazdu trecomu,zapytanie na temat przyjazdu trecomu,inne,0.5
+SD-163752,MS9 - Raport PMX - Brak danych za okres miesięczny.,2025-07-01 22:32:38.678000+02:00,Incydent,MS9 - Raport PMX - Brak danych za okres miesięczny.,ms9 - raport pmx - brak danych za okres miesięczny.,inne,0.5
+SD-163751,BOS/MAP - nie można się zalogować,2025-07-01 22:28:43.721000+02:00,Incydent,BOS/MAP - nie można się zalogować,bos/map - nie można się zalogować,BOS/MAP – nie można się zalogować,0.9
+SD-163750,Wyłączone makra,2025-07-01 22:27:39.266000+02:00,Incydent,Wyłączone makra,wyłączone makra,inne,0.5
+SD-163749,POS02 - Kasa nie uruchamia się,2025-07-01 22:25:28.501000+02:00,Incydent,POS02 - Kasa nie uruchamia się,pos02 - kasa nie uruchamia się,inne,0.5
+SD-163748,"""Brak zainstalowanych drukarek""",2025-07-01 22:24:57.495000+02:00,Incydent,"""Brak zainstalowanych drukarek""","""brak zainstalowanych drukarek""",inne,0.5
+SD-163747,MyStore - edycja odbić czasowych - brak odbić,2025-07-01 22:24:56.751000+02:00,Incydent,MyStore - edycja odbić czasowych - brak odbić,mystore - edycja odbić czasowych - brak odbić,MyStore – Prośba o pomoc w edycji odbić czasowych,0.9
+SD-163745,KVS29 - Wiszace zamówienie,2025-07-01 22:17:30.486000+02:00,Incydent,KVS29 - Wiszace zamówienie,kvs29 - wiszace zamówienie,KVSxx – zawieszone zamówienie,0.9
+SD-163744,MyStore - Rest wpisał że wprowadził dostawę 01.07.2025 i nie widać jej w raporcie zużycia półproduktów,2025-07-01 21:58:55.147000+02:00,Incydent,MyStore - Rest wpisał że wprowadził dostawę 01.07.2025 i nie widać jej w raporcie zużycia półproduktów,mystore - rest wpisał że wprowadził dostawę 01.07.2025 i nie widać jej w raporcie zużycia półproduktów,inne,0.5
+SD-163741,DT - problem z monitorami,2025-07-01 21:31:56.705000+02:00,Incydent,DT - problem z monitorami,dt - problem z monitorami,inne,0.5
+SD-163740,Problem przestał występować po odebraniu telefonu ,2025-07-01 21:30:02.175000+02:00,Usługa,Problem przestał występować po odebraniu telefonu,problem przestał występować po odebraniu telefonu,inne,0.5
+SD-163739,NewPos - Nie liczą się czasy obsługi na KVS,2025-07-01 21:23:15.662000+02:00,Incydent,NewPos - Nie liczą się czasy obsługi na KVS,newpos - nie liczą się czasy obsługi na kvs,inne,0.5
+SD-163738,POS24 - error 65542,2025-07-01 21:23:09.929000+02:00,Incydent,POS24 - error 65542,pos24 - error 65542,inne,0.5
+SD-163737,"Na koncie office, przy próbie wydrukowania pojawia się błąd. "" brak zainstalowanych drukarek""",2025-07-01 21:22:51.692000+02:00,Incydent,"Na koncie office, przy próbie wydrukowania pojawia się błąd. "" brak zainstalowanych drukarek""","na koncie office, przy próbie wydrukowania pojawia się błąd. "" brak zainstalowanych drukarek""",inne,0.5
+SD-163734,Włączenie Serwerów - planowane włączenie prądu,2025-07-01 20:48:07.092000+02:00,Incydent,Włączenie Serwerów - planowane włączenie prądu,włączenie serwerów - planowane włączenie prądu,inne,0.5
+SD-163733,"RE: RE: RE: Awaria/niedostępność usługi: 873539, ul. Marynarska 15, 02-674 Warszawa | INC000013925404 | Customer Id: 988",2025-07-01 20:46:51.770000+02:00,Usługa,"RE: RE: RE: Awaria/niedostępność usługi: 873539, ul. Marynarska 15, 02-674 Warszawa | INC000013925404 | Customer Id: 988","re: re: re: awaria/niedostępność usługi: 873539, ul. marynarska 15, 02-674 warszawa | inc000013925404 | customer id: 988",inne,0.5
+SD-163732,POS01 - Nie działa terminal,2025-07-01 20:36:51.335000+02:00,Incydent,POS01 - Nie działa terminal,pos01 - nie działa terminal,inne,0.5
+SD-163731,DF MOP - nie drukuje zamówień ,2025-07-01 20:30:28.535000+02:00,Incydent,DF MOP - nie drukuje zamówień,df mop - nie drukuje zamówień,inne,0.5
+SD-163730,NewPos - Zawiesił się przy dużej płatności na POS07,2025-07-01 20:29:33.304000+02:00,Incydent,NewPos - Zawiesił się przy dużej płatności na POS07,newpos - zawiesił się przy dużej płatności na pos07,inne,0.5
+SD-163729,CSO26 - admin logon,2025-07-01 20:29:18.936000+02:00,Incydent,CSO26 - admin logon,cso26 - admin logon,inne,0.5
+SD-163728,NewPos - Nie uruchomił się po awarii prądu,2025-07-01 20:22:25.735000+02:00,Incydent,NewPos - Nie uruchomił się po awarii prądu,newpos - nie uruchomił się po awarii prądu,inne,0.5
+SD-163727,Zablokowanie MOP,2025-07-01 20:00:39.638000+02:00,Usługa,Zablokowanie MOP,zablokowanie mop,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163726,Brak ciastka jabłkowego na panelu kasowym,2025-07-01 19:53:50.862000+02:00,Incydent,Brak ciastka jabłkowego na panelu kasowym,brak ciastka jabłkowego na panelu kasowym,inne,0.5
+SD-163725,BackOffice - Menager nie może się zalogować,2025-07-01 19:51:37.482000+02:00,Incydent,BackOffice - Menager nie może się zalogować,backoffice - menager nie może się zalogować,inne,0.5
+SD-163724,CSO31 - Nie włącza się,2025-07-01 19:35:48.944000+02:00,Incydent,CSO31 - Nie włącza się,cso31 - nie włącza się,inne,0.5
+SD-163723,"RE: RE: Awaria/niedostępność usługi: 873539, ul. Marynarska 15, 02-674 Warszawa | INC000013925404 | Customer Id: 988",2025-07-01 19:20:51.422000+02:00,Usługa,"RE: RE: Awaria/niedostępność usługi: 873539, ul. Marynarska 15, 02-674 Warszawa | INC000013925404 | Customer Id: 988","re: re: awaria/niedostępność usługi: 873539, ul. marynarska 15, 02-674 warszawa | inc000013925404 | customer id: 988",inne,0.5
+SD-163722,Office - błąd przy logowaniu,2025-07-01 19:19:25.374000+02:00,Incydent,Office - błąd przy logowaniu,office - błąd przy logowaniu,inne,0.5
+SD-163721,oDMB - zawieszone podsumowanie,2025-07-01 19:18:43.042000+02:00,Incydent,oDMB - zawieszone podsumowanie,odmb - zawieszone podsumowanie,inne,0.5
+SD-163720,"Re: RE: Awaria/niedostępność usługi: 873539, ul. Marynarska 15, 02-674 Warszawa | INC000013925404 | Customer Id: 988",2025-07-01 19:12:52.253000+02:00,Usługa,"Re: RE: Awaria/niedostępność usługi: 873539, ul. Marynarska 15, 02-674 Warszawa | INC000013925404 | Customer Id: 988","re: re: awaria/niedostępność usługi: 873539, ul. marynarska 15, 02-674 warszawa | inc000013925404 | customer id: 988",inne,0.5
+SD-163719,Wyłączone konta Użytkowania,2025-07-01 19:11:15.241000+02:00,Incydent,Wyłączone konta Użytkowania,wyłączone konta użytkowania,inne,0.5
+SD-163718,POS24- adapter is busy,2025-07-01 19:08:39.957000+02:00,Incydent,POS24- adapter is busy,pos24- adapter is busy,inne,0.5
+SD-163717,OfficePC - problem z dostępem,2025-07-01 19:07:42.919000+02:00,Incydent,OfficePC - problem z dostępem,officepc - problem z dostępem,inne,0.5
+SD-163716,MyStore - Rest prosi o przywrócenie listy magazynowej,2025-07-01 18:57:21.735000+02:00,Usługa,MyStore - Rest prosi o przywrócenie listy magazynowej,mystore - rest prosi o przywrócenie listy magazynowej,inne,0.5
+SD-163715,NewPos - Nie załadował się na POS06,2025-07-01 18:55:50.503000+02:00,Incydent,NewPos - Nie załadował się na POS06,newpos - nie załadował się na pos06,inne,0.5
+SD-163714,"Nie otwiera się szuflada. Brak reakcji na ""otwórz szufladę""",2025-07-01 18:47:35.186000+02:00,Incydent,"Nie otwiera się szuflada. Brak reakcji na ""otwórz szufladę""","nie otwiera się szuflada. brak reakcji na ""otwórz szufladę""",inne,0.5
+SD-163713,"POS05 - Nie działa terminal
+
+",2025-07-01 18:47:09.973000+02:00,Incydent,POS05 - Nie działa terminal,pos05 - nie działa terminal,inne,0.5
+SD-163710,Mystore - problem z zalogowaniem,2025-07-01 18:25:36.673000+02:00,Incydent,Mystore - problem z zalogowaniem,mystore - problem z zalogowaniem,inne,0.5
+SD-163709,Wymiana obudowy - test nowej obudowy Gotówkomat,2025-07-01 18:22:17.665000+02:00,Incydent,Wymiana obudowy - test nowej obudowy Gotówkomat,wymiana obudowy - test nowej obudowy gotówkomat,inne,0.5
+SD-163708,Brak zainstalowanych drukarek,2025-07-01 18:15:57.006000+02:00,Incydent,Brak zainstalowanych drukarek,brak zainstalowanych drukarek,inne,0.5
+SD-163705,Zapytanie o instrukcję dla prac w ramach ankiety DT SBS dla OTP,2025-07-01 17:49:54.384000+02:00,Usługa,Zapytanie o instrukcję dla prac w ramach ankiety DT SBS dla OTP,zapytanie o instrukcję dla prac w ramach ankiety dt sbs dla otp,inne,0.5
+SD-163704,Pytanie o usuniecie Kasy z systemu,2025-07-01 17:42:51.463000+02:00,Incydent,Pytanie o usuniecie Kasy z systemu,pytanie o usuniecie kasy z systemu,inne,0.5
+SD-163702,GPR OAT1 - nie drukuje,2025-07-01 17:25:41.784000+02:00,Incydent,GPR OAT1 - nie drukuje,gpr oat1 - nie drukuje,inne,0.5
+SD-163701,Drukarka Grill na beverage nie działa prawidłowo,2025-07-01 17:25:14.519000+02:00,Incydent,Drukarka Grill na beverage nie działa prawidłowo,drukarka grill na beverage nie działa prawidłowo,inne,0.5
+SD-163700,Niepotrzebnie potwierdzona dostawa ,2025-07-01 17:20:58.289000+02:00,Incydent,Niepotrzebnie potwierdzona dostawa,niepotrzebnie potwierdzona dostawa,inne,0.5
+SD-163699,MyStore - Aplikacja nie chce się uruchomić,2025-07-01 17:16:58.195000+02:00,Incydent,MyStore - Aplikacja nie chce się uruchomić,mystore - aplikacja nie chce się uruchomić,inne,0.5
+SD-163698,Proszę o ponowne otwarcie zgłoszenia o numerze SD-65300,2025-07-01 17:16:32.784000+02:00,Incydent,Proszę o ponowne otwarcie zgłoszenia o numerze SD-65300,proszę o ponowne otwarcie zgłoszenia o numerze sd-65300,inne,0.5
+SD-163696,POS01 - Dyspenser ma diodę mrugającą L1 ,2025-07-01 17:13:00.872000+02:00,Incydent,POS01 - Dyspenser ma diodę mrugającą L1,pos01 - dyspenser ma diodę mrugającą l1,inne,0.5
+SD-163695,CFS - Problem z monitorem na drive,2025-07-01 17:08:19.556000+02:00,Incydent,CFS - Problem z monitorem na drive,cfs - problem z monitorem na drive,inne,0.5
+SD-163694,Spadek - Oddzwoniono,2025-07-01 17:07:53.222000+02:00,Usługa,Spadek - Oddzwoniono,spadek - oddzwoniono,inne,0.5
+SD-163693,CSO29 - nie pinguje czarny ekran,2025-07-01 17:01:13.168000+02:00,Incydent,CSO29 - nie pinguje czarny ekran,cso29 - nie pinguje czarny ekran,inne,0.5
+SD-163692,CSO25 - terminal nie reaguje,2025-07-01 16:56:43.712000+02:00,Incydent,CSO25 - terminal nie reaguje,cso25 - terminal nie reaguje,inne,0.5
+SD-163691,Prośba o Sprawdzenia Access points,2025-07-01 16:52:19.083000+02:00,Incydent,Prośba o Sprawdzenia Access points,prośba o sprawdzenia access points,inne,0.5
+SD-163690,Brak raportu PMX za czerwiec ,2025-07-01 16:49:38.352000+02:00,Incydent,Brak raportu PMX za czerwiec,brak raportu pmx za czerwiec,inne,0.5
+SD-163688,Spadek,2025-07-01 16:44:48.617000+02:00,Usługa,Spadek,spadek,inne,0.5
+SD-163687,Spadek - Oddzwoniono,2025-07-01 16:40:55.804000+02:00,Usługa,Spadek - Oddzwoniono,spadek - oddzwoniono,inne,0.5
+SD-163686,TAP45 - NewPos Blocked,2025-07-01 16:30:15.335000+02:00,Incydent,TAP45 - NewPos Blocked,tap45 - newpos blocked,inne,0.5
+SD-163685,POS06 - Fiscal Driver is Not Started,2025-07-01 16:27:34.525000+02:00,Incydent,POS06 - Fiscal Driver is Not Started,pos06 - fiscal driver is not started,inne,0.5
+SD-163684,Brak możliwości zalogowania się do komputera w crew room ,2025-07-01 16:24:20.227000+02:00,Incydent,Brak możliwości zalogowania się do komputera w crew room,brak możliwości zalogowania się do komputera w crew room,inne,0.5
+SD-163683,Wygenerowanie kodów MFA,2025-07-01 16:23:55.446000+02:00,Incydent,Wygenerowanie kodów MFA,wygenerowanie kodów mfa,inne,0.5
+SD-163682,KVS12 - Nie można włączyć lub wyłączyć Strony,2025-07-01 16:20:33.594000+02:00,Incydent,KVS12 - Nie można włączyć lub wyłączyć Strony,kvs12 - nie można włączyć lub wyłączyć strony,inne,0.5
+SD-163681,POS24 - zawiesił się po nabiciu 24 HM,2025-07-01 16:18:24.655000+02:00,Incydent,POS24 - zawiesił się po nabiciu 24 HM,pos24 - zawiesił się po nabiciu 24 hm,inne,0.5
+SD-163680,Raport PMX - brak danych za czerwiec,2025-07-01 16:17:39.167000+02:00,Incydent,Raport PMX - brak danych za czerwiec,raport pmx - brak danych za czerwiec,inne,0.5
+SD-163679,pętle DT,2025-07-01 16:17:17.235000+02:00,Incydent,pętle DT,pętle dt,inne,0.5
+SD-163678,KVS12 - nie można wyłączyć strony,2025-07-01 16:10:45.784000+02:00,Incydent,KVS12 - nie można wyłączyć strony,kvs12 - nie można wyłączyć strony,inne,0.5
+SD-163677,POS01 - Zawieszony Dotyk,2025-07-01 16:07:58.423000+02:00,Incydent,POS01 - Zawieszony Dotyk,pos01 - zawieszony dotyk,inne,0.5
+SD-163675,COD - Kupony skanują się na błędną kase,2025-07-01 16:04:11.081000+02:00,Incydent,COD - Kupony skanują się na błędną kase,cod - kupony skanują się na błędną kase,inne,0.5
+SD-163674,POS07 - Fiscal Driver is not started,2025-07-01 15:58:44.427000+02:00,Incydent,POS07 - Fiscal Driver is not started,pos07 - fiscal driver is not started,inne,0.5
+SD-163673,Wyse.5 - nie pinguje,2025-07-01 15:58:28.222000+02:00,Incydent,Wyse.5 - nie pinguje,wyse.5 - nie pinguje,inne,0.5
+SD-163672,Połączenie,2025-07-01 15:56:40.144000+02:00,Usługa,Połączenie,połączenie,inne,0.5
+SD-163671,nie skanuje kuponów,2025-07-01 15:53:36.967000+02:00,Incydent,nie skanuje kuponów,nie skanuje kuponów,inne,0.5
+SD-163670,Problem z zamówieniami na DT,2025-07-01 15:52:12.812000+02:00,Incydent,Problem z zamówieniami na DT,problem z zamówieniami na dt,inne,0.5
+SD-163668,Delivery - Zamówienia na tablecie Pyszne.pl pokazują się dopiero jak kurier już przyjedzie po zamówienie,2025-07-01 15:36:37.841000+02:00,Incydent,Delivery - Zamówienia na tablecie Pyszne.pl pokazują się dopiero jak kurier już przyjedzie po zamówienie,delivery - zamówienia na tablecie pyszne.pl pokazują się dopiero jak kurier już przyjedzie po zamówienie,inne,0.5
+SD-163667,KVS17 - BEV GPR - drukują się czyste opisy,2025-07-01 15:35:05.982000+02:00,Incydent,KVS17 - BEV GPR - drukują się czyste opisy,kvs17 - bev gpr - drukują się czyste opisy,inne,0.5
+SD-163665,MOP - prośba o włączenie usługi,2025-07-01 15:30:17.208000+02:00,Usługa,MOP - prośba o włączenie usługi,mop - prośba o włączenie usługi,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163664,Głuchy telefon,2025-07-01 15:23:31.419000+02:00,Usługa,Głuchy telefon,głuchy telefon,inne,0.5
+SD-163663,MyStore - Prośba o pomoc w edycji odbić czasowych,2025-07-01 15:20:00.948000+02:00,Incydent,MyStore - Prośba o pomoc w edycji odbić czasowych,mystore - prośba o pomoc w edycji odbić czasowych,MyStore – Prośba o pomoc w edycji odbić czasowych,0.9
+SD-163662,MOP - Prośba o włączenie usługi,2025-07-01 15:17:44.824000+02:00,Usługa,MOP - Prośba o włączenie usługi,mop - prośba o włączenie usługi,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163661,Spadek,2025-07-01 15:09:21.137000+02:00,Usługa,Spadek,spadek,inne,0.5
+SD-163657,KVS11 - Rozkalibrowany Dotyk,2025-07-01 14:56:40.159000+02:00,Incydent,KVS11 - Rozkalibrowany Dotyk,kvs11 - rozkalibrowany dotyk,inne,0.5
+SD-163655,MS9 - Raport PMX brak danych,2025-07-01 14:52:32.645000+02:00,Incydent,MS9 - Raport PMX brak danych,ms9 - raport pmx brak danych,inne,0.5
+SD-163653,Niedziałająca nowa bonifikata dla pracowników galerii Sfera ,2025-07-01 14:48:58.450000+02:00,Incydent,Niedziałająca nowa bonifikata dla pracowników galerii Sfera,niedziałająca nowa bonifikata dla pracowników galerii sfera,inne,0.5
+SD-163652,Rekalkulacja na zabawkach,2025-07-01 14:46:54.289000+02:00,Incydent,Rekalkulacja na zabawkach,rekalkulacja na zabawkach,inne,0.5
+SD-163650,CFS2 - brak obrazu,2025-07-01 14:44:58.689000+02:00,Incydent,CFS2 - brak obrazu,cfs2 - brak obrazu,inne,0.5
+SD-163649,POS/CSO - Nie można przyjmować płatności kartą na wszystkich kasach/kioskach,2025-07-01 14:44:12.012000+02:00,Incydent,POS/CSO - Nie można przyjmować płatności kartą na wszystkich kasach/kioskach,pos/cso - nie można przyjmować płatności kartą na wszystkich kasach/kioskach,inne,0.5
+SD-163646,Brak produkty technicznego,2025-07-01 14:41:46.206000+02:00,Usługa,Brak produkty technicznego,brak produkty technicznego,inne,0.5
+SD-163645,brak numeru do sprawdzenia reorganizacji w zarządzaniu półproduktu,2025-07-01 14:39:27.492000+02:00,Usługa,brak numeru do sprawdzenia reorganizacji w zarządzaniu półproduktu,brak numeru do sprawdzenia reorganizacji w zarządzaniu półproduktu,inne,0.5
+SD-163644,Webtool - wysąpił nie oczekiwany błąd,2025-07-01 14:38:31.518000+02:00,Incydent,Webtool - wysąpił nie oczekiwany błąd,webtool - wysąpił nie oczekiwany błąd,inne,0.5
+SD-163643,IDMB - błędna promocja lokalna,2025-07-01 14:37:57.764000+02:00,Incydent,IDMB - błędna promocja lokalna,idmb - błędna promocja lokalna,inne,0.5
+SD-163642,POS24 - Brak wykonania rozkazu drukarki,2025-07-01 14:35:41.567000+02:00,Incydent,POS24 - Brak wykonania rozkazu drukarki,pos24 - brak wykonania rozkazu drukarki,inne,0.5
+SD-163641,RE: McDonald's PL Czechowice-Dziedzice-61600575 Coates Support Case 00370416 Acknowledgment,2025-07-01 14:33:52.224000+02:00,Usługa,RE: McDonald's PL Czechowice-Dziedzice-61600575 Coates Support Case 00370416 Acknowledgment,re: mcdonald's pl czechowice-dziedzice-61600575 coates support case 00370416 acknowledgment,inne,0.5
+SD-163640,Po przerwie w dostawie prądu - monitory nie ładuje się newpos,2025-07-01 14:29:06.568000+02:00,Incydent,Po przerwie w dostawie prądu - monitory nie ładuje się newpos,po przerwie w dostawie prądu - monitory nie ładuje się newpos,inne,0.5
+SD-163638,Wyłączenie Serwerów - planowane wyłączenie prądu,2025-07-01 14:22:09.568000+02:00,Incydent,Wyłączenie Serwerów - planowane wyłączenie prądu,wyłączenie serwerów - planowane wyłączenie prądu,inne,0.5
+SD-163637,Pytanie o zamknięcie dnia - brak paczki sprzedażowej za 30.01,2025-07-01 14:21:43.977000+02:00,Incydent,Pytanie o zamknięcie dnia - brak paczki sprzedażowej za 30.01,pytanie o zamknięcie dnia - brak paczki sprzedażowej za 30.01,inne,0.5
+SD-163636,Ślad na monitorze oDMB,2025-07-01 14:17:06.512000+02:00,Incydent,Ślad na monitorze oDMB,ślad na monitorze odmb,inne,0.5
+SD-163635,CSO33 - Uszkodzony nóż,2025-07-01 14:12:09.305000+02:00,Incydent,CSO33 - Uszkodzony nóż,cso33 - uszkodzony nóż,inne,0.5
+SD-163634,ORB01 - czerwone M,2025-07-01 14:09:20.716000+02:00,Incydent,ORB01 - czerwone M,orb01 - czerwone m,inne,0.5
+SD-163633,Rekalkulacja na półproduktach,2025-07-01 14:08:01.509000+02:00,Incydent,Rekalkulacja na półproduktach,rekalkulacja na półproduktach,inne,0.5
+SD-163632,Eprod - same zera na ekranach,2025-07-01 14:07:10.516000+02:00,Incydent,Eprod - same zera na ekranach,eprod - same zera na ekranach,inne,0.5
+SD-163630,CSO28 - Czasem dotyk przestaje działać ,2025-07-01 14:05:05.297000+02:00,Incydent,CSO28 - Czasem dotyk przestaje działać,cso28 - czasem dotyk przestaje działać,inne,0.5
+SD-163629,Mail - Brak przekierowania ,2025-07-01 14:03:09.653000+02:00,Incydent,Mail - Brak przekierowania,mail - brak przekierowania,inne,0.5
+SD-163628,MS9 - Błędy w zużyciu pp,2025-07-01 14:02:34.851000+02:00,Incydent,MS9 - Błędy w zużyciu pp,ms9 - błędy w zużyciu pp,inne,0.5
+SD-163626,CSO26 - niedostępny,2025-07-01 13:59:26.461000+02:00,Incydent,CSO26 - niedostępny,cso26 - niedostępny,CSOxx – niedostępny,0.9
+SD-163625,POS01 - terminal - nie przeszło zamówienie,2025-07-01 13:58:59.688000+02:00,Incydent,POS01 - terminal - nie przeszło zamówienie,pos01 - terminal - nie przeszło zamówienie,inne,0.5
+SD-163624,KVS17 - offline,2025-07-01 13:55:38.034000+02:00,Incydent,KVS17 - offline,kvs17 - offline,inne,0.5
+SD-163623,Re: Re: Błędne menu - 227 i 356 Glovo,2025-07-01 13:53:50.998000+02:00,Usługa,Re: Re: Błędne menu - 227 i 356 Glovo,re: re: błędne menu - 227 i 356 glovo,Autorelease – nie wpada automatycznie,0.75
+SD-163622, brak domeny Mcd w skrzynce kierownika,2025-07-01 13:53:47.462000+02:00,Incydent,brak domeny Mcd w skrzynce kierownika,brak domeny mcd w skrzynce kierownika,inne,0.5
+SD-163621,Raport PMX - brak danych ,2025-07-01 13:53:27.171000+02:00,Usługa,Raport PMX - brak danych,raport pmx - brak danych,inne,0.5
+SD-163620,Brak domeny ,2025-07-01 13:51:58.375000+02:00,Incydent,Brak domeny,brak domeny,inne,0.5
+SD-163619,Re: Błędnie menu - SITE 559 Glovo,2025-07-01 13:51:52.287000+02:00,Usługa,Re: Błędnie menu - SITE 559 Glovo,re: błędnie menu - site 559 glovo,Autorelease – nie wpada automatycznie,0.75
+SD-163618,COD - Skaner nie świeci się,2025-07-01 13:51:46.031000+02:00,Incydent,COD - Skaner nie świeci się,cod - skaner nie świeci się,inne,0.5
+SD-163617,POS07 - POS Not Initialized,2025-07-01 13:47:20.609000+02:00,Incydent,POS07 - POS Not Initialized,pos07 - pos not initialized,inne,0.5
+SD-163616,Wyse.13 - nie pinguje ,2025-07-01 13:44:38.135000+02:00,Incydent,Wyse.13 - nie pinguje,wyse.13 - nie pinguje,inne,0.5
+SD-163615,McDonald's PL Czechowice-Dziedzice-61600575 Coates Support Case 00370416 Acknowledgment,2025-07-01 13:43:00.148000+02:00,Usługa,McDonald's PL Czechowice-Dziedzice-61600575 Coates Support Case 00370416 Acknowledgment,mcdonald's pl czechowice-dziedzice-61600575 coates support case 00370416 acknowledgment,inne,0.5
+SD-163614,Zły wydruk zamówień,2025-07-01 13:41:24.130000+02:00,Incydent,Zły wydruk zamówień,zły wydruk zamówień,inne,0.5
+SD-163612,McDonald's Poland Coates Support Case 00370416 Acknowledgment,2025-07-01 13:32:56.957000+02:00,Usługa,McDonald's Poland Coates Support Case 00370416 Acknowledgment,mcdonald's poland coates support case 00370416 acknowledgment,inne,0.5
+SD-163611,Ankieta DT zapytanie ,2025-07-01 13:29:20.249000+02:00,Usługa,Ankieta DT zapytanie,ankieta dt zapytanie,inne,0.5
+SD-163610,KVS34 - czarny ekran,2025-07-01 13:28:48.447000+02:00,Incydent,KVS34 - czarny ekran,kvs34 - czarny ekran,inne,0.5
+SD-163609,spadek,2025-07-01 13:28:04.432000+02:00,Usługa,spadek,spadek,inne,0.5
+SD-163608,POS01 - Brakuje okienek podsumowania kwoty,2025-07-01 13:24:56.532000+02:00,Incydent,POS01 - Brakuje okienek podsumowania kwoty,pos01 - brakuje okienek podsumowania kwoty,POS – brak kafelków,0.9
+SD-163607,MyStore - brak danych PMX,2025-07-01 13:21:40.482000+02:00,Incydent,MyStore - brak danych PMX,mystore - brak danych pmx,inne,0.5
+SD-163605,Proszę o tymczasowe wyłączenie usługi MOP w czasie trwania Open'er Festiwal od 02 do 06 lipca 2025. ,2025-07-01 13:19:28.925000+02:00,Incydent,Proszę o tymczasowe wyłączenie usługi MOP w czasie trwania Open'er Festiwal od 02 do 06 lipca 2025.,proszę o tymczasowe wyłączenie usługi mop w czasie trwania open'er festiwal od 02 do 06 lipca 2025.,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163604,"MyStore - błęda wartość ""papier"" w nieplanowanych dostawach",2025-07-01 13:14:29.814000+02:00,Usługa,"MyStore - błęda wartość ""papier"" w nieplanowanych dostawach","mystore - błęda wartość ""papier"" w nieplanowanych dostawach",MyStore – dostawa nie zaksięgowała się,0.9
+SD-163602,Nie można załadować danych w dziennym planowaniu sprzedaży,2025-07-01 13:11:40.344000+02:00,Incydent,Nie można załadować danych w dziennym planowaniu sprzedaży,nie można załadować danych w dziennym planowaniu sprzedaży,inne,0.5
+SD-163601,Epr01 - brak czasów,2025-07-01 13:10:31.807000+02:00,Incydent,Epr01 - brak czasów,epr01 - brak czasów,inne,0.5
+SD-163600,spadek,2025-07-01 12:57:07.996000+02:00,Usługa,spadek,spadek,inne,0.5
+SD-163598,KVS19 - Bumbar nie działa,2025-07-01 12:54:48.785000+02:00,Incydent,KVS19 - Bumbar nie działa,kvs19 - bumbar nie działa,inne,0.5
+SD-163597,KVS17 - ekran nie działa,2025-07-01 12:49:35.128000+02:00,Incydent,KVS17 - ekran nie działa,kvs17 - ekran nie działa,inne,0.5
+SD-163596,MyStore - zniknęło zużycie na jednym z PP,2025-07-01 12:49:01.546000+02:00,Usługa,MyStore - zniknęło zużycie na jednym z PP,mystore - zniknęło zużycie na jednym z pp,inne,0.5
+SD-163595,POS07 - kasa się zacieła - brak możliwości podsumowania zamówienia,2025-07-01 12:47:57.953000+02:00,Incydent,POS07 - kasa się zacieła - brak możliwości podsumowania zamówienia,pos07 - kasa się zacieła - brak możliwości podsumowania zamówienia,POS – brak kafelków,0.9
+SD-163594,Webcockpit -  brak dostępu,2025-07-01 12:47:24.528000+02:00,Usługa,Webcockpit -  brak dostępu,webcockpit -  brak dostępu,inne,0.5
+SD-163593,Drukarka nie widzi papier.,2025-07-01 12:44:14.464000+02:00,Incydent,Drukarka nie widzi papier.,drukarka nie widzi papier.,inne,0.5
+SD-163592,MyStore - różnice w raporcie odbić czasowych i raporcie operacyjnym,2025-07-01 12:42:50.932000+02:00,Incydent,MyStore - różnice w raporcie odbić czasowych i raporcie operacyjnym,mystore - różnice w raporcie odbić czasowych i raporcie operacyjnym,MyStore – Prośba o pomoc w edycji odbić czasowych,0.9
+SD-163591,Terminale nie działają,2025-07-01 12:39:03.633000+02:00,Incydent,Terminale nie działają,terminale nie działają,inne,0.5
+SD-163590,Produkty z Bonifikaty ,2025-07-01 12:36:03.197000+02:00,Incydent,Produkty z Bonifikaty,produkty z bonifikaty,inne,0.5
+SD-163589,CSO26 - DF nie odpowiada,2025-07-01 12:35:05.473000+02:00,Incydent,CSO26 - DF nie odpowiada,cso26 - df nie odpowiada,inne,0.5
+SD-163587,POS1 - Nie można zalogować kasjera,2025-07-01 12:33:35.044000+02:00,Incydent,POS1 - Nie można zalogować kasjera,pos1 - nie można zalogować kasjera,inne,0.5
+SD-163585,ORB01 - offline,2025-07-01 12:29:30.646000+02:00,Incydent,ORB01 - offline,orb01 - offline,inne,0.5
+SD-163584,CSO30 - Nie reaguje na dotyk na dole ekranu,2025-07-01 12:29:13.596000+02:00,Incydent,CSO30 - Nie reaguje na dotyk na dole ekranu,cso30 - nie reaguje na dotyk na dole ekranu,inne,0.5
+SD-163583,Tablet Glovo - problem z połączeniem sieciowym,2025-07-01 12:27:25.493000+02:00,Incydent,Tablet Glovo - problem z połączeniem sieciowym,tablet glovo - problem z połączeniem sieciowym,Autorelease – nie wpada automatycznie,0.75
+SD-163582,MyStore - brak danych w raporcie PMX,2025-07-01 12:27:22.225000+02:00,Incydent,MyStore - brak danych w raporcie PMX,mystore - brak danych w raporcie pmx,inne,0.5
+SD-163581,Reklama dla kiosku,2025-07-01 12:25:05.472000+02:00,Usługa,Reklama dla kiosku,reklama dla kiosku,inne,0.5
+SD-163580,Monitor nie wyświetla zamówień ,2025-07-01 12:24:41.241000+02:00,Incydent,Monitor nie wyświetla zamówień,monitor nie wyświetla zamówień,inne,0.5
+SD-163579,KVS - nie liczy czasów obsługi - 0/0,2025-07-01 12:23:59.147000+02:00,Incydent,KVS - nie liczy czasów obsługi - 0/0,kvs - nie liczy czasów obsługi - 0/0,inne,0.5
+SD-163578,"KVS01,02,31 - Nie pokazuja się specjalne zamówienia",2025-07-01 12:23:17.530000+02:00,Incydent,"KVS01,02,31 - Nie pokazuja się specjalne zamówienia","kvs01,02,31 - nie pokazuja się specjalne zamówienia",inne,0.5
+SD-163577,spadek,2025-07-01 12:23:12.938000+02:00,Usługa,spadek,spadek,inne,0.5
+SD-163576,"Błędy w raporcie ""Dzienne Rozliczenie Pieniędzy""",2025-07-01 12:22:10.009000+02:00,Incydent,"Błędy w raporcie ""Dzienne Rozliczenie Pieniędzy""","błędy w raporcie ""dzienne rozliczenie pieniędzy""",inne,0.5
+SD-163575,Drukarka kiosku nr 27 ,2025-07-01 12:18:50.682000+02:00,Incydent,Drukarka kiosku nr 27,drukarka kiosku nr 27,inne,0.5
+SD-163574,Naprawa serwera serwera radius w serwisie centralnym,2025-07-01 12:17:15.169000+02:00,Incydent,Naprawa serwera serwera radius w serwisie centralnym,naprawa serwera serwera radius w serwisie centralnym,inne,0.5
+SD-163572,MS - brak danych w raporcie pmx,2025-07-01 12:13:46.774000+02:00,Incydent,MS - brak danych w raporcie pmx,ms - brak danych w raporcie pmx,inne,0.5
+SD-163571,MS - różnica na zabawkach,2025-07-01 12:12:47.688000+02:00,Incydent,MS - różnica na zabawkach,ms - różnica na zabawkach,inne,0.5
+SD-163570,CSO28 - DF nie tnie paragonów,2025-07-01 12:12:12.082000+02:00,Incydent,CSO28 - DF nie tnie paragonów,cso28 - df nie tnie paragonów,inne,0.5
+SD-163569,Brak danych w raporcie pieniądze - dzienne planowanie sprzedaży na lipiec,2025-07-01 12:08:47.184000+02:00,Incydent,Brak danych w raporcie pieniądze - dzienne planowanie sprzedaży na lipiec,brak danych w raporcie pieniądze - dzienne planowanie sprzedaży na lipiec,inne,0.5
+SD-163568,MyStore - Wysokie odchylenie ,2025-07-01 12:02:25.079000+02:00,Incydent,MyStore - Wysokie odchylenie,mystore - wysokie odchylenie,inne,0.5
+SD-163567,Raport PMX - brak danych,2025-07-01 12:00:11.831000+02:00,Usługa,Raport PMX - brak danych,raport pmx - brak danych,inne,0.5
+SD-163566,"GPR - MFY1, MFY2 nie drukuja",2025-07-01 12:00:04.281000+02:00,Incydent,"GPR - MFY1, MFY2 nie drukuja","gpr - mfy1, mfy2 nie drukuja",inne,0.5
+SD-163565,POS06 - skaner kuponów nie skanuje,2025-07-01 11:59:12.871000+02:00,Incydent,POS06 - skaner kuponów nie skanuje,pos06 - skaner kuponów nie skanuje,inne,0.5
+SD-163564,spadek,2025-07-01 11:59:08.771000+02:00,Usługa,spadek,spadek,inne,0.5
+SD-163563,bonifikarta plastikowa ,2025-07-01 11:56:26.766000+02:00,Usługa,bonifikarta plastikowa,bonifikarta plastikowa,inne,0.5
+SD-163562,MyStore - zużycie na szklankach,2025-07-01 11:55:30.320000+02:00,Incydent,MyStore - zużycie na szklankach,mystore - zużycie na szklankach,inne,0.5
+SD-163561,Re: Błędy w wysyłce menu McDonald's - Dzika 239 i McDonald's - Pabianicka 75,2025-07-01 11:54:59.974000+02:00,Usługa,Re: Błędy w wysyłce menu McDonald's - Dzika 239 i McDonald's - Pabianicka 75,re: błędy w wysyłce menu mcdonald's - dzika 239 i mcdonald's - pabianicka 75,inne,0.5
+SD-163560,KVS17 - Brak Obrazu,2025-07-01 11:51:04.435000+02:00,Incydent,KVS17 - Brak Obrazu,kvs17 - brak obrazu,inne,0.5
+SD-163559,Zegar dane z 30.06.2025,2025-07-01 11:49:03.917000+02:00,Incydent,Zegar dane z 30.06.2025,zegar dane z 30.06.2025,inne,0.5
+SD-163558,proszę o rekalkulację wszystkich półproduktów z uwagi na brak zużycia ,2025-07-01 11:43:42.321000+02:00,Usługa,proszę o rekalkulację wszystkich półproduktów z uwagi na brak zużycia,proszę o rekalkulację wszystkich półproduktów z uwagi na brak zużycia,inne,0.5
+SD-163557,Brak raportu operacyjnego z dnia 30.06.2025,2025-07-01 11:43:11.681000+02:00,Incydent,Brak raportu operacyjnego z dnia 30.06.2025,brak raportu operacyjnego z dnia 30.06.2025,inne,0.5
+SD-163555,Problem z zalogowaniem się na BOS01/MAP01,2025-07-01 11:39:48.779000+02:00,Usługa,Problem z zalogowaniem się na BOS01/MAP01,problem z zalogowaniem się na bos01/map01,BOS/MAP – nie można się zalogować,0.9
+SD-163553,TR - problem z odbiciem,2025-07-01 11:34:14.002000+02:00,Incydent,TR - problem z odbiciem,tr - problem z odbiciem,inne,0.5
+SD-163552,POS03 - Zablokowane oferty,2025-07-01 11:32:46.226000+02:00,Incydent,POS03 - Zablokowane oferty,pos03 - zablokowane oferty,inne,0.5
+SD-163551,Tablet glovo - rozłączył się z siecią HHOT,2025-07-01 11:28:14.552000+02:00,Incydent,Tablet glovo - rozłączył się z siecią HHOT,tablet glovo - rozłączył się z siecią hhot,inne,0.5
+SD-163550,w raporcie szybkości obsługi zarejstrowane jest zamówienie o godzinie 23:00 obecnie jest godzina 11:26,2025-07-01 11:28:03.968000+02:00,Incydent,w raporcie szybkości obsługi zarejstrowane jest zamówienie o godzinie 23:00 obecnie jest godzina 11:26,w raporcie szybkości obsługi zarejstrowane jest zamówienie o godzinie 23:00 obecnie jest godzina 11:26,inne,0.5
+SD-163549,RHS - produkcja offline,2025-07-01 11:26:45.793000+02:00,Incydent,RHS - produkcja offline,rhs - produkcja offline,inne,0.5
+SD-163548,ORB01 - zacięty obraz,2025-07-01 11:26:36.215000+02:00,Incydent,ORB01 - zacięty obraz,orb01 - zacięty obraz,inne,0.5
+SD-163545,Kasy na Drive wyłączyły się,2025-07-01 11:21:59.644000+02:00,Usługa,Kasy na Drive wyłączyły się,kasy na drive wyłączyły się,inne,0.5
+SD-163543,MS - brak danych w raporcie PMX,2025-07-01 11:18:30.756000+02:00,Incydent,MS - brak danych w raporcie PMX,ms - brak danych w raporcie pmx,inne,0.5
+SD-163542,MOP DF - nie drukuje zamówień,2025-07-01 11:18:05.992000+02:00,Incydent,MOP DF - nie drukuje zamówień,mop df - nie drukuje zamówień,inne,0.5
+SD-163541,MS - problem z zamknięciem dnia biznesowego,2025-07-01 11:16:43.641000+02:00,Incydent,MS - problem z zamknięciem dnia biznesowego,ms - problem z zamknięciem dnia biznesowego,inne,0.5
+SD-163538,Office - Nie wykrywa drukarki,2025-07-01 11:07:33.569000+02:00,Incydent,Office - Nie wykrywa drukarki,office - nie wykrywa drukarki,inne,0.5
+SD-163537,TR - nieprawidłowa data ,2025-07-01 11:06:53.446000+02:00,Incydent,TR - nieprawidłowa data,tr - nieprawidłowa data,inne,0.5
+SD-163536,Tablet od lokalizatorów ma czarny ekran. ,2025-07-01 11:06:01.113000+02:00,Incydent,Tablet od lokalizatorów ma czarny ekran.,tablet od lokalizatorów ma czarny ekran.,inne,0.5
+SD-163535,Promocja Lokalna - Nieprawidłowa cena w aplikacji,2025-07-01 11:01:47.862000+02:00,Incydent,Promocja Lokalna - Nieprawidłowa cena w aplikacji,promocja lokalna - nieprawidłowa cena w aplikacji,inne,0.5
+SD-163534,MOP - włączenie zamówień,2025-07-01 11:01:47.501000+02:00,Incydent,MOP - włączenie zamówień,mop - włączenie zamówień,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163533,iDMB- FC2 migający ekran,2025-07-01 10:57:17.020000+02:00,Incydent,iDMB- FC2 migający ekran,idmb- fc2 migający ekran,inne,0.5
+SD-163532,Promocja lokalna wyświetla się zbyt wcześnie,2025-07-01 10:53:45.410000+02:00,Incydent,Promocja lokalna wyświetla się zbyt wcześnie,promocja lokalna wyświetla się zbyt wcześnie,inne,0.5
+SD-163530,Pytanie o niepoprawnie wprowadzoną inwentaryzację,2025-07-01 10:45:07.787000+02:00,Usługa,Pytanie o niepoprawnie wprowadzoną inwentaryzację,pytanie o niepoprawnie wprowadzoną inwentaryzację,inne,0.5
+SD-163528,POS01 - Dyspender wydaje za mało ,2025-07-01 10:42:20.070000+02:00,Incydent,POS01 - Dyspender wydaje za mało,pos01 - dyspender wydaje za mało,inne,0.5
+SD-163527,MS - Brak zmapowanego dysku,2025-07-01 10:35:33.829000+02:00,Incydent,MS - Brak zmapowanego dysku,ms - brak zmapowanego dysku,inne,0.5
+SD-163526,Spadek,2025-07-01 10:32:05.593000+02:00,Usługa,Spadek,spadek,inne,0.5
+SD-163525,oDMB - ekrany się wyłączają w weekend,2025-07-01 10:31:58.233000+02:00,Incydent,oDMB - ekrany się wyłączają w weekend,odmb - ekrany się wyłączają w weekend,inne,0.5
+SD-163523,POS03 - nie działa skaner,2025-07-01 10:26:05.119000+02:00,Incydent,POS03 - nie działa skaner,pos03 - nie działa skaner,inne,0.5
+SD-163522,POS20 - uszkodzony zasilacz,2025-07-01 10:22:50.614000+02:00,Incydent,POS20 - uszkodzony zasilacz,pos20 - uszkodzony zasilacz,inne,0.5
+SD-163520,ABS - Nie nalewa napojów automatycznie ,2025-07-01 10:20:08.076000+02:00,Incydent,ABS - Nie nalewa napojów automatycznie,abs - nie nalewa napojów automatycznie,inne,0.5
+SD-163518,"RE: Awaria/niedostępność usługi: 873539, ul. Marynarska 15, 02-674 Warszawa | INC000013925404 | Customer Id: 988",2025-07-01 10:14:52.791000+02:00,Usługa,"RE: Awaria/niedostępność usługi: 873539, ul. Marynarska 15, 02-674 Warszawa | INC000013925404 | Customer Id: 988","re: awaria/niedostępność usługi: 873539, ul. marynarska 15, 02-674 warszawa | inc000013925404 | customer id: 988",inne,0.5
+SD-163517,TAP45 - brak połączenia z MS,2025-07-01 10:12:31.887000+02:00,Incydent,TAP45 - brak połączenia z MS,tap45 - brak połączenia z ms,inne,0.5
+SD-163516,BackOffice - Printer Status Error,2025-07-01 10:12:20.793000+02:00,Incydent,BackOffice - Printer Status Error,backoffice - printer status error,inne,0.5
+SD-163515,"Na ekranie wyświetlającymi zamówienia DT po restarcie komunikacji wisi zamówienie w opcji ""podsumowanie"" - proszę o usunięcie wiszącego w chmurze zamówienia, które u Nas na kasie nie istnieje zamówienie numer 288",2025-07-01 10:10:03.690000+02:00,Incydent,"Na ekranie wyświetlającymi zamówienia DT po restarcie komunikacji wisi zamówienie w opcji ""podsumowanie"" - proszę o usunięcie wiszącego w chmurze zamówienia, które u Nas na kasie nie istnieje zamówienie numer 288","na ekranie wyświetlającymi zamówienia dt po restarcie komunikacji wisi zamówienie w opcji ""podsumowanie"" - proszę o usunięcie wiszącego w chmurze zamówienia, które u nas na kasie nie istnieje zamówienie numer 288",inne,0.5
+SD-163514,Różnice na DRP,2025-07-01 10:08:00.740000+02:00,Incydent,Różnice na DRP,różnice na drp,inne,0.5
+SD-163513,Drukarka MOP - Nie działa prawidłowo,2025-07-01 10:07:04.759000+02:00,Incydent,Drukarka MOP - Nie działa prawidłowo,drukarka mop - nie działa prawidłowo,inne,0.5
+SD-163512,Zapytanie o aktualność cen,2025-07-01 10:06:41.679000+02:00,Incydent,Zapytanie o aktualność cen,zapytanie o aktualność cen,inne,0.5
+SD-163511,MOP - prośba o wyłączenie zamówień,2025-07-01 10:06:22.921000+02:00,Usługa,MOP - prośba o wyłączenie zamówień,mop - prośba o wyłączenie zamówień,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163510,oDMB - ekran zaciął się na podsumowaniu zamówienia ,2025-07-01 10:05:55.706000+02:00,Incydent,oDMB - ekran zaciął się na podsumowaniu zamówienia,odmb - ekran zaciął się na podsumowaniu zamówienia,inne,0.5
+SD-163507,"POS - Niepoprawna paczka, pos blocked",2025-07-01 10:02:57.878000+02:00,Incydent,"POS - Niepoprawna paczka, pos blocked","pos - niepoprawna paczka, pos blocked",inne,0.5
+SD-163506,Wyłączenie usługi MOP,2025-07-01 10:01:00.379000+02:00,Usługa,Wyłączenie usługi MOP,wyłączenie usługi mop,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163505,Korekta błędnie wbitych strat,2025-07-01 10:00:35.321000+02:00,Usługa,Korekta błędnie wbitych strat,korekta błędnie wbitych strat,inne,0.5
+SD-163504,Zapytanie o aplikację mobilną,2025-07-01 09:59:08.828000+02:00,Incydent,Zapytanie o aplikację mobilną,zapytanie o aplikację mobilną,inne,0.5
+SD-163503,DF MOP - nie drukują się zamówienia,2025-07-01 09:58:33.979000+02:00,Incydent,DF MOP - nie drukują się zamówienia,df mop - nie drukują się zamówienia,inne,0.5
+SD-163502,KVS09 - niedziałający BB,2025-07-01 09:56:55.881000+02:00,Incydent,KVS09 - niedziałający BB,kvs09 - niedziałający bb,inne,0.5
+SD-163501,Mystore - brak widocznych raportów PMX za czerwiec,2025-07-01 09:56:11.911000+02:00,Incydent,Mystore - brak widocznych raportów PMX za czerwiec,mystore - brak widocznych raportów pmx za czerwiec,inne,0.5
+SD-163500,Korekta błędnie wbitych strat - informacja,2025-07-01 09:56:09.581000+02:00,Usługa,Korekta błędnie wbitych strat - informacja,korekta błędnie wbitych strat - informacja,inne,0.5
+SD-163499,MyStore - raport PMX nie wczytuje danych,2025-07-01 09:55:51.289000+02:00,Incydent,MyStore - raport PMX nie wczytuje danych,mystore - raport pmx nie wczytuje danych,inne,0.5
+SD-163497,MOP - nie drukują się zamówienia,2025-07-01 09:55:45.311000+02:00,Incydent,MOP - nie drukują się zamówienia,mop - nie drukują się zamówienia,inne,0.5
+SD-163496,Raport PMIX - brak danych,2025-07-01 09:54:59.742000+02:00,Incydent,Raport PMIX - brak danych,raport pmix - brak danych,inne,0.5
+SD-163495,Rozmazany ekran nad drukarka fiskalna. Nie widać nic. ,2025-07-01 09:54:55.351000+02:00,Incydent,Rozmazany ekran nad drukarka fiskalna. Nie widać nic.,rozmazany ekran nad drukarka fiskalna. nie widać nic.,inne,0.5
+SD-163494,POS06 - Brak Kafelków ,2025-07-01 09:53:17.988000+02:00,Incydent,POS06 - Brak Kafelków,pos06 - brak kafelków,POS – brak kafelków,0.9
+SD-163493,MS - Dostawa zaciągneła się po zamknięciu dnia,2025-07-01 09:52:52.776000+02:00,Incydent,MS - Dostawa zaciągneła się po zamknięciu dnia,ms - dostawa zaciągneła się po zamknięciu dnia,MyStore – dostawa nie zaksięgowała się,0.9
+SD-163491,CSO30 - Niedostępny,2025-07-01 09:49:54.438000+02:00,Incydent,CSO30 - Niedostępny,cso30 - niedostępny,CSOxx – niedostępny,0.9
+SD-163490,POS07 - brak paska górnego na kasie,2025-07-01 09:49:35.335000+02:00,Incydent,POS07 - brak paska górnego na kasie,pos07 - brak paska górnego na kasie,POS – brak kafelków,0.9
+SD-163489,POS - Nie można zamknąć dnia,2025-07-01 09:40:48.882000+02:00,Incydent,POS - Nie można zamknąć dnia,pos - nie można zamknąć dnia,inne,0.5
+SD-163488,aktualizacja cennika półproduktów ,2025-07-01 09:40:36.132000+02:00,Incydent,aktualizacja cennika półproduktów,aktualizacja cennika półproduktów,inne,0.5
+SD-163487,MyStore - brak danych PMX,2025-07-01 09:39:12.873000+02:00,Incydent,MyStore - brak danych PMX,mystore - brak danych pmx,inne,0.5
+SD-163486,ORB01 - brak obrazu,2025-07-01 09:38:51.014000+02:00,Incydent,ORB01 - brak obrazu,orb01 - brak obrazu,inne,0.5
+SD-163485,FOE63 - nieprawidłowy dzień biznesowy,2025-07-01 09:35:33.968000+02:00,Incydent,FOE63 - nieprawidłowy dzień biznesowy,foe63 - nieprawidłowy dzień biznesowy,inne,0.5
+SD-163482,MyStore - brak danych PMX,2025-07-01 09:30:37.246000+02:00,Incydent,MyStore - brak danych PMX,mystore - brak danych pmx,inne,0.5
+SD-163481,ORB01 - czerwona M-ka,2025-07-01 09:30:21.852000+02:00,Incydent,ORB01 - czerwona M-ka,orb01 - czerwona m-ka,inne,0.5
+SD-163480,Waystation offline po otwarciu dnia,2025-07-01 09:25:17.424000+02:00,Poważny Incydent,Waystation offline po otwarciu dnia,waystation offline po otwarciu dnia,inne,0.5
+SD-163479,[TELEFON SERWISOWY] - Prośba o wyłączenie serwerów na czas konserwacji,2025-07-01 09:24:48.614000+02:00,Incydent,[TELEFON SERWISOWY] - Prośba o wyłączenie serwerów na czas konserwacji,[telefon serwisowy] - prośba o wyłączenie serwerów na czas konserwacji,inne,0.5
+SD-163478,Skaner DT - Nie działa,2025-07-01 09:24:12.822000+02:00,Incydent,Skaner DT - Nie działa,skaner dt - nie działa,inne,0.5
+SD-163477,Prośba o rekalkulację za cały miesiąc,2025-07-01 09:24:03.327000+02:00,Incydent,Prośba o rekalkulację za cały miesiąc,prośba o rekalkulację za cały miesiąc,inne,0.5
+SD-163476,MOP - zamówienia nie drukują się / odrzuca zamówienia,2025-07-01 09:22:49.497000+02:00,Incydent,MOP - zamówienia nie drukują się / odrzuca zamówienia,mop - zamówienia nie drukują się / odrzuca zamówienia,inne,0.5
+SD-163475,MS - zamknięcie dnia biznesowego,2025-07-01 09:18:20.578000+02:00,Incydent,MS - zamknięcie dnia biznesowego,ms - zamknięcie dnia biznesowego,inne,0.5
+SD-163474,Wygenerowanie MFA,2025-07-01 09:15:02.847000+02:00,Usługa,Wygenerowanie MFA,wygenerowanie mfa,inne,0.5
+SD-163472,MyStore - problem z zamknięciem dnia przez odbicia na nie ten dzień,2025-07-01 09:14:43.724000+02:00,Incydent,MyStore - problem z zamknięciem dnia przez odbicia na nie ten dzień,mystore - problem z zamknięciem dnia przez odbicia na nie ten dzień,MyStore – Prośba o pomoc w edycji odbić czasowych,0.9
+SD-163471,POS06 - nie można przyjmować zamówień,2025-07-01 09:14:42.810000+02:00,Incydent,POS06 - nie można przyjmować zamówień,pos06 - nie można przyjmować zamówień,inne,0.5
+SD-163470,MyStore - Brak raportu PMX,2025-07-01 09:14:37.594000+02:00,Incydent,MyStore - Brak raportu PMX,mystore - brak raportu pmx,inne,0.5
+SD-163469,MOP - Brak fiskalizacji,2025-07-01 09:11:17.094000+02:00,Incydent,MOP - Brak fiskalizacji,mop - brak fiskalizacji,inne,0.5
+SD-163467,FOE63 - brak fiskalizacji zamówień MOP,2025-07-01 09:06:23.726000+02:00,Incydent,FOE63 - brak fiskalizacji zamówień MOP,foe63 - brak fiskalizacji zamówień mop,inne,0.5
+SD-163466,MOP - Włączenie zamówień mobilnych ,2025-07-01 09:06:23.388000+02:00,Usługa,MOP - Włączenie zamówień mobilnych,mop - włączenie zamówień mobilnych,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163465,Office PC - Brak możliwości połączenia ,2025-07-01 09:03:54.601000+02:00,Incydent,Office PC - Brak możliwości połączenia,office pc - brak możliwości połączenia,inne,0.5
+SD-163464,Mystore - problem z wygenerowaniem raportu PMX,2025-07-01 09:03:21.990000+02:00,Incydent,Mystore - problem z wygenerowaniem raportu PMX,mystore - problem z wygenerowaniem raportu pmx,inne,0.5
+SD-163463,CSO30/32 - nie pingują,2025-07-01 09:03:19.976000+02:00,Incydent,CSO30/32 - nie pingują,cso30/32 - nie pingują,inne,0.5
+SD-163462,Brak danych w raporcie PMX ,2025-07-01 08:58:31.484000+02:00,Incydent,Brak danych w raporcie PMX,brak danych w raporcie pmx,inne,0.5
+SD-163460,Brak dnia 30.06 na wydruku miesięcznym z DF,2025-07-01 08:49:56.913000+02:00,Incydent,Brak dnia 30.06 na wydruku miesięcznym z DF,brak dnia 30.06 na wydruku miesięcznym z df,inne,0.5
+SD-163459,POS24 - brak kafelków NP,2025-07-01 08:49:34.637000+02:00,Incydent,POS24 - brak kafelków NP,pos24 - brak kafelków np,POS – brak kafelków,0.9
+SD-163457,CSO29 - Czerwone M,2025-07-01 08:48:37.809000+02:00,Incydent,CSO29 - Czerwone M,cso29 - czerwone m,inne,0.5
+SD-163456,KVS04 - zacięty na czerwonym tle,2025-07-01 08:48:10.462000+02:00,Incydent,KVS04 - zacięty na czerwonym tle,kvs04 - zacięty na czerwonym tle,inne,0.5
+SD-163454,"McDonalds, McDonald's PL Jarocin-61600255, Coates Support Case 00369739, 61600255 - Lane 1 Presell screen has incorrect default HDMI source set, Case Resolution",2025-07-01 08:46:19.138000+02:00,Usługa,"McDonalds, McDonald's PL Jarocin-61600255, Coates Support Case 00369739, 61600255 - Lane 1 Presell screen has incorrect default HDMI source set, Case Resolution","mcdonalds, mcdonald's pl jarocin-61600255, coates support case 00369739, 61600255 - lane 1 presell screen has incorrect default hdmi source set, case resolution",inne,0.5
+SD-163452,Brak możliwości wygenerowania raportu pmx,2025-07-01 08:45:44.260000+02:00,Incydent,Brak możliwości wygenerowania raportu pmx,brak możliwości wygenerowania raportu pmx,inne,0.5
+SD-163451,"Monitory aktualizują się, czerwony ekran na każdym z monitorów ",2025-07-01 08:42:16.796000+02:00,Incydent,"Monitory aktualizują się, czerwony ekran na każdym z monitorów","monitory aktualizują się, czerwony ekran na każdym z monitorów",inne,0.5
+SD-163450,MS - brak zużycia na zabawkach,2025-07-01 08:41:35.373000+02:00,Incydent,MS - brak zużycia na zabawkach,ms - brak zużycia na zabawkach,inne,0.5
+SD-163449,CFS - Kamera linia 1 nie pokazuje obrazu ,2025-07-01 08:41:28.483000+02:00,Incydent,CFS - Kamera linia 1 nie pokazuje obrazu,cfs - kamera linia 1 nie pokazuje obrazu,inne,0.5
+SD-163448,MyStore,2025-07-01 08:41:25.161000+02:00,Incydent,MyStore,mystore,inne,0.5
+SD-163446,MS - Brak zmapowanego dysku,2025-07-01 08:39:11.952000+02:00,Incydent,MS - Brak zmapowanego dysku,ms - brak zmapowanego dysku,inne,0.5
+SD-163445,Mystore - prośba o usunięcie odbicia czasowego,2025-07-01 08:38:40.957000+02:00,Incydent,Mystore - prośba o usunięcie odbicia czasowego,mystore - prośba o usunięcie odbicia czasowego,MyStore – Prośba o pomoc w edycji odbić czasowych,0.9
+SD-163444,TR - reflexis jest niedostępny,2025-07-01 08:36:12.604000+02:00,Incydent,TR - reflexis jest niedostępny,tr - reflexis jest niedostępny,inne,0.5
+SD-163443,MyStore - problem z odbiciem czasowym,2025-07-01 08:36:02.655000+02:00,Usługa,MyStore - problem z odbiciem czasowym,mystore - problem z odbiciem czasowym,MyStore – Prośba o pomoc w edycji odbić czasowych,0.9
+SD-163442,HWA01 - nie działa dotyk,2025-07-01 08:35:51.512000+02:00,Incydent,HWA01 - nie działa dotyk,hwa01 - nie działa dotyk,inne,0.5
+SD-163441,Drukarka OAT nie drukuje,2025-07-01 08:32:59.916000+02:00,Incydent,Drukarka OAT nie drukuje,drukarka oat nie drukuje,inne,0.5
+SD-163439,raport PMX nie ładuje się ,2025-07-01 08:31:25.602000+02:00,Incydent,raport PMX nie ładuje się,raport pmx nie ładuje się,inne,0.5
+SD-163438,RHS - Wyłączony ,2025-07-01 08:29:49.543000+02:00,Incydent,RHS - Wyłączony,rhs - wyłączony,inne,0.5
+SD-163437,Drukarka BO - Nie drukuje,2025-07-01 08:29:42.635000+02:00,Incydent,Drukarka BO - Nie drukuje,drukarka bo - nie drukuje,inne,0.5
+SD-163436,CSO30 - różnica w raportach,2025-07-01 08:28:55.066000+02:00,Incydent,CSO30 - różnica w raportach,cso30 - różnica w raportach,inne,0.5
+SD-163435,brak kafelków,2025-07-01 08:27:12.054000+02:00,Incydent,brak kafelków,brak kafelków,POS – brak kafelków,0.9
+SD-163434,MS - Brak danych raportu PMX,2025-07-01 08:26:21.399000+02:00,Incydent,MS - Brak danych raportu PMX,ms - brak danych raportu pmx,inne,0.5
+SD-163433,MyStore - Brak reportu PMX,2025-07-01 08:26:10.488000+02:00,Incydent,MyStore - Brak reportu PMX,mystore - brak reportu pmx,inne,0.5
+SD-163432,MyStore - Brak danych w raporcie PMX,2025-07-01 08:25:33.909000+02:00,Incydent,MyStore - Brak danych w raporcie PMX,mystore - brak danych w raporcie pmx,inne,0.5
+SD-163431,Rekalkulacja,2025-07-01 08:25:25.066000+02:00,Usługa,Rekalkulacja,rekalkulacja,inne,0.5
+SD-163430,Mystore - nieprawidłowa różnica wartości na frytkach,2025-07-01 08:25:24.893000+02:00,Incydent,Mystore - nieprawidłowa różnica wartości na frytkach,mystore - nieprawidłowa różnica wartości na frytkach,inne,0.5
+SD-163429,MyStore - błędne odbicia za zamknięty miesiąc,2025-07-01 08:25:16.742000+02:00,Incydent,MyStore - błędne odbicia za zamknięty miesiąc,mystore - błędne odbicia za zamknięty miesiąc,MyStore – Prośba o pomoc w edycji odbić czasowych,0.9
+SD-163428,KVS11 - admin logon,2025-07-01 08:22:51.273000+02:00,Incydent,KVS11 - admin logon,kvs11 - admin logon,inne,0.5
+SD-163427,MS - brak danych raportu PMX,2025-07-01 08:22:50.528000+02:00,Incydent,MS - brak danych raportu PMX,ms - brak danych raportu pmx,inne,0.5
+SD-163425,MS - Nie ładują się szablony PMX,2025-07-01 08:22:00.310000+02:00,Incydent,MS - Nie ładują się szablony PMX,ms - nie ładują się szablony pmx,inne,0.5
+SD-163424,sprzedaż czerwiec,2025-07-01 08:20:51.829000+02:00,Usługa,sprzedaż czerwiec,sprzedaż czerwiec,inne,0.5
+SD-163423,Frytki nie wyświetlają się na ekranie nad frytką,2025-07-01 08:18:53.100000+02:00,Incydent,Frytki nie wyświetlają się na ekranie nad frytką,frytki nie wyświetlają się na ekranie nad frytką,inne,0.5
+SD-163422,MyStore - Błąd przy raporcie odchyleń ,2025-07-01 08:15:15.417000+02:00,Incydent,MyStore - Błąd przy raporcie odchyleń,mystore - błąd przy raporcie odchyleń,inne,0.5
+SD-163421,POS - Newpos Blocked,2025-07-01 08:15:10.619000+02:00,Incydent,POS - Newpos Blocked,pos - newpos blocked,inne,0.5
+SD-163420,MS - brakuje wrinu 99999,2025-07-01 08:10:20.289000+02:00,Incydent,MS - brakuje wrinu 99999,ms - brakuje wrinu 99999,inne,0.5
+SD-163419,Prośba o włącznie MOP,2025-07-01 08:10:17.330000+02:00,Usługa,Prośba o włącznie MOP,prośba o włącznie mop,inne,0.5
+SD-163417,MS - 26.06 brak inwentaryzacji na frytkach,2025-07-01 08:09:08.607000+02:00,Incydent,MS - 26.06 brak inwentaryzacji na frytkach,ms - 26.06 brak inwentaryzacji na frytkach,inne,0.5
+SD-163416,Eprod - brak projekcji,2025-07-01 08:08:28.342000+02:00,Incydent,Eprod - brak projekcji,eprod - brak projekcji,inne,0.5
+SD-163415,Mystore - brak widocznego raportu PMIX,2025-07-01 08:04:37.725000+02:00,Incydent,Mystore - brak widocznego raportu PMIX,mystore - brak widocznego raportu pmix,inne,0.5
+SD-163414,ORB01 - Czerwone M,2025-07-01 08:02:03.264000+02:00,Incydent,ORB01 - Czerwone M,orb01 - czerwone m,inne,0.5
+SD-163413,Prośba o odblokowanie zamówień MOP,2025-07-01 07:59:25.769000+02:00,Incydent,Prośba o odblokowanie zamówień MOP,prośba o odblokowanie zamówień mop,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163411,CSO27 - nie pinguje,2025-07-01 07:54:39.862000+02:00,Incydent,CSO27 - nie pinguje,cso27 - nie pinguje,inne,0.5
+SD-163410,MyStore prośba o usunięcie odbicia czasowego,2025-07-01 07:53:38.725000+02:00,Incydent,MyStore prośba o usunięcie odbicia czasowego,mystore prośba o usunięcie odbicia czasowego,MyStore – Prośba o pomoc w edycji odbić czasowych,0.9
+SD-163409,Problem z logowanie na Maila ,2025-07-01 07:53:17.234000+02:00,Incydent,Problem z logowanie na Maila,problem z logowanie na maila,inne,0.5
+SD-163406,MyStore - Prośba o rekalkulacje na 30.06,2025-07-01 07:43:51.397000+02:00,Incydent,MyStore - Prośba o rekalkulacje na 30.06,mystore - prośba o rekalkulacje na 30.06,inne,0.5
+SD-163405,MyStore - opak. zbiorcze - książeczki,2025-07-01 07:43:01.450000+02:00,Usługa,MyStore - opak. zbiorcze - książeczki,mystore - opak. zbiorcze - książeczki,inne,0.5
+SD-163404,Prośba o odblokowanie zamówień MOP,2025-07-01 07:42:57.538000+02:00,Incydent,Prośba o odblokowanie zamówień MOP,prośba o odblokowanie zamówień mop,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163403,MOP - prośba o włączenie / wyłączenie,2025-07-01 07:41:23.080000+02:00,Usługa,MOP - prośba o włączenie / wyłączenie,mop - prośba o włączenie / wyłączenie,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163401,spadek,2025-07-01 07:40:23.737000+02:00,Usługa,spadek,spadek,inne,0.5
+SD-163400,brak wrin,2025-07-01 07:40:22.200000+02:00,Incydent,brak wrin,brak wrin,inne,0.5
+SD-163399,brak wrin,2025-07-01 07:39:57.651000+02:00,Incydent,brak wrin,brak wrin,inne,0.5
+SD-163398,ODMB - double right na linii 1 ma zmienione kolory,2025-07-01 07:39:24.188000+02:00,Incydent,ODMB - double right na linii 1 ma zmienione kolory,odmb - double right na linii 1 ma zmienione kolory,inne,0.5
+SD-163397,Problem z dostępem do poczty managerskiej z laptopa personalnego,2025-07-01 07:37:01.333000+02:00,Incydent,Problem z dostępem do poczty managerskiej z laptopa personalnego,problem z dostępem do poczty managerskiej z laptopa personalnego,inne,0.5
+SD-163395,RE: Sprzedaż 30.06,2025-07-01 07:33:51.532000+02:00,Usługa,RE: Sprzedaż 30.06,re: sprzedaż 30.06,inne,0.5
+SD-163394,brak danych pmx,2025-07-01 07:32:41.944000+02:00,Incydent,brak danych pmx,brak danych pmx,inne,0.5
+SD-163393,MyStore - Brak Zużycia ,2025-07-01 07:31:37.940000+02:00,Incydent,MyStore - Brak Zużycia,mystore - brak zużycia,inne,0.5
+SD-163391,Prośba o rekalkulacje,2025-07-01 07:28:49.298000+02:00,Incydent,Prośba o rekalkulacje,prośba o rekalkulacje,inne,0.5
+SD-163389,POS24 - Brak kafelków,2025-07-01 07:27:02.596000+02:00,Incydent,POS24 - Brak kafelków,pos24 - brak kafelków,POS – brak kafelków,0.9
+SD-163388,CR.240 - wyskakuje błąd komunikacji,2025-07-01 07:26:48.127000+02:00,Incydent,CR.240 - wyskakuje błąd komunikacji,cr.240 - wyskakuje błąd komunikacji,inne,0.5
+SD-163387,MyStore - Brak Raportu PMX,2025-07-01 07:26:30.508000+02:00,Incydent,MyStore - Brak Raportu PMX,mystore - brak raportu pmx,inne,0.5
+SD-163386,KVS - złe godziny,2025-07-01 07:26:23.349000+02:00,Incydent,KVS - złe godziny,kvs - złe godziny,inne,0.5
+SD-163385,Korekta błędnie wbitych strat,2025-07-01 07:25:25.775000+02:00,Usługa,Korekta błędnie wbitych strat,korekta błędnie wbitych strat,inne,0.5
+SD-163383,MS - inwentaryzacja szklanek,2025-07-01 07:24:08.028000+02:00,Incydent,MS - inwentaryzacja szklanek,ms - inwentaryzacja szklanek,inne,0.5
+SD-163382,KVS22 - Dotyk nie działa,2025-07-01 07:23:49.559000+02:00,Incydent,KVS22 - Dotyk nie działa,kvs22 - dotyk nie działa,inne,0.5
+SD-163381,Włączenie zamówień mobilnych ,2025-07-01 07:23:42.271000+02:00,Incydent,Włączenie zamówień mobilnych,włączenie zamówień mobilnych,inne,0.5
+SD-163380,Brak raportu pmx ,2025-07-01 07:21:53.593000+02:00,Incydent,Brak raportu pmx,brak raportu pmx,inne,0.5
+SD-163379,Mystore - prośba o rekalkulację,2025-07-01 07:20:42.773000+02:00,Incydent,Mystore - prośba o rekalkulację,mystore - prośba o rekalkulację,inne,0.5
+SD-163378,MS - brak raportu PMX,2025-07-01 07:20:39.678000+02:00,Incydent,MS - brak raportu PMX,ms - brak raportu pmx,inne,0.5
+SD-163377,KVS03 czerwone M,2025-07-01 07:20:02.465000+02:00,Incydent,KVS03 czerwone M,kvs03 czerwone m,inne,0.5
+SD-163376,KVS17 - gpr nie drukuje nalepek,2025-07-01 07:19:55.148000+02:00,Incydent,KVS17 - gpr nie drukuje nalepek,kvs17 - gpr nie drukuje nalepek,inne,0.5
+SD-163375,POS19 - problem z dotykiem,2025-07-01 07:19:16.018000+02:00,Incydent,POS19 - problem z dotykiem,pos19 - problem z dotykiem,inne,0.5
+SD-163374,POS01 - płatności kartą przechodzą wolno,2025-07-01 07:18:39.661000+02:00,Incydent,POS01 - płatności kartą przechodzą wolno,pos01 - płatności kartą przechodzą wolno,inne,0.5
+SD-163373,FOE63 - status close,2025-07-01 07:17:42.917000+02:00,Incydent,FOE63 - status close,foe63 - status close,inne,0.5
+SD-163372,MOP - prośba o włączenie,2025-07-01 07:17:31.883000+02:00,Usługa,MOP - prośba o włączenie,mop - prośba o włączenie,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163371,MOP - prośba o włączenie usługi,2025-07-01 07:17:19.330000+02:00,Usługa,MOP - prośba o włączenie usługi,mop - prośba o włączenie usługi,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163370,HWA01 - nie działa,2025-07-01 07:16:49.891000+02:00,Incydent,HWA01 - nie działa,hwa01 - nie działa,inne,0.5
+SD-163369,POS03 - brak kafelków,2025-07-01 07:16:34.679000+02:00,Incydent,POS03 - brak kafelków,pos03 - brak kafelków,POS – brak kafelków,0.9
+SD-163368,MAP - Brak możliwości zalogowania się na office pc,2025-07-01 07:16:34.300000+02:00,Incydent,MAP - Brak możliwości zalogowania się na office pc,map - brak możliwości zalogowania się na office pc,inne,0.5
+SD-163367,POS07 - brak ikonek na kasie ,2025-07-01 07:12:38.165000+02:00,Incydent,POS07 - brak ikonek na kasie,pos07 - brak ikonek na kasie,POS – brak kafelków,0.9
+SD-163366,FOE63 - zły dzień biznesowy,2025-07-01 07:11:15.656000+02:00,Incydent,FOE63 - zły dzień biznesowy,foe63 - zły dzień biznesowy,inne,0.5
+SD-163364,FOE63 - brak fiskalizacji zamówień,2025-07-01 07:07:37.944000+02:00,Incydent,FOE63 - brak fiskalizacji zamówień,foe63 - brak fiskalizacji zamówień,inne,0.5
+SD-163363,POS24 - zaciął się na logowaniu ,2025-07-01 07:06:41.856000+02:00,Incydent,POS24 - zaciął się na logowaniu,pos24 - zaciął się na logowaniu,inne,0.5
+SD-163362,Prośba o włączenie MOP,2025-07-01 07:06:37.844000+02:00,Usługa,Prośba o włączenie MOP,prośba o włączenie mop,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163361,Problem przy wypłacaniu gotówki ,2025-07-01 07:05:52.088000+02:00,Incydent,Problem przy wypłacaniu gotówki,problem przy wypłacaniu gotówki,inne,0.5
+SD-163360,Mystore - prośba o rekalkulację z całego miesiąca,2025-07-01 07:05:37.673000+02:00,Incydent,Mystore - prośba o rekalkulację z całego miesiąca,mystore - prośba o rekalkulację z całego miesiąca,inne,0.5
+SD-163359,Sprzedaż 30.06,2025-07-01 07:03:51.319000+02:00,Usługa,Sprzedaż 30.06,sprzedaż 30.06,inne,0.5
+SD-163358,Wprowadzenie sprzedaży za dzień 01.07,2025-07-01 07:03:50.365000+02:00,Usługa,Wprowadzenie sprzedaży za dzień 01.07,wprowadzenie sprzedaży za dzień 01.07,inne,0.5
+SD-163357,MOP - prośba o włączenie usługi,2025-07-01 07:01:20.844000+02:00,Usługa,MOP - prośba o włączenie usługi,mop - prośba o włączenie usługi,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163356,POS02 - Brak kafelków ,2025-07-01 07:01:10.404000+02:00,Incydent,POS02 - Brak kafelków,pos02 - brak kafelków,POS – brak kafelków,0.9
+SD-163355,POS01 - Brak kafelków ,2025-07-01 07:00:49.206000+02:00,Incydent,POS01 - Brak kafelków,pos01 - brak kafelków,POS – brak kafelków,0.9
+SD-163354,Raport PMX nie wczytuje się ,2025-07-01 07:00:25.977000+02:00,Incydent,Raport PMX nie wczytuje się,raport pmx nie wczytuje się,inne,0.5
+SD-163353,POS - No Response Message,2025-07-01 06:59:10.622000+02:00,Incydent,POS - No Response Message,pos - no response message,inne,0.5
+SD-163352,POS03 - Brak górnego paska na kasie ,2025-07-01 06:58:08.109000+02:00,Incydent,POS03 - Brak górnego paska na kasie,pos03 - brak górnego paska na kasie,POS – brak kafelków,0.9
+SD-163351,POS02/06 - Brak Kafelków ,2025-07-01 06:56:43.991000+02:00,Incydent,POS02/06 - Brak Kafelków,pos02/06 - brak kafelków,POS – brak kafelków,0.9
+SD-163350,POS24 - brak kafelków NP,2025-07-01 06:56:25.852000+02:00,Incydent,POS24 - brak kafelków NP,pos24 - brak kafelków np,POS – brak kafelków,0.9
+SD-163349,Prośba o odblokowanie zamówień MOP,2025-07-01 06:52:47.408000+02:00,Incydent,Prośba o odblokowanie zamówień MOP,prośba o odblokowanie zamówień mop,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163348,Brak danych w Raporcie PMX,2025-07-01 06:51:46.161000+02:00,Incydent,Brak danych w Raporcie PMX,brak danych w raporcie pmx,inne,0.5
+SD-163347,POS06 - brak kafelków,2025-07-01 06:51:13.246000+02:00,Incydent,POS06 - brak kafelków,pos06 - brak kafelków,POS – brak kafelków,0.9
+SD-163346,DRP różni się od raportu operacyjnego,2025-07-01 06:51:04.412000+02:00,Incydent,DRP różni się od raportu operacyjnego,drp różni się od raportu operacyjnego,inne,0.5
+SD-163345,Prosimy o nr kuponów do blokowania MojeM okazYEAH,2025-07-01 06:50:32.670000+02:00,Incydent,Prosimy o nr kuponów do blokowania MojeM okazYEAH,prosimy o nr kuponów do blokowania mojem okazyeah,inne,0.5
+SD-163344,MyStore - problem z nieplanowaną dostawą,2025-07-01 06:50:13.012000+02:00,Incydent,MyStore - problem z nieplanowaną dostawą,mystore - problem z nieplanowaną dostawą,inne,0.5
+SD-163343,POS24 - brak kafelków NP,2025-07-01 06:47:48.885000+02:00,Incydent,POS24 - brak kafelków NP,pos24 - brak kafelków np,POS – brak kafelków,0.9
+SD-163342,Prośba o odblokowanie zamówień MOP,2025-07-01 06:46:04.804000+02:00,Incydent,Prośba o odblokowanie zamówień MOP,prośba o odblokowanie zamówień mop,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163341,Włączenie usługi MOP,2025-07-01 06:45:27.832000+02:00,Usługa,Włączenie usługi MOP,włączenie usługi mop,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163340,Drukarka BO - Komunikat Ciężki papier,2025-07-01 06:42:05.619000+02:00,Incydent,Drukarka BO - Komunikat Ciężki papier,drukarka bo - komunikat ciężki papier,inne,0.5
+SD-163339,"Wentylator w tablecie ""Zebra"" głośno pracuje.",2025-07-01 06:40:02.152000+02:00,Incydent,"Wentylator w tablecie ""Zebra"" głośno pracuje.","wentylator w tablecie ""zebra"" głośno pracuje.",inne,0.5
+SD-163338,nieprawidłowy dzień biznesowy ,2025-07-01 06:39:33.519000+02:00,Incydent,nieprawidłowy dzień biznesowy,nieprawidłowy dzień biznesowy,Waystation – Nieprawidłowy dzień biznesowy,0.9
+SD-163336,Prośba o odblokowanie zamówień MOP,2025-07-01 06:38:22.099000+02:00,Incydent,Prośba o odblokowanie zamówień MOP,prośba o odblokowanie zamówień mop,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163335,receptury,2025-07-01 06:37:53.443000+02:00,Incydent,receptury,receptury,inne,0.5
+SD-163334,MyStore - brak danych w raporcie PMX,2025-07-01 06:35:54.790000+02:00,Incydent,MyStore - brak danych w raporcie PMX,mystore - brak danych w raporcie pmx,inne,0.5
+SD-163333,POS/CSO - NewPos Blocked McDonalds,2025-07-01 06:35:15.213000+02:00,Incydent,POS/CSO - NewPos Blocked McDonalds,pos/cso - newpos blocked mcdonalds,inne,0.5
+SD-163332,POS24 - Kasa zawiesiła się,2025-07-01 06:34:33.162000+02:00,Incydent,POS24 - Kasa zawiesiła się,pos24 - kasa zawiesiła się,inne,0.5
+SD-163331,Problemy z zejściem,2025-07-01 06:34:06.804000+02:00,Incydent,Problemy z zejściem,problemy z zejściem,inne,0.5
+SD-163330,Drukarka MOP - Nieprawidłowy dzień biznesowy ,2025-07-01 06:31:34.256000+02:00,Incydent,Drukarka MOP - Nieprawidłowy dzień biznesowy,drukarka mop - nieprawidłowy dzień biznesowy,inne,0.5
+SD-163329,MOP - Prośba o odblokowanie,2025-07-01 06:31:01.217000+02:00,Usługa,MOP - Prośba o odblokowanie,mop - prośba o odblokowanie,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163327,Waystation offline - brak przyczyny wystąpienia,2025-07-01 06:31:00.076000+02:00,Poważny Incydent,Waystation offline - brak przyczyny wystąpienia,waystation offline - brak przyczyny wystąpienia,inne,0.5
+SD-163326,Problem z cashcollectorem ,2025-07-01 06:28:37.590000+02:00,Usługa,Problem z cashcollectorem,problem z cashcollectorem,inne,0.5
+SD-163325,Mystore - prośba o wykonanie rekalkulacji,2025-07-01 06:26:40.371000+02:00,Incydent,Mystore - prośba o wykonanie rekalkulacji,mystore - prośba o wykonanie rekalkulacji,inne,0.5
+SD-163324,Włączenie MOP,2025-07-01 06:25:41.738000+02:00,Incydent,Włączenie MOP,włączenie mop,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163323,MOP - brak fiskalizacji,2025-07-01 06:25:36.551000+02:00,Incydent,MOP - brak fiskalizacji,mop - brak fiskalizacji,inne,0.5
+SD-163322,KVS01 - Nie działa BumpBar,2025-07-01 06:24:24.505000+02:00,Incydent,KVS01 - Nie działa BumpBar,kvs01 - nie działa bumpbar,inne,0.5
+SD-163321,POS - brak kafelków,2025-07-01 06:23:27.270000+02:00,Incydent,POS - brak kafelków,pos - brak kafelków,POS – brak kafelków,0.9
+SD-163320,Drukarka OAT - nie drukuje,2025-07-01 06:22:06.457000+02:00,Incydent,Drukarka OAT - nie drukuje,drukarka oat - nie drukuje,inne,0.5
+SD-163319,Autorelease - nie wpada automatycznie,2025-07-01 06:21:28.612000+02:00,Incydent,Autorelease - nie wpada automatycznie,autorelease - nie wpada automatycznie,Autorelease – nie wpada automatycznie,0.9
+SD-163318,Problem z zamknięciem dnia biznesowego w mystore,2025-07-01 06:20:11.163000+02:00,Incydent,Problem z zamknięciem dnia biznesowego w mystore,problem z zamknięciem dnia biznesowego w mystore,inne,0.5
+SD-163317,POS - brak kafelków,2025-07-01 06:18:01.851000+02:00,Incydent,POS - brak kafelków,pos - brak kafelków,POS – brak kafelków,0.9
+SD-163316,MyStore - Szklanki nie właściwe zużycie ,2025-07-01 06:17:42.610000+02:00,Usługa,MyStore - Szklanki nie właściwe zużycie,mystore - szklanki nie właściwe zużycie,inne,0.5
+SD-163315,POS07 - brak kafelków,2025-07-01 06:16:21.895000+02:00,Incydent,POS07 - brak kafelków,pos07 - brak kafelków,POS – brak kafelków,0.9
+SD-163313,Straty półproduktu - nie pokazują się straty po zapisaniu ,2025-07-01 06:14:06.416000+02:00,Usługa,Straty półproduktu - nie pokazują się straty po zapisaniu,straty półproduktu - nie pokazują się straty po zapisaniu,inne,0.5
+SD-163312,POS02 - zły dzień biznesowy,2025-07-01 06:07:47.079000+02:00,Incydent,POS02 - zły dzień biznesowy,pos02 - zły dzień biznesowy,inne,0.5
+SD-163311,MS - Dewiacja ,2025-07-01 06:06:21.042000+02:00,Incydent,MS - Dewiacja,ms - dewiacja,inne,0.5
+SD-163310,Głuchy telefon,2025-07-01 06:04:46.540000+02:00,Usługa,Głuchy telefon,głuchy telefon,inne,0.5
+SD-163309,POS02 - admin logon,2025-07-01 06:04:14.395000+02:00,Incydent,POS02 - admin logon,pos02 - admin logon,inne,0.5
+SD-163308,DF MOP - Brak Fiskalizacji ,2025-07-01 06:03:05.895000+02:00,Incydent,DF MOP - Brak Fiskalizacji,df mop - brak fiskalizacji,inne,0.5
+SD-163306,MOP - Prośba o włączenie MOP,2025-07-01 05:56:13.799000+02:00,Usługa,MOP - Prośba o włączenie MOP,mop - prośba o włączenie mop,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163304,POS07 - error synchronizing with fiscal printer,2025-07-01 05:52:30.438000+02:00,Incydent,POS07 - error synchronizing with fiscal printer,pos07 - error synchronizing with fiscal printer,inne,0.5
+SD-163303,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.",2025-07-01 05:51:11.456000+02:00,Incydent,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.","newpos - zamknięcie nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-163302,POS07 - ładowanie na 50%,2025-07-01 05:51:04.275000+02:00,Incydent,POS07 - ładowanie na 50%,pos07 - ładowanie na 50%,inne,0.5
+SD-163301,Mop - brak fiskalizacji zamówień ,2025-07-01 05:49:13.182000+02:00,Incydent,Mop - brak fiskalizacji zamówień,mop - brak fiskalizacji zamówień,inne,0.5
+SD-163300,Zamówienia nie wpadają z kas/kiosków na monitory.,2025-07-01 05:46:48.416000+02:00,Incydent,Zamówienia nie wpadają z kas/kiosków na monitory.,zamówienia nie wpadają z kas/kiosków na monitory.,inne,0.5
+SD-163298,Newpos - produkcja none,2025-07-01 05:37:28.862000+02:00,Incydent,Newpos - produkcja none,newpos - produkcja none,inne,0.5
+SD-163297,Brak zużycia ,2025-07-01 05:36:37.160000+02:00,Incydent,Brak zużycia,brak zużycia,inne,0.5
+SD-163296,MS9 - brak danych w raporcie PMX,2025-07-01 05:32:29.155000+02:00,Incydent,MS9 - brak danych w raporcie PMX,ms9 - brak danych w raporcie pmx,inne,0.5
+SD-163295,Korekta błędnie wbitych strat,2025-07-01 05:30:15.327000+02:00,Usługa,Korekta błędnie wbitych strat,korekta błędnie wbitych strat,inne,0.5
+SD-163294,Prośba o wygenerowanie kodów MFA.,2025-07-01 05:29:34.302000+02:00,Usługa,Prośba o wygenerowanie kodów MFA.,prośba o wygenerowanie kodów mfa.,inne,0.5
+SD-163292,Błędne zużycie  półproduktu ,2025-07-01 05:24:31.549000+02:00,Usługa,Błędne zużycie  półproduktu,błędne zużycie  półproduktu,inne,0.5
+SD-163291,MS9 - brak danych w raporcie PMX,2025-07-01 05:11:29.072000+02:00,Incydent,MS9 - brak danych w raporcie PMX,ms9 - brak danych w raporcie pmx,inne,0.5
+SD-163290,POS02 - Brak kafelków.S,2025-07-01 05:11:01.240000+02:00,Incydent,POS02 - Brak kafelków.S,pos02 - brak kafelków.s,POS – brak kafelków,0.9
+SD-163289,Spadek,2025-07-01 05:10:48.278000+02:00,Usługa,Spadek,spadek,inne,0.5
+SD-163288,Korekta błędnie wbitych strat,2025-07-01 05:10:16.293000+02:00,Usługa,Korekta błędnie wbitych strat,korekta błędnie wbitych strat,inne,0.5
+SD-163287,IDMB - nie uruchomiły się automatycznie ekrany.,2025-07-01 05:10:06.721000+02:00,Incydent,IDMB - nie uruchomiły się automatycznie ekrany.,idmb - nie uruchomiły się automatycznie ekrany.,inne,0.5
+SD-163286,POS - brak kafelków,2025-07-01 05:10:00.574000+02:00,Incydent,POS - brak kafelków,pos - brak kafelków,POS – brak kafelków,0.9
+SD-163285,Nie można wyzerować dostawy nieplanowanej.,2025-07-01 05:08:03.837000+02:00,Incydent,Nie można wyzerować dostawy nieplanowanej.,nie można wyzerować dostawy nieplanowanej.,inne,0.5
+SD-163283,Rekalkulacja,2025-07-01 05:05:33.300000+02:00,Usługa,Rekalkulacja,rekalkulacja,inne,0.5
+SD-163282,MS9 - brak danych do wyświetlenia w raporcie PMX,2025-07-01 05:01:53.449000+02:00,Incydent,MS9 - brak danych do wyświetlenia w raporcie PMX,ms9 - brak danych do wyświetlenia w raporcie pmx,inne,0.5
+SD-163281,Zamknięcie MyStore - rest zamknęła dzień za szybko,2025-07-01 05:01:45.846000+02:00,Incydent,Zamknięcie MyStore - rest zamknęła dzień za szybko,zamknięcie mystore - rest zamknęła dzień za szybko,inne,0.5
+SD-163279,Zapytanie o wybicie dostawy,2025-07-01 04:57:20.593000+02:00,Usługa,Zapytanie o wybicie dostawy,zapytanie o wybicie dostawy,inne,0.5
+SD-163278,KVS05 - nie pinguje ,2025-07-01 04:56:06.840000+02:00,Incydent,KVS05 - nie pinguje,kvs05 - nie pinguje,inne,0.5
+SD-163276,Brak raportu PMX,2025-07-01 04:49:33.603000+02:00,Incydent,Brak raportu PMX,brak raportu pmx,inne,0.5
+SD-163275,Błędne ceny,2025-07-01 04:49:04.194000+02:00,Incydent,Błędne ceny,błędne ceny,inne,0.5
+SD-163274,"LineDisplay POS03, 06, 07, 08 - złe wyświetlanie",2025-07-01 04:47:28.572000+02:00,Incydent,"LineDisplay POS03, 06, 07, 08 - złe wyświetlanie","linedisplay pos03, 06, 07, 08 - złe wyświetlanie",inne,0.5
+SD-163273,Zapytanie o wprowadzenie odstawy nie planowanej w trakcie zamykania dnia.,2025-07-01 04:45:48.905000+02:00,Incydent,Zapytanie o wprowadzenie odstawy nie planowanej w trakcie zamykania dnia.,zapytanie o wprowadzenie odstawy nie planowanej w trakcie zamykania dnia.,inne,0.5
+SD-163271,Brak aktualnego cennika,2025-07-01 04:40:42.198000+02:00,Incydent,Brak aktualnego cennika,brak aktualnego cennika,inne,0.5
+SD-163270,raport PMX nie łąduje się ,2025-07-01 04:37:47.912000+02:00,Incydent,raport PMX nie łąduje się,raport pmx nie łąduje się,inne,0.5
+SD-163269,Bledna ilosc produktu KSIAZECZKI we wprowadzoniu inwentaryzacji ,2025-07-01 04:34:15.168000+02:00,Incydent,Bledna ilosc produktu KSIAZECZKI we wprowadzoniu inwentaryzacji,bledna ilosc produktu ksiazeczki we wprowadzoniu inwentaryzacji,inne,0.5
+SD-163268,Korekta błędnie wbitych strat,2025-07-01 04:34:06.040000+02:00,Usługa,Korekta błędnie wbitych strat,korekta błędnie wbitych strat,inne,0.5
+SD-163267,MS9 - zużycie po inwentaryzacji,2025-07-01 04:29:34.038000+02:00,Incydent,MS9 - zużycie po inwentaryzacji,ms9 - zużycie po inwentaryzacji,inne,0.5
+SD-163266,POS2 - brak ikon,2025-07-01 04:25:23.838000+02:00,Incydent,POS2 - brak ikon,pos2 - brak ikon,POS – brak kafelków,0.9
+SD-163265,Zapytanie o wprowadzenie transferów w trakcie zamknięcia dnia w MS.,2025-07-01 04:25:17.586000+02:00,Incydent,Zapytanie o wprowadzenie transferów w trakcie zamknięcia dnia w MS.,zapytanie o wprowadzenie transferów w trakcie zamknięcia dnia w ms.,inne,0.5
+SD-163264,RFM - brak aktualizacji na kioskach,2025-07-01 04:13:13.969000+02:00,Incydent,RFM - brak aktualizacji na kioskach,rfm - brak aktualizacji na kioskach,inne,0.5
+SD-163263,MOP - Prośba o włączenie MOP,2025-07-01 04:09:16.816000+02:00,Usługa,MOP - Prośba o włączenie MOP,mop - prośba o włączenie mop,MOP – Prośba o włączenie/wyłączenie,0.9
+SD-163262,POS01 - brak iko,2025-07-01 04:08:39.680000+02:00,Incydent,POS01 - brak iko,pos01 - brak iko,POS – brak kafelków,0.9
+SD-163261,Ładowanie aktualizacji stanęło w miejscu,2025-07-01 04:06:41.841000+02:00,Incydent,Ładowanie aktualizacji stanęło w miejscu,ładowanie aktualizacji stanęło w miejscu,inne,0.5
+SD-163260,MyStore - Dewiacja na NIE-POLICZALNYCH pp,2025-07-01 04:02:56.757000+02:00,Usługa,MyStore - Dewiacja na NIE-POLICZALNYCH pp,mystore - dewiacja na nie-policzalnych pp,inne,0.5
+SD-163258,dewiacja nie produkt ,2025-07-01 03:57:41.594000+02:00,Incydent,dewiacja nie produkt,dewiacja nie produkt,inne,0.5
+SD-163257,"CSO25,28,30 - niedostępne",2025-07-01 03:50:54.848000+02:00,Incydent,"CSO25,28,30 - niedostępne","cso25,28,30 - niedostępne",inne,0.5
+SD-163256,Różnice między dwoma raportami ,2025-07-01 03:45:36.038000+02:00,Incydent,Różnice między dwoma raportami,różnice między dwoma raportami,inne,0.5
+SD-163255,Brak zużycia na wrinie 163/037,2025-07-01 03:45:35.956000+02:00,Usługa,Brak zużycia na wrinie 163/037,brak zużycia na wrinie 163/037,inne,0.5
+SD-163254,MyStore - Raport pmix - brak danych dla wybranego okresu,2025-07-01 03:40:01.108000+02:00,Incydent,MyStore - Raport pmix - brak danych dla wybranego okresu,mystore - raport pmix - brak danych dla wybranego okresu,inne,0.5
+SD-163253,MS9 - raport PMX - Brak danych po zaznaczneiu miesiąca.,2025-07-01 03:38:59.173000+02:00,Incydent,MS9 - raport PMX - Brak danych po zaznaczneiu miesiąca.,ms9 - raport pmx - brak danych po zaznaczneiu miesiąca.,inne,0.5
+SD-163252,Brak danych w PMX,2025-07-01 03:34:21.687000+02:00,Incydent,Brak danych w PMX,brak danych w pmx,inne,0.5
+SD-163251,MyStore - Poznikały zużycia za 3 miesiące.,2025-07-01 03:33:12.701000+02:00,Usługa,MyStore - Poznikały zużycia za 3 miesiące.,mystore - poznikały zużycia za 3 miesiące.,inne,0.5
+SD-163250,MyStore - zarządzanie PP - 80005 książeczki - błędna liczba w opakowaniu zbiorczym,2025-07-01 03:33:00.103000+02:00,Incydent,MyStore - zarządzanie PP - 80005 książeczki - błędna liczba w opakowaniu zbiorczym,mystore - zarządzanie pp - 80005 książeczki - błędna liczba w opakowaniu zbiorczym,inne,0.5
+SD-163248,Brak zużycia na 4/176 26.06,2025-07-01 03:25:36.569000+02:00,Usługa,Brak zużycia na 4/176 26.06,brak zużycia na 4/176 26.06,inne,0.5
+SD-163246,MyStore - uznana reklamacja za 26.06 nie odjęła się w zużyciu,2025-07-01 03:23:51.096000+02:00,Usługa,MyStore - uznana reklamacja za 26.06 nie odjęła się w zużyciu,mystore - uznana reklamacja za 26.06 nie odjęła się w zużyciu,inne,0.5
+SD-163245,"poluzowany element zaznaczony na niebiesko, finalnie wszystkie wydrukie wkrecają sie pod rolke ",2025-07-01 03:18:52.010000+02:00,Incydent,"poluzowany element zaznaczony na niebiesko, finalnie wszystkie wydrukie wkrecają sie pod rolke","poluzowany element zaznaczony na niebiesko, finalnie wszystkie wydrukie wkrecają sie pod rolke",inne,0.5
+SD-163244,MyStore - raport odchyleń statystycznych - różnica na frytkach,2025-07-01 03:18:24.511000+02:00,Incydent,MyStore - raport odchyleń statystycznych - różnica na frytkach,mystore - raport odchyleń statystycznych - różnica na frytkach,inne,0.5
+SD-163241,MyStore - brak zużycia,2025-07-01 03:12:51.980000+02:00,Usługa,MyStore - brak zużycia,mystore - brak zużycia,inne,0.5
+SD-163239,CSO25 - żółta M na czerwonym tle ,2025-07-01 02:48:58.358000+02:00,Incydent,CSO25 - żółta M na czerwonym tle,cso25 - żółta m na czerwonym tle,inne,0.5
+SD-163238,POS - nie działają płatności na terminalach,2025-07-01 02:47:54.168000+02:00,Incydent,POS - nie działają płatności na terminalach,pos - nie działają płatności na terminalach,inne,0.5
+SD-163237,"CSO25,30 - niedostępne",2025-07-01 02:47:44.495000+02:00,Incydent,"CSO25,30 - niedostępne","cso25,30 - niedostępne",inne,0.5
+SD-163236,Prośba o zmiane hasla do ms ,2025-07-01 02:45:17.216000+02:00,Incydent,Prośba o zmiane hasla do ms,prośba o zmiane hasla do ms,inne,0.5
+SD-163235,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień. ",2025-07-01 02:44:40.535000+02:00,Incydent,"Newpos - Zamknięcie nie przeszło na kasie, z której był zamykany dzień.","newpos - zamknięcie nie przeszło na kasie, z której był zamykany dzień.","Newpos – Zamknięcie nie przeszło na kasie, z której był zamykany dzień",0.9
+SD-163234,Raport operacyjny - brak godzin przepracowanych - 30.06,2025-07-01 02:39:39.884000+02:00,Incydent,Raport operacyjny - brak godzin przepracowanych - 30.06,raport operacyjny - brak godzin przepracowanych - 30.06,inne,0.5
+SD-163233,MS9 - Dostawa nie zaczytała się.,2025-07-01 02:39:14.099000+02:00,Incydent,MS9 - Dostawa nie zaczytała się.,ms9 - dostawa nie zaczytała się.,MyStore – dostawa nie zaksięgowała się,0.9
+SD-163232,Błędne wartości w depozycie ,2025-07-01 02:37:52.550000+02:00,Incydent,Błędne wartości w depozycie,błędne wartości w depozycie,inne,0.5
+SD-163231,MyStore - Prośba o pomoc w edycji odbić czasowych,2025-07-01 02:26:03.436000+02:00,Incydent,MyStore - Prośba o pomoc w edycji odbić czasowych,mystore - prośba o pomoc w edycji odbić czasowych,MyStore – Prośba o pomoc w edycji odbić czasowych,0.9
+SD-163230,MyStore - Raport pmix - brak danych dla wybranego okresu,2025-07-01 02:05:23.541000+02:00,Incydent,MyStore - Raport pmix - brak danych dla wybranego okresu,mystore - raport pmix - brak danych dla wybranego okresu,inne,0.5
+SD-163228,Zamknięcie/Otwarcie POS - Nie przeszło zamknięcie.,2025-07-01 01:59:08.219000+02:00,Incydent,Zamknięcie/Otwarcie POS - Nie przeszło zamknięcie.,zamknięcie/otwarcie pos - nie przeszło zamknięcie.,inne,0.5
+SD-163227,raport pmx,2025-07-01 01:57:55.445000+02:00,Incydent,raport pmx,raport pmx,inne,0.5
+SD-163226,problem z otwarciem nowego dnia biznesowego,2025-07-01 01:54:47.716000+02:00,Incydent,problem z otwarciem nowego dnia biznesowego,problem z otwarciem nowego dnia biznesowego,inne,0.5
+SD-163225,Brak komunikacji ,2025-07-01 01:47:10.944000+02:00,Incydent,Brak komunikacji,brak komunikacji,inne,0.5
+SD-163222,Problem z zalogowaniem do BOS01 ,2025-07-01 01:40:42.673000+02:00,Incydent,Problem z zalogowaniem do BOS01,problem z zalogowaniem do bos01,BOS/MAP – nie można się zalogować,0.9
+SD-163221,MS9 - Raport PMX - Nie można wejść w raport.,2025-07-01 01:38:41.625000+02:00,Incydent,MS9 - Raport PMX - Nie można wejść w raport.,ms9 - raport pmx - nie można wejść w raport.,inne,0.5
+SD-163220,Urządzenie  nie wyłącza się automatycznie (świeci całą noc),2025-07-01 01:37:40.594000+02:00,Incydent,Urządzenie  nie wyłącza się automatycznie (świeci całą noc),urządzenie  nie wyłącza się automatycznie (świeci całą noc),inne,0.5
+SD-163219, MyStore - brak danych w raporcie sprzedaży dziennej,2025-07-01 01:37:13.698000+02:00,Incydent,MyStore - brak danych w raporcie sprzedaży dziennej,mystore - brak danych w raporcie sprzedaży dziennej,inne,0.5
+SD-163217,MyStore - dostawa nie zaksięgowała się,2025-07-01 01:19:25.510000+02:00,Incydent,MyStore - dostawa nie zaksięgowała się,mystore - dostawa nie zaksięgowała się,MyStore – dostawa nie zaksięgowała się,0.9
+SD-163216,CSO27 - nie uruchamia sie ,2025-07-01 01:06:51.730000+02:00,Incydent,CSO27 - nie uruchamia sie,cso27 - nie uruchamia sie,inne,0.5
+SD-163215,MS9 - Kasetka widnieje jako zalogowana,2025-07-01 01:05:32.697000+02:00,Incydent,MS9 - Kasetka widnieje jako zalogowana,ms9 - kasetka widnieje jako zalogowana,inne,0.5
+SD-163214,Prośba o rekalkulację,2025-07-01 01:01:42.042000+02:00,Usługa,Prośba o rekalkulację,prośba o rekalkulację,inne,0.5
+SD-163213,MyStore – edycja odbić czasowych – błąd podczas wysyłania poprawek odbić – 30.06,2025-07-01 01:00:43.802000+02:00,Usługa,MyStore – edycja odbić czasowych – błąd podczas wysyłania poprawek odbić – 30.06,mystore – edycja odbić czasowych – błąd podczas wysyłania poprawek odbić – 30.06,MyStore – Prośba o pomoc w edycji odbić czasowych,0.9
+SD-163212,Korekta błędnie wbitych strat,2025-07-01 00:56:49.214000+02:00,Usługa,Korekta błędnie wbitych strat,korekta błędnie wbitych strat,inne,0.5
+SD-163211,CR .240 - w automacie jest zacięty banknot,2025-07-01 00:53:17.191000+02:00,Incydent,CR .240 - w automacie jest zacięty banknot,cr .240 - w automacie jest zacięty banknot,inne,0.5
+SD-163210,Raport PMX - brak danych ,2025-07-01 00:43:54.603000+02:00,Incydent,Raport PMX - brak danych,raport pmx - brak danych,inne,0.5
+SD-163209,MyStore - Raport pmix - brak danych dla wybranego okresu,2025-07-01 00:39:23.699000+02:00,Incydent,MyStore - Raport pmix - brak danych dla wybranego okresu,mystore - raport pmix - brak danych dla wybranego okresu,inne,0.5
+SD-163208,Zamknięcie/Otwarcie POS - Nie przeszło otwarcie,2025-07-01 00:39:10.220000+02:00,Incydent,Zamknięcie/Otwarcie POS - Nie przeszło otwarcie,zamknięcie/otwarcie pos - nie przeszło otwarcie,inne,0.5
+SD-163207,MS9 - kasetki widoczne jako zalogowane,2025-07-01 00:36:39.139000+02:00,Incydent,MS9 - kasetki widoczne jako zalogowane,ms9 - kasetki widoczne jako zalogowane,inne,0.5
+SD-163206,MyStore - Raport pmix - brak danych dla wybranego okresu,2025-07-01 00:30:35.372000+02:00,Incydent,MyStore - Raport pmix - brak danych dla wybranego okresu,mystore - raport pmix - brak danych dla wybranego okresu,inne,0.5
+SD-163205,Raport drp i raporty z drawera roznica 06.06,2025-07-01 00:29:59.169000+02:00,Incydent,Raport drp i raporty z drawera roznica 06.06,raport drp i raporty z drawera roznica 06.06,inne,0.5
+SD-163204,Brak zużycia na wszystkich PP - 30.06,2025-07-01 00:27:49.552000+02:00,Usługa,Brak zużycia na wszystkich PP - 30.06,brak zużycia na wszystkich pp - 30.06,inne,0.5
+SD-163203,POS06 - Adapter is busy.,2025-07-01 00:27:06.105000+02:00,Incydent,POS06 - Adapter is busy.,pos06 - adapter is busy.,inne,0.5
+SD-163202,MS - dewiacja na nie produkt,2025-07-01 00:26:33.764000+02:00,Incydent,MS - dewiacja na nie produkt,ms - dewiacja na nie produkt,inne,0.5
+SD-163201,POS07 - fiscal driver not started,2025-07-01 00:24:49.070000+02:00,Incydent,POS07 - fiscal driver not started,pos07 - fiscal driver not started,inne,0.5
+SD-163200,Błędnie wbita dostawa ,2025-07-01 00:23:11.594000+02:00,Usługa,Błędnie wbita dostawa,błędnie wbita dostawa,inne,0.5
+SD-163199,Zamknięcie/Otwracie POS - Nie przeszło otwarcie,2025-07-01 00:17:15.683000+02:00,Incydent,Zamknięcie/Otwracie POS - Nie przeszło otwarcie,zamknięcie/otwracie pos - nie przeszło otwarcie,inne,0.5
+SD-163198,POS07- brak ikon,2025-07-01 00:15:07.538000+02:00,Incydent,POS07- brak ikon,pos07- brak ikon,POS – brak kafelków,0.9
+SD-163197,PSO- Smart update.,2025-07-01 00:12:03.462000+02:00,Incydent,PSO- Smart update.,pso- smart update.,inne,0.5
+SD-163195,CSO25 - Cr -Logo CashInfinity,2025-07-01 00:05:09.884000+02:00,Incydent,CSO25 - Cr -Logo CashInfinity,cso25 - cr -logo cashinfinity,inne,0.5
+SD-163194,Możliwość zeskanowania kuponu z McChikenem po północy,2025-07-01 00:03:01.834000+02:00,Usługa,Możliwość zeskanowania kuponu z McChikenem po północy,możliwość zeskanowania kuponu z mcchikenem po północy,inne,0.5
+SD-163193,Zamknięcie/Otwarcie POS - Nie przeszło otwarcie.,2025-07-01 00:02:58.730000+02:00,Incydent,Zamknięcie/Otwarcie POS - Nie przeszło otwarcie.,zamknięcie/otwarcie pos - nie przeszło otwarcie.,inne,0.5
+SD-163192,Otwarcie POS - waystation niedostępne dla komend w całej restauracji,2025-07-01 00:00:38.865000+02:00,Incydent,Otwarcie POS - waystation niedostępne dla komend w całej restauracji,otwarcie pos - waystation niedostępne dla komend w całej restauracji,inne,0.5

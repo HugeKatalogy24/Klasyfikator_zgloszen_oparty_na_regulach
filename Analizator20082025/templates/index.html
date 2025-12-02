@@ -1,0 +1,1712 @@
+﻿{% extends "base.html" %}
+
+{% block title %}Analizator Problemów Jira - Strona Główna{% endblock %}
+
+{% block content %}
+<div class="form-wrapper">
+    <h1>🔍 Analizator Problemów Jira</h1>
+    
+    <div class="description">
+        <p>Ta aplikacja analizuje zgłoszenia z systemu Jira i automatycznie klasyfikuje je do <strong>kategorii problemów bieżących</strong> używając zaawansowanych reguł biznesowych oraz umożliwia zmianę typów zgłoszeń, żądań.</p>
+        <div class="features">
+            <div class="feature">
+                <span class="feature-icon">📊</span>
+                <span>Automatyczna klasyfikacja</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">🔄</span>
+                <span>Zmiana typów zgłoszeń</span>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">📋</span>
+                <span>Eksport do CSV</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Zakładki -->
+    <div class="tabs-container">
+        <div class="tabs-header">
+            <button class="tab-button active" onclick="showTab(event, 'analysis-tab')">
+                <span class="tab-icon">🔍</span>
+                Analiza Problemów
+            </button>
+            <button class="tab-button" onclick="showTab(event, 'change-type-tab')">
+                <span class="tab-icon">🔄</span>
+                Zmiana typu zgłoszenia
+            </button>
+            <button class="tab-button" onclick="showTab(event, 'admin-tab')">
+                <span class="tab-icon">⚙️</span>
+                Panel Administratora
+            </button>
+        </div>
+
+        <!-- Zakładka Analizy -->
+        <div id="analysis-tab" class="tab-content active">
+            <form method="POST" action="/analyze" class="analysis-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="start_date">📅 Data początkowa</label>
+                        <input type="date" 
+                               id="start_date" 
+                               name="start_date" 
+                               class="form-control date-picker" 
+                               lang="pl-PL"
+                               required
+                               max="{{ today }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="end_date">📅 Data końcowa</label>
+                        <input type="date" 
+                               id="end_date" 
+                               name="end_date" 
+                               class="form-control date-picker" 
+                               lang="pl-PL"
+                               required
+                               max="{{ today }}">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary" id="analyzeBtn">
+                    <span class="btn-icon">🚀</span>
+                    Rozpocznij analizę
+                </button>
+                
+                <!-- Pasek postępu (ukryty początkowo) -->
+                <div id="progressContainer" class="progress-container" style="display: none;">
+                    <div class="progress-header">
+                        <h3 id="progressTitle">📊 Analiza w toku...</h3>
+                        <span id="progressText">Przygotowywanie...</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-details">
+                        <span id="progressPercentage">0%</span>
+                        <span id="progressEta">Szacowany czas: obliczanie...</span>
+                    </div>
+                </div>
+
+                <!-- Komunikat o błędzie (ukryty początkowo) -->
+                <div id="errorContainer" class="error-container" style="display: none;">
+                    <div class="error-header">
+                        <h3>❌ Wystąpił błąd</h3>
+                    </div>
+                    <div class="error-message" id="errorMessage"></div>
+                    <div class="error-actions">
+                        <button type="button" class="btn-primary" onclick="resetAnalysis()">
+                            <span class="btn-icon">🔄</span>
+                            Spróbuj ponownie
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="info-section">
+                <div class="categories-info">
+                    <h3>📋 Kategoryzowane problemy ({{ categories|length }} kategorii):</h3>
+                    {% if categories %}
+                        <div class="categories-table-wrapper">
+                            <table class="categories-table">
+                                <thead>
+                                    <tr>
+                                        <th class="category-number">#</th>
+                                        <th class="category-name">Nazwa kategorii problemu</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for category in categories %}
+                                    <tr class="category-row">
+                                        <td class="category-number">{{ loop.index }}</td>
+                                        <td class="category-name">{{ category|e }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="no-categories">
+                            <p>⚠️ Brak zdefiniowanych reguł klasyfikacji</p>
+                            <p>Przejdź do zakładki "Panel Administratora", aby dodać nowe reguły.</p>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="stats-preview">
+                    <h3>📈 Co otrzymasz:</h3>
+                    <ul class="benefits-list">
+                        <li>Szczegółowe statystyki klasyfikacji problemów</li>
+                        <li>Analiza coverage (pokrycia) klasyfikacji</li>
+                        <li>Eksport wyników do CSV</li>
+                        <li>Lista najczęstszych problemów</li>
+                        <li>Zmianę typów zgłoszeń i żądań</li>
+                        <li>Zarządzanie regułami klasyfikacji</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Zakładka Zmiany Typu Zgłoszenia -->
+        <div id="change-type-tab" class="tab-content">
+            <div class="change-type-panel">
+                {% if session.get('admin_authenticated') %}
+                    <!-- Panel dla zalogowanego administratora -->
+                    <div class="admin-header">
+                        <h2>🔄 Zmiana Typu Zgłoszenia</h2>
+                        <div class="admin-status">
+                            <span class="admin-status-text">
+                                <i class="fas fa-user-shield"></i>
+                                Zalogowany jako administrator
+                            </span>
+                            <a href="{{ url_for('admin_logout') }}" class="btn-logout">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Wyloguj
+                            </a>
+                        </div>
+                    </div>
+                    <p class="change-type-description">Tutaj możesz zmienić typ zgłoszenia i typ żądania dla maksymalnie 1000 zgłoszeń jednocześnie.</p>
+                
+                <!-- Krok 1: Wpisanie kluczy zgłoszeń -->
+                <div class="step-section" id="step1">
+                    <h3>📝 Krok 1: Podaj klucze zgłoszeń</h3>
+                    <div class="form-group">
+                        <label for="issue_keys">Klucze zgłoszeń (format: SD-XXXXX)</label>
+                        <textarea id="issue_keys" 
+                                  class="form-control textarea-field" 
+                                  rows="8"
+                                  placeholder="Wklej klucze zgłoszeń w formacie SD-XXXXX, oddzielone spacjami lub nowymi liniami.&#10;Przykład:&#10;SD-25312 SD-214 SD-532351&#10;SD-12345&#10;SD-67890&#10;&#10;Maksymalnie 1000 zgłoszeń na raz."></textarea>
+                        <small class="form-help">
+                            Obsługiwane formaty: SD-25312, SD-214, SD-532351 itp. 
+                            Można wkleić tekst zawierający klucze - zostaną automatycznie wyfiltrowane.
+                        </small>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-primary" onclick="validateIssues()">
+                            <span class="btn-icon">✅</span>
+                            Sprawdź zgłoszenia
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="clearForm()">
+                            <span class="btn-icon">🗑️</span>
+                            Wyczyść
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Krok 2: Wyniki walidacji -->
+                <div class="step-section" id="step2" style="display: none;">
+                    <h3>📊 Krok 2: Wyniki walidacji</h3>
+                    <div id="validation-results">
+                        <!-- Tutaj będą wyniki walidacji -->
+                    </div>
+                </div>
+
+                <!-- Krok 3: Wybór typu zgłoszenia -->
+                <div class="step-section" id="step3" style="display: none;">
+                    <h3>📋 Krok 3: Wybierz nowy typ zgłoszenia</h3>
+                    <div class="form-group">
+                        <label for="new_issue_type">📋 Nowy typ zgłoszenia</label>
+                        <select id="new_issue_type" class="form-control">
+                            <option value="">-- Wybierz typ zgłoszenia --</option>
+                        </select>
+                        <small class="form-help">Wybierz nowy typ zgłoszenia do którego chcesz zmienić wszystkie zgłoszenia</small>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-primary" onclick="updateIssueTypes()">
+                            <span class="btn-icon">🔄</span>
+                            Zaktualizuj typ zgłoszenia
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="goBackToStep1()">
+                            <span class="btn-icon">⬅️</span>
+                            Wróć do kroku 1
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Krok 4: Wyniki aktualizacji typu zgłoszenia -->
+                <div class="step-section" id="step4" style="display: none;">
+                    <h3>✅ Krok 4: Wyniki aktualizacji typu zgłoszenia</h3>
+                    <div id="issue-type-results">
+                        <!-- Tutaj będą wyniki aktualizacji typu zgłoszenia -->
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-primary" onclick="proceedToRequestType()">
+                            <span class="btn-icon">➡️</span>
+                            Przejdź do zmiany typu żądania
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="startNewUpdate()">
+                            <span class="btn-icon">🔄</span>
+                            Nowa aktualizacja
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Krok 5: Wybór typu żądania -->
+                <div class="step-section" id="step5" style="display: none;">
+                    <h3>🎯 Krok 5: Wybierz nowy typ żądania</h3>
+                    <div class="form-group">
+                        <label for="new_request_type">🎯 Nowy typ żądania</label>
+                        <select id="new_request_type" class="form-control">
+                            <option value="">-- Ładowanie typów żądań... --</option>
+                        </select>
+                        <small class="form-help">Dostępne typy żądań dla wybranego typu zgłoszenia</small>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-primary" onclick="updateRequestTypes()">
+                            <span class="btn-icon">🚀</span>
+                            Zaktualizuj typ żądania
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="skipRequestType()">
+                            <span class="btn-icon">⏭️</span>
+                            Pomiń zmianę typu żądania
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Krok 6: Wyniki finalne -->
+                <div class="step-section" id="step6" style="display: none;">
+                    <h3>🎉 Krok 6: Wyniki finalne</h3>
+                    <div id="final-results">
+                        <!-- Tutaj będą finalne wyniki -->
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-primary" onclick="startNewUpdate()">
+                            <span class="btn-icon">🔄</span>
+                            Nowa aktualizacja
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pasek postępu -->
+                <div id="changeTypeProgress" class="progress-container" style="display: none;">
+                    <div class="progress-header">
+                        <h3>⏳ Operacja w toku...</h3>
+                        <span id="changeTypeProgressText">Przygotowywanie...</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="changeTypeProgressFill"></div>
+                    </div>
+                    <div class="progress-details">
+                        <span id="changeTypeProgressPercentage">0%</span>
+                    </div>
+                </div>
+                
+                {% else %}
+                    <!-- Panel logowania -->
+                    <div class="admin-login-prompt">
+                        <h2>🔒 Zmiana Typu Zgłoszenia</h2>
+                        <p class="admin-description">Dostęp do funkcji zmiany typu zgłoszenia jest ograniczony.</p>
+                        <div class="login-card">
+                            <div class="login-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3>Wymagane uwierzytelnienie</h3>
+                            <p>Aby zarządzać typami zgłoszeń i żądań, musisz się zalogować jako administrator.</p>
+                            <a href="{{ url_for('admin_login') }}" class="btn-primary">
+                                <i class="fas fa-sign-in-alt me-2"></i>
+                                Zaloguj się
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Zakładka Panelu Administratora -->
+        <div id="admin-tab" class="tab-content">
+            <div class="admin-panel">
+                {% if session.get('admin_authenticated') %}
+                    <!-- Panel dla zalogowanego administratora -->
+                    <div class="admin-header">
+                        <h2>⚙️ Panel Zarządzania Regułami Klasyfikacji</h2>
+                        <div class="admin-status">
+                            <span class="admin-status-text">
+                                <i class="fas fa-user-shield"></i>
+                                Zalogowany jako administrator
+                            </span>
+                            <a href="{{ url_for('admin_logout') }}" class="btn-logout">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Wyloguj
+                            </a>
+                        </div>
+                    </div>
+                    <p class="admin-description">Tutaj możesz dodawać nowe reguły klasyfikacji lub modyfikować istniejące.</p>
+                    
+                    <!-- Formularz dodawania nowej reguły -->
+                    <form method="POST" action="/admin/add-rule" class="rule-form" id="ruleForm">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                {% else %}
+                    <!-- Panel logowania -->
+                    <div class="admin-login-prompt">
+                        <h2>🔒 Panel Administratora</h2>
+                        <p class="admin-description">Dostęp do panelu administratora jest ograniczony.</p>
+                        <div class="login-card">
+                            <div class="login-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3>Wymagane uwierzytelnienie</h3>
+                            <p>Aby zarządzać regułami klasyfikacji, musisz się zalogować jako administrator.</p>
+                            <a href="{{ url_for('admin_login') }}" class="btn-primary">
+                                <i class="fas fa-sign-in-alt me-2"></i>
+                                Zaloguj się
+                            </a>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                {% if session.get('admin_authenticated') %}
+                    <div class="form-group">
+                        <label for="rule_name">📝 Nazwa kategorii problemu</label>
+                        <input type="text" 
+                               id="rule_name" 
+                               name="rule_name" 
+                               class="form-control" 
+                               placeholder="np. MyStore – Problem z synchronizacją"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="keywords">🔍 Słowa kluczowe (oddzielone przecinkami)</label>
+                        <textarea id="keywords" 
+                                  name="keywords" 
+                                  class="form-control textarea-field" 
+                                  rows="3"
+                                  placeholder="np. mystore, ms, synchronizacja, sync, błąd"
+                                  required></textarea>
+                        <small class="form-help">Wpisz słowa kluczowe, które powinny występować w tytule zgłoszenia</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="required_combinations">🔗 Wymagane kombinacje słów (opcjonalne)</label>
+                        <textarea id="required_combinations" 
+                                  name="required_combinations" 
+                                  class="form-control textarea-field" 
+                                  rows="4"
+                                  placeholder="np. mystore+synchronizacja, ms+błąd"></textarea>
+                        <small class="form-help">Każda linia to jedna kombinacja słów połączona znakiem +</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="forbidden">🚫 Słowa zabronione (oddzielone przecinkami)</label>
+                        <textarea id="forbidden" 
+                                  name="forbidden" 
+                                  class="form-control textarea-field" 
+                                  rows="3"
+                                  placeholder="np. pos, kasa, background, service"></textarea>
+                        <small class="form-help">Jeśli tytuł zawiera któreś z tych słów, reguła nie zostanie zastosowana</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="min_score">📊 Minimalny wynik (1-10)</label>
+                        <input type="number" 
+                               id="min_score" 
+                               name="min_score" 
+                               class="form-control" 
+                               min="1" 
+                               max="10" 
+                               value="2"
+                               required>
+                        <small class="form-help">Im wyższy wynik, tym bardziej restrykcyjna reguła</small>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">
+                            <span class="btn-icon">💾</span>
+                            Dodaj nową regułę
+                        </button>
+                        <button type="button" class="btn-secondary" onclick="resetForm()">
+                            <span class="btn-icon">🔄</span>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Lista istniejących reguł -->
+                <div class="existing-rules">
+                    <h3>📋 Istniejące reguły klasyfikacji</h3>
+                    <div class="rules-list" id="rulesList">
+                        <!-- Tutaj będą dynamicznie ładowane istniejące reguły -->
+                    </div>
+                    
+                    <!-- Przyciski zarządzania regułami -->
+                    <div class="admin-actions">
+                        <form method="POST" action="/admin/reload-rules" style="display: inline-block;">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                            <button type="submit" class="btn-secondary" onclick="return confirm('Czy na pewno chcesz przeładować reguły klasyfikacji?')">
+                                <span class="btn-icon">🔄</span>
+                                Przeładuj reguły
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script nonce="{{ csp_nonce }}">
+// Funkcje zarządzania zakładkami
+function showTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    
+    // Ukryj wszystkie zakładki
+    tabcontent = document.getElementsByClassName("tab-content");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].classList.remove("active");
+    }
+    
+    // Usuń klasę "active" ze wszystkich przycisków zakładek
+    tablinks = document.getElementsByClassName("tab-button");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
+    }
+    
+    // Pokaż wybraną zakładkę
+    const tabElement = document.getElementById(tabName);
+    if (tabElement) {
+        tabElement.classList.add("active");
+    }
+    
+    // Dodaj klasę "active" do przycisku (z zabezpieczeniem)
+    if (evt && evt.currentTarget && evt.currentTarget.classList) {
+        evt.currentTarget.classList.add("active");
+    } else {
+        // Fallback - znajdź przycisk zakładki i aktywuj go
+        const tabButton = document.querySelector(`[onclick*="${tabName}"]`);
+        if (tabButton && tabButton.classList) {
+            tabButton.classList.add("active");
+        }
+    }
+}
+
+// Funkcja resetowania formularza
+function resetForm() {
+    document.getElementById('ruleForm').reset();
+}
+
+// Walidacja dat i ulepszenia kalendarza
+document.addEventListener('DOMContentLoaded', function() {
+    // Ustaw polskie locale dla kalendarzy (Poniedziałek jako pierwszy dzień tygodnia)
+    if (document.documentElement) {
+        document.documentElement.lang = 'pl-PL';
+    }
+    
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0];
+    
+    const startDateInput = document.getElementById('start_date');
+    const endDateInput = document.getElementById('end_date');
+    
+    // Ustaw maksymalną datę na dzisiaj (umożliwiamy wybór dzisiejszej daty)
+    startDateInput.setAttribute('max', todayStr);
+    endDateInput.setAttribute('max', todayStr);
+    
+    // Konfiguruj kalendarz żeby zaczynał od poniedziałku i używał polskiego formatu daty
+    [startDateInput, endDateInput].forEach(input => {
+        // Dodaj polskie locale jako atrybut
+        input.setAttribute('locale', 'pl-PL');
+        input.setAttribute('lang', 'pl-PL');
+        
+        // Ustaw format daty na polski (DD/MM/YYYY)
+        input.setAttribute('data-date-format', 'dd/mm/yyyy');
+        input.setAttribute('pattern', '[0-9]{2}/[0-9]{2}/[0-9]{4}');
+        
+        // Event listener dla pokazywania kalendarza
+        input.addEventListener('focus', function() {
+            this.showPicker && this.showPicker();
+        });
+        
+        // Dodatkowa konfiguracja dla polskiego locale
+        input.style.direction = 'ltr';
+    });
+    
+    // Obsługa formularza analizy z przekierowaniem na stronę postępu
+    const analysisForm = document.querySelector('.analysis-form');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    
+    analysisForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Sprawdź walidację formularza
+        if (!this.checkValidity()) {
+            this.reportValidity();
+            return;
+        }
+        
+        // Wyślij żądanie AJAX
+        const formData = new FormData(this);
+        
+        fetch('/analyze', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Rozpocznij śledzenie postępu
+                startProgressTracking(data.analysis_id);
+            } else {
+                // Pokaż błędy
+                if (data.errors && data.errors.length > 0) {
+                    showError(data.errors.join(', '));
+                } else {
+                    showError('Wystąpił błąd podczas uruchamiania analizy');
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Błąd:', error);
+            showError('Błąd połączenia z serwerem');
+        });
+    });
+    
+    // Walidacja zakresu dat z lepszymi komunikatami - umożliwiamy dzisiejszą datę
+    function validateDateRange() {
+        const startDate = new Date(startDateInput.value);
+        const endDate = new Date(endDateInput.value);
+        const todayDate = new Date();
+        const tomorrowDate = new Date(todayDate);
+        tomorrowDate.setDate(todayDate.getDate() + 1);
+        
+        // Sprawdź czy daty nie są z przyszłości (ale pozwalamy na dzisiejszą datę)
+        if (startDate >= tomorrowDate) {
+            startDateInput.setCustomValidity('Data początkowa nie może być z przyszłości');
+            return;
+        }
+        if (endDate >= tomorrowDate) {
+            endDateInput.setCustomValidity('Data końcowa nie może być z przyszłości');
+            return;
+        }
+        
+        // Sprawdź zakres dat
+        if (startDateInput.value && endDateInput.value) {
+            if (startDate > endDate) {
+                endDateInput.setCustomValidity('Data końcowa nie może być wcześniejsza niż początkowa');
+                return;
+            }
+            
+            // Sprawdź czy zakres nie jest zbyt duży (max 365 dni)
+            const diffTime = Math.abs(endDate - startDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            if (diffDays > 365) {
+                endDateInput.setCustomValidity('Zakres dat nie może być większy niż 365 dni');
+                return;
+            }
+        }
+        
+        // Wyczyść błędy jeśli wszystko OK
+        startDateInput.setCustomValidity('');
+        endDateInput.setCustomValidity('');
+    }
+    
+    // Dodaj event listenery
+    startDateInput.addEventListener('change', validateDateRange);
+    endDateInput.addEventListener('change', validateDateRange);
+    startDateInput.addEventListener('input', validateDateRange);
+    endDateInput.addEventListener('input', validateDateRange);
+    
+    // Automatyczne ustawienie dat domyślnych - data końcowa na dzisiaj
+    if (!endDateInput.value) {
+        endDateInput.value = todayStr;
+    }
+    
+    if (!startDateInput.value) {
+        const weekAgo = new Date();
+        weekAgo.setDate(weekAgo.getDate() - 7);
+        startDateInput.value = weekAgo.toISOString().split('T')[0];
+    }
+    
+    // Waliduj po załadowaniu
+    validateDateRange();
+    
+    // Sprawdź czy przekierowano z logowania admin
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('show_admin') === 'true') {
+        // Pokaż zakładkę admin
+        const adminTabButton = document.querySelector('[onclick*="admin-tab"]');
+        if (adminTabButton) {
+            adminTabButton.click();
+        }
+        // Wyczyść parametr z URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    
+    // Załaduj istniejące reguły tylko jeśli użytkownik jest zalogowany jako admin
+    {% if session.get('admin_authenticated') %}
+        loadExistingRules();
+    {% endif %}
+});
+
+// Funkcja ładowania istniejących reguł
+function loadExistingRules() {
+    fetch('/admin/get-rules')
+        .then(response => {
+            if (!response.ok) {
+                if (response.status === 401 || response.status === 403) {
+                    console.warn('Użytkownik nie jest zalogowany jako administrator');
+                    return { success: false, rules: {} }; // Zwróć pustą odpowiedź
+                }
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (!data.success) {
+                console.error('Błąd pobierania reguł:', data.error || 'Nieznany błąd');
+                return;
+            }
+            
+            const rulesList = document.getElementById('rulesList');
+            if (!rulesList) return;
+            
+            rulesList.innerHTML = '';
+            
+            Object.keys(data.rules).forEach(ruleName => {
+                const rule = data.rules[ruleName];
+                const ruleDiv = document.createElement('div');
+                ruleDiv.className = 'rule-item';
+                ruleDiv.innerHTML = `
+                    <div class="rule-header">
+                        <h4>${ruleName}</h4>
+                        <div class="rule-actions">
+                            <button class="btn-small btn-edit" onclick="editRule('${ruleName}')">
+                                <span class="btn-icon">✏️</span>
+                                Edytuj
+                            </button>
+                            <button class="btn-small btn-delete" onclick="deleteRule('${ruleName}')">
+                                <span class="btn-icon">🗑️</span>
+                                Usuń
+                            </button>
+                        </div>
+                    </div>
+                    <div class="rule-details">
+                        <p><strong>Keywords:</strong> ${rule.keywords.join(', ')}</p>
+                        <p><strong>Min score:</strong> ${rule.min_score}</p>
+                        ${rule.forbidden ? `<p><strong>Forbidden:</strong> ${rule.forbidden.join(', ')}</p>` : ''}
+                    </div>
+                `;
+                rulesList.appendChild(ruleDiv);
+            });
+        })
+        .catch(error => {
+            console.error('Error loading rules:', error);
+            // Nie pokazuj alertu dla błędów ładowania reguł, tylko zaloguj do konsoli
+        });
+}
+
+// Funkcje edycji i usuwania reguł
+function editRule(ruleName) {
+    // Pobierz dane reguły z serwera
+    fetch('/admin/get-rules')
+        .then(response => {
+            // Sprawdź status HTTP
+            if (!response.ok) {
+                if (response.status === 401 || response.status === 403) {
+                    return response.json().then(data => {
+                        throw new Error(data.error || 'Brak uprawnień administratora. Zaloguj się ponownie.');
+                    }).catch(() => {
+                        throw new Error('Brak uprawnień administratora. Zaloguj się ponownie.');
+                    });
+                } else if (response.status === 404) {
+                    throw new Error('Endpoint nie został znaleziony.');
+                } else {
+                    throw new Error(`Błąd serwera: ${response.status} ${response.statusText}`);
+                }
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success && data.rules[ruleName]) {
+                const rule = data.rules[ruleName];
+                
+                // Wypełnij formularz danymi reguły
+                document.getElementById('rule_name').value = ruleName;
+                document.getElementById('keywords').value = rule.keywords.join(', ');
+                
+                // Obsługa required_combinations
+                if (rule.required_combinations && rule.required_combinations.length > 0) {
+                    const combinations = rule.required_combinations.map(combo => combo.join('+')).join('\n');
+                    document.getElementById('required_combinations').value = combinations;
+                } else {
+                    document.getElementById('required_combinations').value = '';
+                }
+                
+                // Obsługa forbidden words
+                if (rule.forbidden && rule.forbidden.length > 0) {
+                    document.getElementById('forbidden').value = rule.forbidden.join(', ');
+                } else {
+                    document.getElementById('forbidden').value = '';
+                }
+                
+                document.getElementById('min_score').value = rule.min_score;
+                
+                // Zmień formularz w tryb edycji
+                const form = document.getElementById('ruleForm');
+                form.action = '/admin/edit-rule';
+                
+                // Dodaj ukryte pole z oryginalną nazwą reguły
+                let originalNameField = document.getElementById('original_rule_name');
+                if (!originalNameField) {
+                    originalNameField = document.createElement('input');
+                    originalNameField.type = 'hidden';
+                    originalNameField.id = 'original_rule_name';
+                    originalNameField.name = 'original_rule_name';
+                    form.appendChild(originalNameField);
+                }
+                originalNameField.value = ruleName;
+                
+                // Zmień tekst przycisku
+                const submitBtn = form.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = '<span class="btn-icon">✏️</span> Aktualizuj regułę';
+                
+                // Dodaj przycisk anulowania
+                let cancelBtn = document.getElementById('cancelEditBtn');
+                if (!cancelBtn) {
+                    cancelBtn = document.createElement('button');
+                    cancelBtn.type = 'button';
+                    cancelBtn.id = 'cancelEditBtn';
+                    cancelBtn.className = 'btn-secondary';
+                    cancelBtn.innerHTML = '<span class="btn-icon">❌</span> Anuluj edycję';
+                    cancelBtn.onclick = cancelEdit;
+                    form.querySelector('.form-actions').appendChild(cancelBtn);
+                }
+                cancelBtn.style.display = 'flex';
+                
+                // Przejdź do zakładki administratora i przewiń do formularza
+                const adminTabButton = document.querySelector('[onclick*="admin-tab"]');
+                if (adminTabButton) {
+                    // Symuluj kliknięcie na przycisk zakładki admin
+                    adminTabButton.click();
+                } else {
+                    // Fallback - bezpośrednie wywołanie funkcji showTab z mockiem event
+                    const mockEvent = { currentTarget: document.querySelector('.tab-button[onclick*="admin-tab"]') };
+                    showTab(mockEvent, 'admin-tab');
+                }
+                document.getElementById('ruleForm').scrollIntoView({ behavior: 'smooth' });
+                
+            } else if (data.success && !data.rules[ruleName]) {
+                alert(`Reguła "${ruleName}" nie została znaleziona.`);
+            } else {
+                // Serwer zwrócił success: false
+                const errorMsg = data.error || 'Nieznany błąd podczas pobierania reguł';
+                alert(`Błąd: ${errorMsg}`);
+                
+                // Jeśli jest redirect, przekieruj użytkownika
+                if (data.redirect) {
+                    window.location.href = data.redirect;
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error loading rule for edit:', error);
+            alert(`Błąd podczas ładowania danych reguły: ${error.message}`);
+            
+            // Jeśli błąd dotyczy autoryzacji, przekieruj do logowania
+            if (error.message.includes('uprawnienie') || error.message.includes('autoryzacji')) {
+                setTimeout(() => {
+                    window.location.href = '/admin/login';
+                }, 2000);
+            }
+        });
+}
+
+function cancelEdit() {
+    // Przywróć formularz do trybu dodawania
+    const form = document.getElementById('ruleForm');
+    form.action = '/admin/add-rule';
+    
+    // Usuń ukryte pole z oryginalną nazwą
+    const originalNameField = document.getElementById('original_rule_name');
+    if (originalNameField) {
+        originalNameField.remove();
+    }
+    
+    // Przywróć tekst przycisku
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.innerHTML = '<span class="btn-icon">💾</span> Dodaj nową regułę';
+    
+    // Ukryj przycisk anulowania
+    const cancelBtn = document.getElementById('cancelEditBtn');
+    if (cancelBtn) {
+        cancelBtn.style.display = 'none';
+    }
+    
+    // Wyczyść formularz
+    resetForm();
+}
+
+function deleteRule(ruleName) {
+    if (confirm(`Czy na pewno chcesz usunąć regułę "${ruleName}"?`)) {
+        // Pobierz token CSRF z formularza
+        const csrfToken = document.querySelector('input[name="csrf_token"]').value;
+        
+        fetch('/admin/delete-rule', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': csrfToken  // Dodanie tokenu CSRF do nagłówka
+            },
+            body: JSON.stringify({rule_name: ruleName})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                loadExistingRules(); // Odśwież listę
+                updateCategoriesTable(); // Odśwież tabelę kategorii
+                alert('Reguła została usunięta pomyślnie');
+            } else {
+                alert('Błąd podczas usuwania reguły: ' + (data.error || 'Nieznany błąd'));
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Błąd połączenia podczas usuwania reguły');
+        });
+    }
+}
+
+// Funkcja do odświeżania tabeli kategorii na stronie głównej
+function updateCategoriesTable() {
+    fetch('/admin/get-rules')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Znajdź tabelę kategorii
+                const tableWrapper = document.querySelector('.categories-table-wrapper');
+                const categoriesInfo = document.querySelector('.categories-info');
+                
+                if (!tableWrapper || !categoriesInfo) return;
+                
+                const categories = Object.keys(data.rules);
+                
+                // Aktualizuj nagłówek
+                const header = categoriesInfo.querySelector('h3');
+                if (header) {
+                    header.textContent = `📋 Kategoryzowane problemy (${categories.length} kategorii):`;
+                }
+                
+                // Aktualizuj zawartość tabeli
+                const tbody = tableWrapper.querySelector('tbody');
+                if (tbody) {
+                    tbody.innerHTML = '';
+                    
+                    categories.forEach((category, index) => {
+                        const row = document.createElement('tr');
+                        row.className = 'category-row';
+                        row.innerHTML = `
+                            <td class="category-number">${index + 1}</td>
+                            <td class="category-name">${category}</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error updating categories table:', error);
+        });
+}
+
+    // ===== FUNKCJE PASKA POSTĘPU (NOWE - RZECZYWISTE ŚLEDZENIE) =====
+    
+    let currentAnalysisId = null;
+    let progressInterval = null;
+
+    // Funkcja do formatowania czasu
+    function formatTime(seconds) {
+        // Nie pokazuj bardzo małych czasów
+        if (seconds < 3) {
+            return 'kilka sekund';
+        }
+        if (seconds < 60) {
+            return `${seconds} sekund`;
+        } else {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            if (remainingSeconds < 5) {
+                return `${minutes} min`;
+            }
+            return `${minutes}m ${remainingSeconds}s`;
+        }
+    }
+
+    // Funkcja do aktualizacji paska postępu
+    function updateProgress(progress, status, etaSeconds) {
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const progressPercentage = document.getElementById('progressPercentage');
+        const progressEta = document.getElementById('progressEta');
+        
+        if (progressFill) progressFill.style.width = progress + '%';
+        if (progressText) progressText.textContent = status;
+        if (progressPercentage) progressPercentage.textContent = Math.round(progress) + '%';
+        
+        if (progressEta) {
+            if (etaSeconds > 0) {
+                progressEta.textContent = `Pozostało: ${formatTime(etaSeconds)}`;
+            } else {
+                progressEta.textContent = 'Zakończenie...';
+            }
+        }
+    }
+
+    // Funkcja do sprawdzania postępu
+    function checkProgress() {
+        if (!currentAnalysisId) return;
+        
+        fetch(`/api/analysis-progress/${currentAnalysisId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateProgress(data.progress, data.status, data.eta_seconds);
+                    
+                    if (data.completed) {
+                        clearInterval(progressInterval);
+                        progressInterval = null;
+                        
+                        if (data.error) {
+                            // Pokaż błąd
+                            showError(data.error);
+                        } else if (data.redirect_url) {
+                            // Przekieruj do wyników po krótkiej przerwie
+                            setTimeout(() => {
+                                window.location.href = data.redirect_url;
+                            }, 1500);
+                        }
+                    }
+                } else {
+                    clearInterval(progressInterval);
+                    progressInterval = null;
+                    showError(data.error || 'Nieznany błąd');
+                }
+            })
+            .catch(error => {
+                console.error('Błąd podczas sprawdzania postępu:', error);
+                clearInterval(progressInterval);
+                progressInterval = null;
+                showError('Błąd połączenia z serwerem');
+            });
+    }
+
+    // Funkcja do pokazania błędu
+    function showError(errorMessage) {
+        document.getElementById('progressContainer').style.display = 'none';
+        document.getElementById('errorMessage').textContent = errorMessage;
+        document.getElementById('errorContainer').style.display = 'block';
+    }
+
+    // Funkcja do resetowania analizy
+    function resetAnalysis() {
+        document.getElementById('errorContainer').style.display = 'none';
+        document.getElementById('progressContainer').style.display = 'none';
+        document.getElementById('analyzeBtn').style.display = 'inline-flex';
+        currentAnalysisId = null;
+        if (progressInterval) {
+            clearInterval(progressInterval);
+            progressInterval = null;
+        }
+    }
+
+    // Funkcja do rozpoczęcia śledzenia postępu
+    function startProgressTracking(analysisId) {
+        currentAnalysisId = analysisId;
+        document.getElementById('analyzeBtn').style.display = 'none';
+        document.getElementById('progressContainer').style.display = 'block';
+        updateProgress(0, 'Przygotowywanie analizy...', 0);
+        
+        // Pierwsze sprawdzenie po 1 sekundzie
+        setTimeout(checkProgress, 1000);
+        
+        // Następnie sprawdzaj co 2 sekundy
+        progressInterval = setInterval(checkProgress, 2000);
+    }
+
+// ===== FUNKCJONALNOŚĆ ZMIANY TYPU ZGŁOSZENIA =====
+
+// Globalne zmienne dla zmiany typu
+let validatedIssues = [];
+let issueTypes = [];
+let requestTypes = [];
+let selectedIssueTypeId = null;
+let issueTypeUpdateResults = null;
+let requestTypeUpdateResults = null;
+let successfulIssueKeys = []; // Klucze, które pomyślnie zaktualizowano typ zgłoszenia
+
+// Ładowanie typów zgłoszeń przy inicjalizacji
+document.addEventListener('DOMContentLoaded', function() {
+    loadIssueTypes();
+});
+
+function loadIssueTypes() {
+    fetch('/api/get-issue-types')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                issueTypes = data.issue_types;
+                populateIssueTypeSelect();
+            } else {
+                console.error('Błąd ładowania typów zgłoszeń:', data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Błąd połączenia przy ładowaniu typów zgłoszeń:', error);
+        });
+}
+
+function loadRequestTypes(issueTypeId = null) {
+    const url = issueTypeId ? `/api/get-request-types?issue_type_id=${issueTypeId}` : '/api/get-request-types';
+    
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                requestTypes = data.request_types;
+                populateRequestTypeSelect();
+                console.log(`Załadowano ${requestTypes.length} typów żądań${issueTypeId ? ' dla typu zgłoszenia ' + issueTypeId : ''}`);
+            } else {
+                console.error('Błąd ładowania typów żądań:', data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Błąd połączenia przy ładowaniu typów żądań:', error);
+        });
+}
+
+function populateIssueTypeSelect() {
+    const select = document.getElementById('new_issue_type');
+    if (!select) return;
+    
+    // Wyczyść opcje (oprócz pierwszej "pozostaw bez zmian")
+    while (select.children.length > 1) {
+        select.removeChild(select.lastChild);
+    }
+    
+    // Dodaj opcje typów zgłoszeń
+    issueTypes.forEach(type => {
+        const option = document.createElement('option');
+        option.value = type.id;
+        option.textContent = type.name;
+        if (type.description) {
+            option.title = type.description;
+        }
+        select.appendChild(option);
+    });
+}
+
+function populateRequestTypeSelect() {
+    const select = document.getElementById('new_request_type');
+    if (!select) return;
+    
+    // Wyczyść wszystkie opcje
+    select.innerHTML = '';
+    
+    // Dodaj pierwszą opcję
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = requestTypes.length > 0 ? '-- Wybierz typ żądania --' : '-- Brak dostępnych typów żądań --';
+    select.appendChild(defaultOption);
+    
+    // Dodaj opcje typów żądań
+    requestTypes.forEach(type => {
+        const option = document.createElement('option');
+        option.value = type.id;
+        option.textContent = type.name;
+        if (type.description) {
+            option.title = type.description;
+        }
+        select.appendChild(option);
+    });
+}
+
+function validateIssues() {
+    // Sprawdź uwierzytelnienie administratora
+    if (!checkAdminAuth()) {
+        alert('Wymagane uwierzytelnienie administratora');
+        window.location.href = "{{ url_for('admin_login') }}";
+        return;
+    }
+    
+    const issueKeysText = document.getElementById('issue_keys').value.trim();
+    
+    if (!issueKeysText) {
+        alert('Proszę wprowadzić klucze zgłoszeń');
+        return;
+    }
+    
+    // Pokaż pasek postępu
+    showChangeTypeProgress(20, 'Sprawdzanie kluczy zgłoszeń...');
+    
+    // Przygotuj dane do wysłania
+    const formData = new FormData();
+    formData.append('issue_keys', issueKeysText);
+    
+    fetch('/api/validate-issues', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        hideChangeTypeProgress();
+        
+        if (data.success) {
+            validatedIssues = data.valid_issues;
+            displayValidationResults(data);
+            
+            if (data.valid_count > 0) {
+                showStep2();
+                showStep3();
+            } else {
+                showStep2();
+            }
+        } else {
+            alert('Błąd walidacji: ' + data.error);
+        }
+    })
+    .catch(error => {
+        hideChangeTypeProgress();
+        console.error('Błąd walidacji:', error);
+        alert('Błąd połączenia podczas walidacji zgłoszeń');
+    });
+}
+
+function displayValidationResults(data) {
+    const resultsDiv = document.getElementById('validation-results');
+    
+    let html = `
+        <div class="validation-summary">
+            <div class="summary-stats">
+                <div class="stat-item success">
+                    <span class="stat-number">${data.valid_count}</span>
+                    <span class="stat-label">Prawidłowe</span>
+                </div>
+                <div class="stat-item error">
+                    <span class="stat-number">${data.invalid_count}</span>
+                    <span class="stat-label">Nieprawidłowe</span>
+                </div>
+                <div class="stat-item total">
+                    <span class="stat-number">${data.total_keys}</span>
+                    <span class="stat-label">Łącznie</span>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Pokaż prawidłowe zgłoszenia
+    if (data.valid_count > 0) {
+        html += `
+            <div class="valid-issues-section">
+                <h4>✅ Prawidłowe zgłoszenia (${data.valid_count})</h4>
+                <div class="issues-table-wrapper">
+                    <table class="issues-table">
+                        <thead>
+                            <tr>
+                                <th>Klucz</th>
+                                <th>Tytuł</th>
+                                <th>Aktualny typ zgłoszenia</th>
+                                <th>Aktualny typ żądania</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+        `;
+        
+        data.valid_issues.forEach(issue => {
+            html += `
+                <tr>
+                    <td><strong>${issue.key}</strong></td>
+                    <td>${issue.summary.substring(0, 60)}${issue.summary.length > 60 ? '...' : ''}</td>
+                    <td>${issue.current_issue_type}</td>
+                    <td>${issue.current_request_type}</td>
+                </tr>
+            `;
+        });
+        
+        html += `
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Pokaż nieprawidłowe zgłoszenia
+    if (data.invalid_count > 0) {
+        html += `
+            <div class="invalid-issues-section">
+                <h4>❌ Nieprawidłowe klucze (${data.invalid_count})</h4>
+                <div class="invalid-keys">
+                    ${data.invalid_issues.map(key => `<span class="invalid-key">${key}</span>`).join('')}
+                </div>
+                <p class="help-text">Te klucze nie zostały znalezione w systemie Jira lub nie masz do nich dostępu.</p>
+            </div>
+        `;
+    }
+    
+    resultsDiv.innerHTML = html;
+}
+
+function updateIssueTypes() {
+    const newIssueTypeId = document.getElementById('new_issue_type').value;
+    
+    if (!newIssueTypeId) {
+        alert('Proszę wybrać typ zgłoszenia');
+        return;
+    }
+    
+    if (validatedIssues.length === 0) {
+        alert('Brak prawidłowych zgłoszeń do aktualizacji');
+        return;
+    }
+    
+    // Sprawdź autoryzację administratora
+    if (!checkAdminAuth()) {
+        alert('Ta operacja wymaga uprawnień administratora. Zaloguj się w panelu administratora.');
+        return;
+    }
+    
+    const issueKeys = validatedIssues.map(issue => issue.key);
+    selectedIssueTypeId = newIssueTypeId;
+    
+    // Pokaż pasek postępu
+    showChangeTypeProgress(30, 'Aktualizowanie typów zgłoszeń...');
+    
+    // Pobierz token CSRF
+    const csrfToken = document.querySelector('input[name="csrf_token"]')?.value;
+    
+    const requestData = {
+        issue_keys: issueKeys,
+        new_issue_type_id: newIssueTypeId
+    };
+    
+    fetch('/api/update-issue-types', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrfToken
+        },
+        body: JSON.stringify(requestData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        hideChangeTypeProgress();
+        
+        if (data.success) {
+            issueTypeUpdateResults = data.results;
+            successfulIssueKeys = data.results.success_issues || [];
+            displayIssueTypeResults(data.results);
+            showStep4();
+        } else {
+            alert('Błąd aktualizacji typu zgłoszenia: ' + data.error);
+        }
+    })
+    .catch(error => {
+        hideChangeTypeProgress();
+        console.error('Błąd aktualizacji typu zgłoszenia:', error);
+        alert('Błąd połączenia podczas aktualizacji typu zgłoszenia');
+    });
+}
+
+function updateRequestTypes() {
+    const newRequestTypeId = document.getElementById('new_request_type').value;
+    
+    if (!newRequestTypeId) {
+        alert('Proszę wybrać typ żądania');
+        return;
+    }
+    
+    if (successfulIssueKeys.length === 0) {
+        alert('Brak zgłoszeń z pomyślnie zaktualizowanym typem zgłoszenia');
+        return;
+    }
+    
+    // Sprawdź autoryzację administratora
+    if (!checkAdminAuth()) {
+        alert('Ta operacja wymaga uprawnień administratora. Zaloguj się w panelu administratora.');
+        return;
+    }
+    
+    // Pokaż pasek postępu
+    showChangeTypeProgress(60, 'Aktualizowanie typów żądań...');
+    
+    // Pobierz token CSRF
+    const csrfToken = document.querySelector('input[name="csrf_token"]')?.value;
+    
+    const requestData = {
+        issue_keys: successfulIssueKeys,
+        new_request_type_id: newRequestTypeId
+    };
+    
+    fetch('/api/update-request-types', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrfToken
+        },
+        body: JSON.stringify(requestData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        hideChangeTypeProgress();
+        
+        if (data.success) {
+            requestTypeUpdateResults = data.results;
+            displayFinalResults();
+            showStep6();
+        } else {
+            alert('Błąd aktualizacji typu żądania: ' + data.error);
+        }
+    })
+    .catch(error => {
+        hideChangeTypeProgress();
+        console.error('Błąd aktualizacji typu żądania:', error);
+        alert('Błąd połączenia podczas aktualizacji typu żądania');
+    });
+}
+
+function displayIssueTypeResults(results) {
+    const resultsDiv = document.getElementById('issue-type-results');
+    
+    let html = `
+        <div class="update-summary">
+            <div class="summary-stats">
+                <div class="stat-item success">
+                    <span class="stat-number">${results.success_count}</span>
+                    <span class="stat-label">Zaktualizowane</span>
+                </div>
+                <div class="stat-item error">
+                    <span class="stat-number">${results.failed_count}</span>
+                    <span class="stat-label">Błędy</span>
+                </div>
+                <div class="stat-item total">
+                    <span class="stat-number">${results.total}</span>
+                    <span class="stat-label">Łącznie</span>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Pokaż zaktualizowane zgłoszenia
+    if (results.success_count > 0) {
+        html += `
+            <div class="success-issues-section">
+                <h4>✅ Pomyślnie zaktualizowane typy zgłoszeń (${results.success_count})</h4>
+                <div class="success-issues">
+                    ${results.success_issues.map(key => 
+                        `<span class="success-issue">${key}</span>`
+                    ).join('')}
+                </div>
+            </div>
+        `;
+    }
+    
+    // Pokaż błędne zgłoszenia
+    if (results.failed_count > 0) {
+        html += `
+            <div class="failed-issues-section">
+                <h4>❌ Błędy aktualizacji typu zgłoszenia (${results.failed_count})</h4>
+                <div class="failed-issues">
+                    ${results.failed_issues.map(key => 
+                        `<span class="failed-issue">${key}</span>`
+                    ).join('')}
+                </div>
+            </div>
+        `;
+    }
+    
+    resultsDiv.innerHTML = html;
+}
+
+function displayFinalResults() {
+    const resultsDiv = document.getElementById('final-results');
+    
+    const totalIssueTypeSuccess = issueTypeUpdateResults?.success_count || 0;
+    const totalIssueTypeFailed = issueTypeUpdateResults?.failed_count || 0;
+    const totalRequestTypeSuccess = requestTypeUpdateResults?.success_count || 0;
+    const totalRequestTypeFailed = requestTypeUpdateResults?.failed_count || 0;
+    
+    let html = `
+        <div class="update-summary">
+            <h4>📊 Podsumowanie całej operacji</h4>
+            <div class="summary-stats">
+                <div class="stat-item success">
+                    <span class="stat-number">${totalIssueTypeSuccess}</span>
+                    <span class="stat-label">Typ zgłoszenia ✅</span>
+                </div>
+                <div class="stat-item success">
+                    <span class="stat-number">${totalRequestTypeSuccess}</span>
+                    <span class="stat-label">Typ żądania ✅</span>
+                </div>
+                <div class="stat-item error">
+                    <span class="stat-number">${totalIssueTypeFailed + totalRequestTypeFailed}</span>
+                    <span class="stat-label">Łączne błędy</span>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Szczegółowe wyniki
+    html += `
+        <div class="detailed-stats">
+            <div class="stat-row">
+                <span>Typ zgłoszenia - zaktualizowane:</span>
+                <span class="stat-value success">${totalIssueTypeSuccess}</span>
+            </div>
+            <div class="stat-row">
+                <span>Typ zgłoszenia - błędy:</span>
+                <span class="stat-value error">${totalIssueTypeFailed}</span>
+            </div>
+            <div class="stat-row">
+                <span>Typ żądania - zaktualizowane:</span>
+                <span class="stat-value success">${totalRequestTypeSuccess}</span>
+            </div>
+            <div class="stat-row">
+                <span>Typ żądania - błędy:</span>
+                <span class="stat-value error">${totalRequestTypeFailed}</span>
+            </div>
+        </div>
+    `;
+    
+    resultsDiv.innerHTML = html;
+}
+
+function clearForm() {
+    document.getElementById('issue_keys').value = '';
+    hideStep2();
+    hideStep3();
+    hideStep4();
+    hideStep5();
+    hideStep6();
+    validatedIssues = [];
+    selectedIssueTypeId = null;
+    issueTypeUpdateResults = null;
+    requestTypeUpdateResults = null;
+    successfulIssueKeys = [];
+}
+
+function goBackToStep1() {
+    hideStep3();
+    hideStep4();
+    hideStep5();
+    hideStep6();
+}
+
+function startNewUpdate() {
+    clearForm();
+}
+
+function proceedToRequestType() {
+    if (!selectedIssueTypeId) {
+        alert('Błąd: Brak wybranego typu zgłoszenia');
+        return;
+    }
+    
+    if (successfulIssueKeys.length === 0) {
+        alert('Brak zgłoszeń z pomyślnie zaktualizowanym typem zgłoszenia');
+        return;
+    }
+    
+    // Pokaż krok 5 i załaduj typy żądań dla wybranego typu zgłoszenia
+    showStep5();
+    loadRequestTypes(selectedIssueTypeId);
+}
+
+function skipRequestType() {
+    // Pomiń aktualizację typu żądania i przejdź do wyników
+    requestTypeUpdateResults = {
+        success_count: 0,
+        failed_count: 0,
+        success_issues: [],
+        failed_issues: []
+    };
+    displayFinalResults();
+    showStep6();
+}
+
+function showStep2() {
+    document.getElementById('step2').style.display = 'block';
+}
+
+function showStep3() {
+    document.getElementById('step3').style.display = 'block';
+}
+
+function showStep4() {
+    document.getElementById('step4').style.display = 'block';
+    hideStep1();
+    hideStep2();
+    hideStep3();
+}
+
+function showStep5() {
+    document.getElementById('step5').style.display = 'block';
+    hideStep1();
+    hideStep2();
+    hideStep3();
+    hideStep4();
+}
+
+function showStep6() {
+    document.getElementById('step6').style.display = 'block';
+    hideStep1();
+    hideStep2();
+    hideStep3();
+    hideStep4();
+    hideStep5();
+}
+
+function hideStep1() {
+    document.getElementById('step1').style.display = 'none';
+}
+
+function hideStep2() {
+    document.getElementById('step2').style.display = 'none';
+}
+
+function hideStep3() {
+    document.getElementById('step3').style.display = 'none';
+}
+
+function hideStep4() {
+    document.getElementById('step4').style.display = 'none';
+}
+
+function hideStep5() {
+    document.getElementById('step5').style.display = 'none';
+}
+
+function hideStep6() {
+    document.getElementById('step6').style.display = 'none';
+    document.getElementById('step1').style.display = 'block';
+}
+
+function showChangeTypeProgress(percentage, text) {
+    const progressContainer = document.getElementById('changeTypeProgress');
+    const progressFill = document.getElementById('changeTypeProgressFill');
+    const progressText = document.getElementById('changeTypeProgressText');
+    const progressPercentage = document.getElementById('changeTypeProgressPercentage');
+    
+    progressContainer.style.display = 'block';
+    progressFill.style.width = percentage + '%';
+    progressText.textContent = text;
+    progressPercentage.textContent = Math.round(percentage) + '%';
+}
+
+function hideChangeTypeProgress() {
+    const progressContainer = document.getElementById('changeTypeProgress');
+    progressContainer.style.display = 'none';
+}
+
+function checkAdminAuth() {
+    // Sprawdź czy użytkownik jest zalogowany jako administrator
+    {% if session.get('admin_authenticated') %}
+        return true;
+    {% else %}
+        return false;
+    {% endif %}
+}
+</script>
+
+<style>
+/* Style dla paska postępu analizy - dopasowane do ciemnego motywu */
+.progress-container {
+    background: var(--primary-card-bg, #161b22);
+    border: 1px solid var(--border-color, #30363d);
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-medium, 0 8px 24px rgba(0, 0, 0, 0.4));
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.progress-header h3 {
+    margin: 0;
+    color: var(--text-primary, #c9d1d9);
+    font-size: 1.1em;
+    font-weight: 600;
+}
+
+#progressText {
+    color: var(--text-secondary, #8b949e);
+    font-size: 0.9em;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: var(--border-color, #30363d);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-blue, #58a6ff), var(--accent-green, #2ea043));
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 8px rgba(88, 166, 255, 0.3);
+}
+
+.progress-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85em;
+}
+
+#progressPercentage {
+    font-weight: 600;
+    color: var(--accent-blue, #58a6ff);
+}
+
+#progressEta {
+    color: var(--text-secondary, #8b949e);
+}
+
+.error-container {
+    background: var(--primary-card-bg, #161b22);
+    border: 1px solid var(--accent-red, #f85149);
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 24px;
+    text-align: center;
+    box-shadow: var(--shadow-medium, 0 8px 24px rgba(0, 0, 0, 0.4));
+}
+
+.error-header h3 {
+    margin: 0 0 16px 0;
+    font-size: 1.2em;
+    color: var(--accent-red, #f85149);
+    font-weight: 600;
+}
+
+.error-message {
+    color: var(--text-secondary, #8b949e);
+    margin-bottom: 20px;
+    padding: 16px;
+    background: rgba(248, 81, 73, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(248, 81, 73, 0.2);
+}
+
+.error-actions {
+    margin-top: 20px;
+}
+
+/* Usunięto animację glow, która nie pasuje do ciemnego motywu */
+</style>
+
+{% endblock %}
