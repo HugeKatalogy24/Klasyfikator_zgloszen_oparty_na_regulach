@@ -445,12 +445,12 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                 flash(escape('Brak danych do wyeksportowania. Proszę najpierw przeprowadzić analizę.'), 'error')
                 return redirect(url_for('index'))
             
-            # Sprawdzenie dostępnych kolumn - dodano request_type, telefon_do, it_buddy i jira_link
+            # Sprawdzenie dostępnych kolumn
             available_columns = [
                 'created', 'key', 'title', 'issue_type', 'site', 'site_name', 
                 'category', 'request_type', 'confidence', 'status', 'priority', 'last_update', 
                 'team', 'assignee', 'creator', 'organisation', 
-                'agent', 'reporter', 'telefon_do', 'it_buddy', 'jira_link'
+                'agent', 'reporter', 'jira_link'
             ]
             export_columns = [col for col in available_columns if col in df.columns]
             
@@ -491,20 +491,6 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                     df['site_name'] = 'Nieznana'
                 if 'site_name' not in export_columns:
                     export_columns.insert(5, 'site_name')  # Dodaj w odpowiednie miejsce
-
-            # Generowanie kolumny "telefon do" na podstawie tytułu
-            if 'title' in df.columns:
-                telefon_do_mask = df['title'].str.contains('telefon do', case=False, na=False)
-                df['telefon_do'] = telefon_do_mask.apply(lambda x: 'tak' if x else '')
-                if 'telefon_do' not in export_columns:
-                    export_columns.append('telefon_do')  # Dodaj na końcu
-
-            # Generowanie kolumny "it buddy" na podstawie tytułu
-            if 'title' in df.columns:
-                it_buddy_mask = df['title'].str.contains('it buddy', case=False, na=False)
-                df['it_buddy'] = it_buddy_mask.apply(lambda x: 'tak' if x else '')
-                if 'it_buddy' not in export_columns:
-                    export_columns.append('it_buddy')  # Dodaj na końcu
 
             # Generowanie kolumny "jira_link" z linkami do zgłoszeń Jira
             if 'key' in df.columns:
@@ -569,7 +555,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                 for col in export_df.select_dtypes(include=['object']).columns:
                     export_df[col] = export_df[col].astype(str).str.replace(r'[^\w\s\-.,:/()áćęłńóśźżĄĆĘŁŃÓŚŹŻ]', '', regex=True)
             
-            # Zmiana nazw kolumn na polskie - dodano request_type, telefon_do, it_buddy i jira_link
+            # Zmiana nazw kolumn na polskie
             column_mapping = {
                 'created': 'Data utworzenia',
                 'key': 'Klucz',
@@ -589,8 +575,6 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                 'organisation': 'Organizacja',
                 'agent': 'Agent',
                 'reporter': 'Zgłaszający',
-                'telefon_do': 'Telefon do',
-                'it_buddy': 'IT Buddy',
                 'jira_link': 'Link do Jira'
             }
             export_df.rename(columns=column_mapping, inplace=True)
@@ -673,12 +657,12 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                     # Fallback - ustaw wszystkie wartości na 0.0
                     export_df['Pewność klasyfikacji'] = 0.0
             
-            # Sortowanie kolumn dla lepszej czytelności - dodano 'Data', 'Godzina', 'Link do Jira', 'Typ żądania', 'Telefon do', 'IT Buddy'
+            # Sortowanie kolumn dla lepszej czytelności
             desired_order = [
                 'Data utworzenia', 'Data', 'Godzina', 'Link do Jira', 'Klucz', 'Tytuł', 'Typ zgłoszenia', 'Status', 'Priorytet',
                 'Numer restauracji', 'Nazwa restauracji', 'Dopasowana Reguła', 'Typ żądania', 'Pewność klasyfikacji',
                 'Ostatnia aktualizacja', 'Zespół', 'Przypisany do', 
-                'Utworzył', 'Zgłaszający', 'Organizacja', 'Agent', 'Telefon do', 'IT Buddy'
+                'Utworzył', 'Zgłaszający', 'Organizacja', 'Agent'
             ]
             existing_columns = [col for col in desired_order if col in export_df.columns]
             
@@ -784,62 +768,50 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
 
     def prepare_statistics(data):
         """Przygotowuje kluczowe statystyki do wyświetlenia."""
-        # Oblicz najpierw specjalne kategorie
-        telefon_do_count = 0
-        it_buddy_count = 0
+        # Łączna ilość zgłoszeń
+        total_issues = len(data)
         
-        if 'title' in data.columns and not data.empty:
-            telefon_do_mask = data['title'].str.contains('telefon do', case=False, na=False)
-            telefon_do_count = telefon_do_mask.sum()
-            
-            it_buddy_mask = data['title'].str.contains('it buddy', case=False, na=False)
-            it_buddy_count = it_buddy_mask.sum()
-        
-        # Łączna ilość zgłoszeń = wszystkie MINUS "telefon do" MINUS "it buddy"
-        raw_total_issues = len(data)
-        total_issues = raw_total_issues - telefon_do_count - it_buddy_count
-        
-        # Sklasyfikowane i pokrycie klasyfikacji odnoszą się do zmodyfikowanej liczby
-        # Filtruj dane wyłączając "telefon do" i "it buddy"
-        filtered_data = data.copy()
-        if 'title' in data.columns and not data.empty:
-            # Usuń zgłoszenia zawierające "telefon do" lub "it buddy"
-            telefon_do_mask = filtered_data['title'].str.contains('telefon do', case=False, na=False)
-            it_buddy_mask = filtered_data['title'].str.contains('it buddy', case=False, na=False)
-            filtered_data = filtered_data[~(telefon_do_mask | it_buddy_mask)]
-        
-        classified_count = len(filtered_data[filtered_data['category'] != 'inne'])
+        # Sklasyfikowane zgłoszenia (wszystkie oprócz kategorii 'inne')
+        classified_count = len(data[data['category'] != 'inne'])
         classification_rate = (classified_count / total_issues * 100) if total_issues > 0 else 0
         
-        # Statystyki kategorii na podstawie przefiltrowanych danych
-        top_problems = filtered_data['category'].value_counts().to_dict()
+        # Zmienna filtered_data dla kompatybilności z resztą kodu
+        filtered_data = data.copy()
         
-        # Statystyki typów zgłoszeń na podstawie przefiltrowanych danych
-        issue_type_stats = filtered_data['issue_type'].value_counts().to_dict()
+        # Statystyki kategorii
+        top_problems = data['category'].value_counts().to_dict()
         
-        # Statystyki statusów (jeśli kolumna istnieje) - na podstawie przefiltrowanych danych
+        # Statystyki typów zgłoszeń
+        issue_type_stats = data['issue_type'].value_counts().to_dict()
+        
+        # Statystyki statusów (jeśli kolumna istnieje)
         status_stats = {}
-        if 'status' in filtered_data.columns:
-            status_stats = filtered_data['status'].value_counts().to_dict()
+        if 'status' in data.columns:
+            status_stats = data['status'].value_counts().to_dict()
         
-        # Statystyki priorytetów (jeśli kolumna istnieje) - na podstawie przefiltrowanych danych
+        # Statystyki priorytetów (jeśli kolumna istnieje)
         priority_stats = {}
-        if 'priority' in filtered_data.columns:
-            priority_stats = filtered_data['priority'].value_counts().to_dict()
+        if 'priority' in data.columns:
+            priority_stats = data['priority'].value_counts().to_dict()
         
-        # Statystyki zespołów (jeśli kolumna istnieje) - na podstawie przefiltrowanych danych
+        # Statystyki zespołów (jeśli kolumna istnieje)
         team_stats = {}
-        if 'team' in filtered_data.columns:
-            team_stats = filtered_data['team'].value_counts().head(10).to_dict()  # Top 10 zespołów
+        if 'team' in data.columns:
+            team_stats = data['team'].value_counts().head(10).to_dict()  # Top 10 zespołów
         
-        # Dominujący typ zgłoszenia dla każdej kategorii - na podstawie przefiltrowanych danych
+        # Dominujący typ zgłoszenia dla każdej kategorii
         category_dominant_types = {}
         for category in top_problems.keys():
             if category != 'inne':
-                category_data = filtered_data[filtered_data['category'] == category]
+                category_data = data[data['category'] == category]
                 if not category_data.empty:
                     dominant_type = category_data['issue_type'].value_counts().idxmax()
                     category_dominant_types[category] = dominant_type
+        
+        # Wartości pewności klasyfikacji (confidence) dla wizualizacji
+        confidence_values = []
+        if 'confidence' in data.columns:
+            confidence_values = data['confidence'].dropna().tolist()
         
         # Oblicz rzeczywiste dni z danych (nie z zakresu dat)
         if 'created' in data.columns and not data.empty:
@@ -916,11 +888,8 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
         
         return {
             'total_issues': total_issues,
-            'raw_total_issues': raw_total_issues,
             'classified_count': classified_count,
             'classification_rate': classification_rate,
-            'telefon_do_count': telefon_do_count,
-            'it_buddy_count': it_buddy_count,
             'top_problems': top_problems,
             'issue_type_stats': issue_type_stats,
             'status_stats': status_stats,
@@ -928,7 +897,8 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
             'team_stats': team_stats,
             'category_dominant_types': category_dominant_types,
             'actual_days': actual_days,
-            'top_sites': top_sites
+            'top_sites': top_sites,
+            'confidence_values': confidence_values
         }
 
     @app.errorhandler(404)

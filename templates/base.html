@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Analizator wolumenu problemów - automatyczna klasyfikacja zgłoszeń Jira">
-    <meta name="author" content="IT Team">
+    <meta name="description" content="Aplikacja Klasyfikacji Zgłoszeń - automatyczna klasyfikacja zgłoszeń">
+    <meta name="author" content="Dominik Rochaczewski">
     <meta http-equiv="Content-Language" content="pl-PL">
     <meta name="locale" content="pl_PL">
-    <title>{% block title %}Analizator Problemów Jira{% endblock %}</title>
+    <title>{% block title %}Aplikacja Klasyfikacji Zgłoszeń{% endblock %}</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -118,5 +118,27 @@
     </script>
     
     {% block scripts %}{% endblock %}
+    
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div class="footer-content">
+            <p>Projekt Inżynierski 2026 - Dominik Rochaczewski</p>
+        </div>
+    </footer>
+    
+    <style>
+    .app-footer {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        color: #a0a0a0;
+        text-align: center;
+        padding: 20px;
+        margin-top: 40px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .app-footer .footer-content p {
+        margin: 0;
+        font-size: 0.9em;
+    }
+    </style>
 </body>
 </html>
