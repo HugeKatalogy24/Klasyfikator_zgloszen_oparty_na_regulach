@@ -1,6 +1,6 @@
 {
     "classification_rules": {
-        "BLAD_SQL_ZAMKNIECIA_DOBY": {
+        "POS - Błąd zamknięcia doby": {
             "keywords": [
                 "zamknięcie dnia",
                 "raport dobowy",
@@ -34,7 +34,7 @@
                 "excel"
             ]
         },
-        "BLAD_SYNCHRONIZACJI_RCP": {
+        "RCP - Błąd synchronizacji": {
             "keywords": [
                 "czas pracy",
                 "ewidencja",
@@ -67,7 +67,7 @@
                 "hasło"
             ]
         },
-        "ZAWIESZENIE_PROCESU_POS": {
+        "POS - Zawieszenie aplikacji": {
             "keywords": [
                 "system pos",
                 "aplikacja sprzedażowa",
@@ -100,7 +100,7 @@
                 "excel"
             ]
         },
-        "BLAD_RENDEROWANIA_GUI": {
+        "POS - Błąd interfejsu": {
             "keywords": [
                 "ikona ostrzegawcza",
                 "błąd graficzny",
@@ -132,7 +132,7 @@
                 "toner"
             ]
         },
-        "BLAD_KOMUNIKACJI_TERMINALA": {
+        "Terminal - Błąd komunikacji": {
             "keywords": [
                 "terminal płatniczy",
                 "pinpad",
@@ -164,7 +164,7 @@
                 "logowanie"
             ]
         },
-        "BLAD_PAMIECI_FISKALNEJ": {
+        "Drukarka fiskalna - Błąd pamięci": {
             "keywords": [
                 "drukarka fiskalna",
                 "moduł fiskalny",
@@ -196,7 +196,7 @@
                 "faktura"
             ]
         },
-        "BLAD_AUTORYZACJI_LDAP": {
+        "Dostęp - Błąd autoryzacji POS": {
             "keywords": [
                 "logowanie do pos",
                 "uprawnienia kasjera",
@@ -229,7 +229,7 @@
                 "vpn"
             ]
         },
-        "OPOZNIENIE_REPLIKACJI_DANYCH": {
+        "System - Opóźnienie replikacji": {
             "keywords": [
                 "synchronizacja danych",
                 "aktualizacja cennika",
@@ -260,7 +260,7 @@
                 "czas pracy"
             ]
         },
-        "AWARIA_DOTYKU_KIOSK": {
+        "Kiosk - Awaria dotyku": {
             "keywords": [
                 "kiosk samoobsługowy",
                 "ngk",
@@ -290,7 +290,7 @@
                 "kasa tradycyjna"
             ]
         },
-        "BLAD_KALIBRACJI_WAGI": {
+        "Waga - Błąd kalibracji": {
             "keywords": [
                 "waga systemowa",
                 "moduł ważący",
@@ -320,7 +320,7 @@
                 "towar"
             ]
         },
-        "BRAK_SYGNALU_VIDEO_KDS": {
+        "KDS - Brak sygnału wideo": {
             "keywords": [
                 "system kds",
                 "ekran kuchenny",
@@ -351,7 +351,7 @@
                 "biuro"
             ]
         },
-        "BLAD_API_APLIKACJI_MOBILNEJ": {
+        "Aplikacja mobilna - Błąd API": {
             "keywords": [
                 "aplikacja lojalnościowa",
                 "skaner qr",
@@ -382,7 +382,7 @@
                 "skaner ręczny"
             ]
         },
-        "NIEDOSTEPNOSC_SERWISU_LOYALTY": {
+        "Loyalty - Niedostępność serwisu": {
             "keywords": [
                 "system lojalnościowy",
                 "karta klienta",
@@ -412,7 +412,7 @@
                 "karta płatnicza"
             ]
         },
-        "BLAD_STEROWNIKA_SKANERA": {
+        "Skaner - Błąd sterownika": {
             "keywords": [
                 "czytnik kodów",
                 "skaner ręczny",
@@ -442,7 +442,7 @@
                 "skaner dokumentów"
             ]
         },
-        "BLAD_API_FAKTUROWANIA": {
+        "Faktury - Błąd API": {
             "keywords": [
                 "moduł faktur",
                 "wystawianie faktury",
@@ -472,7 +472,7 @@
                 "paragon"
             ]
         },
-        "AWARIA_ELEKTROMAGNESU_SZUFLADY": {
+        "Szuflada - Awaria otwarcia": {
             "keywords": [
                 "szuflada kasowa",
                 "elektromagnes",
@@ -501,11 +501,45 @@
             "forbidden": [
                 "sejf"
             ]
+        },
+        "RCP - Korekta czasu": {
+            "keywords": [
+                "korekta czasu",
+                "zapomniałem odbić",
+                "złe odbicie",
+                "edycja czasu",
+                "wniosek o korektę",
+                "błędne godziny"
+            ],
+            "min_score": 3,
+            "required_combinations": [
+                [
+                    "korekta",
+                    "czasu"
+                ],
+                [
+                    "edycja",
+                    "czasu"
+                ],
+                [
+                    "złe",
+                    "odbicie"
+                ],
+                [
+                    "wniosek",
+                    "korektę"
+                ]
+            ],
+            "forbidden": [
+                "błąd synchronizacji",
+                "awaria",
+                "czytnik"
+            ]
         }
     },
     "metadata": {
-        "last_updated": "2025-11-29T13:51:40.288881",
+        "last_updated": "2025-12-02T21:09:31.247889",
         "version": "2.0",
-        "rules_count": 16
+        "rules_count": 17
     }
 }

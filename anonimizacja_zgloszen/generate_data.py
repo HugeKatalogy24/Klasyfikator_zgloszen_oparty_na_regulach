@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 
 # Konfiguracja
 OUTPUT_DIR = os.path.dirname(os.path.abspath(__file__))
-EXCEL_FILENAME = os.path.join(OUTPUT_DIR, 'zgloszenia_testowe_v8.xlsx')
+EXCEL_FILENAME = os.path.join(OUTPUT_DIR, 'zgloszenia_testowe_v10.xlsx')
 JSON_FILENAME = os.path.join(OUTPUT_DIR, 'test_rules.json')
 
 START_DATE = datetime(2025, 11, 1)
@@ -107,7 +107,8 @@ SUFFIXES = [
 
 # Słownik kategorii ZNANYCH (Specyficzne błędy/symptomy zamiast ogólnych grup)
 KNOWN_CATEGORIES = {
-    "BLAD_SQL_ZAMKNIECIA_DOBY": {  # Dawniej POS_EOD_DB_ERROR
+    "POS - Błąd zamknięcia doby": {
+        "type": "[System] Incident",
         "min_score": 3,
         "keywords": [
             "zamknięcie dnia", "raport dobowy", "zamknięcie doby", "z-report", 
@@ -126,7 +127,8 @@ KNOWN_CATEGORIES = {
             ["komunikat: Database Locked", "brak wydruku potwierdzenia", "proces zatrzymuje się na 90%"]
         ]
     },
-    "BLAD_SYNCHRONIZACJI_RCP": {  # Dawniej RCP_SYNC_FAILURE
+    "RCP - Błąd synchronizacji": {
+        "type": "[System] Incident",
         "min_score": 3,
         "keywords": [
             "czas pracy", "ewidencja", "odbicie karty", "rejestracja czasu", 
@@ -145,7 +147,8 @@ KNOWN_CATEGORIES = {
             ["karta pracownicza nie została zaczytana", "system nie uwzględnił nadgodzin", "błędna data w raporcie"]
         ]
     },
-    "ZAWIESZENIE_PROCESU_POS": {  # Dawniej POS_APP_FREEZE
+    "POS - Zawieszenie aplikacji": {
+        "type": "[System] Incident",
         "min_score": 3,
         "keywords": [
             "system pos", "aplikacja sprzedażowa", "zawieszenie systemu", 
@@ -164,7 +167,8 @@ KNOWN_CATEGORIES = {
             ["wymagany twardy reset", "wyciek pamięci RAM", "aplikacja zamknęła się samoistnie"]
         ]
     },
-    "BLAD_RENDEROWANIA_GUI": {  # Dawniej GUI_RENDER_ERROR
+    "POS - Błąd interfejsu": {
+        "type": "[System] Incident",
         "min_score": 3,
         "keywords": [
             "ikona ostrzegawcza", "błąd graficzny", "interfejs użytkownika", 
@@ -183,7 +187,8 @@ KNOWN_CATEGORIES = {
             ["kod błędu GUI-102", "pojawia się po zalogowaniu", "problem sterownika graficznego"]
         ]
     },
-    "BLAD_KOMUNIKACJI_TERMINALA": {  # Dawniej PED_CONNECTION_FAIL
+    "Terminal - Błąd komunikacji": {
+        "type": "[System] Incident",
         "min_score": 3,
         "keywords": [
             "terminal płatniczy", "pinpad", "transakcja odrzucona", 
@@ -202,7 +207,8 @@ KNOWN_CATEGORIES = {
             ["kod błędu ECR-TIMEOUT", "brak sygnału", "nie drukuje potwierdzenia"]
         ]
     },
-    "BLAD_PAMIECI_FISKALNEJ": {  # Dawniej FISCAL_MEM_ERROR
+    "Drukarka fiskalna - Błąd pamięci": {
+        "type": "[System] Incident",
         "min_score": 3,
         "keywords": [
             "drukarka fiskalna", "moduł fiskalny", "brak wydruku paragonu", 
@@ -221,7 +227,8 @@ KNOWN_CATEGORIES = {
             ["dioda Error świeci ciągle", "nie można zafiskalizować transakcji", "paragon nie wysuwa się"]
         ]
     },
-    "BLAD_AUTORYZACJI_LDAP": {  # Dawniej AUTH_LDAP_ERROR
+    "Dostęp - Błąd autoryzacji POS": {
+        "type": "[System] Service request",
         "min_score": 3,
         "keywords": [
             "logowanie do pos", "uprawnienia kasjera", "błąd autoryzacji", 
@@ -235,12 +242,13 @@ KNOWN_CATEGORIES = {
             ["logowanie", "pos"]
         ],
         "components": [
-            ["Błąd autoryzacji użytkownika LDAP na POS", "Zablokowane konto kasjera - przekroczona liczba prób", "Brak propagacji uprawnień do stanowiska", "Pętla logowania - błąd tokena sesji"],
+            ["Zablokowane konto kasjera - przekroczona liczba prób", "Prośba o reset hasła użytkownika POS", "Brak uprawnień do funkcji kierowniczych", "Konto użytkownika wygasło"],
             ["użytkownik {name}", "stanowisko {n}"],
             ["komunikat: Invalid Credentials", "karta magnetyczna nieaktywna", "wymagany reset uprawnień"]
         ]
     },
-    "OPOZNIENIE_REPLIKACJI_DANYCH": {  # Dawniej DATA_REPLICATION_LAG
+    "System - Opóźnienie replikacji": {
+        "type": "[System] Incident",
         "min_score": 3,
         "keywords": [
             "synchronizacja danych", "aktualizacja cennika", "błąd cen", 
@@ -259,7 +267,8 @@ KNOWN_CATEGORIES = {
             ["ceny nie zaktualizowały się", "brak pozycji promocyjnych", "błąd wersji bazy danych"]
         ]
     },
-    "AWARIA_DOTYKU_KIOSK": {  # Dawniej KIOSK_TOUCH_FAIL
+    "Kiosk - Awaria dotyku": {
+        "type": "[System] Incident",
         "min_score": 3,
         "keywords": [
             "kiosk samoobsługowy", "ngk", "ekran dotykowy kiosku", 
@@ -278,7 +287,8 @@ KNOWN_CATEGORIES = {
             ["wymagany serwis on-site", "błąd krytyczny aplikacji", "nie przyjmuje zamówień"]
         ]
     },
-    "BLAD_KALIBRACJI_WAGI": {  # Dawniej SCALE_CALIBRATION_ERR
+    "Waga - Błąd kalibracji": {
+        "type": "[System] Incident",
         "min_score": 3,
         "keywords": [
             "waga systemowa", "moduł ważący", "błąd tarowania", 
@@ -297,7 +307,8 @@ KNOWN_CATEGORIES = {
             ["wymagana ponowna kalibracja", "wartość ujemna na wyświetlaczu", "blokuje sprzedaż produktów ważonych"]
         ]
     },
-    "BRAK_SYGNALU_VIDEO_KDS": {  # Dawniej KDS_VIDEO_SIGNAL_LOST
+    "KDS - Brak sygnału wideo": {
+        "type": "[System] Incident",
         "min_score": 3,
         "keywords": [
             "system kds", "ekran kuchenny", "kontroler wideo", 
@@ -316,7 +327,8 @@ KNOWN_CATEGORIES = {
             ["zamówienia nie pojawiają się", "brak sygnału wideo", "system offline"]
         ]
     },
-    "BLAD_API_APLIKACJI_MOBILNEJ": {  # Dawniej MOBILE_API_ERROR
+    "Aplikacja mobilna - Błąd API": {
+        "type": "[System] Incident",
         "min_score": 3,
         "keywords": [
             "aplikacja lojalnościowa", "skaner qr", "kupon mobilny", 
@@ -335,7 +347,8 @@ KNOWN_CATEGORIES = {
             ["nie nalicza rabatów", "zamówienie nie dociera do POS", "błąd serwera"]
         ]
     },
-    "NIEDOSTEPNOSC_SERWISU_LOYALTY": {  # Dawniej LOYALTY_SVC_DOWN
+    "Loyalty - Niedostępność serwisu": {
+        "type": "[System] Incident",
         "min_score": 3,
         "keywords": [
             "system lojalnościowy", "karta klienta", "punkty loyalty", 
@@ -354,7 +367,8 @@ KNOWN_CATEGORIES = {
             ["klient nie widzi punktów", "transakcja bez identyfikacji", "timeout połączenia"]
         ]
     },
-    "BLAD_STEROWNIKA_SKANERA": {  # Dawniej SCANNER_DRIVER_FAIL
+    "Skaner - Błąd sterownika": {
+        "type": "[System] Incident",
         "min_score": 3,
         "keywords": [
             "czytnik kodów", "skaner ręczny", "skaner stacjonarny", 
@@ -373,7 +387,8 @@ KNOWN_CATEGORIES = {
             ["nie świeci wiązka lasera", "błąd interfejsu USB", "przerywa połączenie"]
         ]
     },
-    "BLAD_API_FAKTUROWANIA": {  # Dawniej INVOICE_API_ERROR
+    "Faktury - Błąd API": {
+        "type": "[System] Incident",
         "min_score": 3,
         "keywords": [
             "moduł faktur", "wystawianie faktury", "nip nabywcy", 
@@ -392,7 +407,8 @@ KNOWN_CATEGORIES = {
             ["dokument nie został utworzony", "błędne dane kontrahenta", "zawieszenie modułu fakturowania"]
         ]
     },
-    "AWARIA_ELEKTROMAGNESU_SZUFLADY": {  # Dawniej DRAWER_SOLENOID_FAIL
+    "Szuflada - Awaria otwarcia": {
+        "type": "[System] Incident",
         "min_score": 3,
         "keywords": [
             "szuflada kasowa", "elektromagnes", "otwarcie szuflady", 
@@ -410,6 +426,26 @@ KNOWN_CATEGORIES = {
             ["stanowisko {n}", "klucz utknął w zamku"],
             ["nie można wydać reszty", "szuflada nie domyka się", "awaria mechaniczna"]
         ]
+    },
+    "RCP - Korekta czasu": {
+        "type": "[System] Service request",
+        "min_score": 3,
+        "keywords": [
+            "korekta czasu", "zapomniałem odbić", "złe odbicie", "edycja czasu",
+            "wniosek o korektę", "błędne godziny"
+        ],
+        "forbidden": ["błąd synchronizacji", "awaria", "czytnik"],
+        "required_combinations": [
+            ["korekta", "czasu"],
+            ["edycja", "czasu"],
+            ["złe", "odbicie"],
+            ["wniosek", "korektę"]
+        ],
+        "components": [
+            ["Prośba o korektę czasu pracy - zapomniane odbicie", "Wniosek o edycję godzin - błędnie wybrane wejście", "Prośba o anulowanie błędnego odbicia RCP", "Uzupełnienie brakującego czasu pracy"],
+            ["pracownik {name}", "data wczorajsza"],
+            ["zapomniałem karty", "odbicie prywatne zamiast służbowego", "pomyłka przy rejestracji"]
+        ]
     }
 }
 
@@ -417,34 +453,77 @@ KNOWN_CATEGORIES = {
 # Wyłącznie problemy IT, ale nie pasujące do powyższych kategorii Retail.
 # Brak "cieknących sufitów" i "braku papieru w toalecie".
 NOISE_CATEGORIES = {
-    "SPRZET_BIUROWY": [
-        "Awaria stacji dokującej laptopa", "Monitor zewnętrzny nie wykrywa sygnału", 
-        "Uszkodzona matryca w laptopie służbowym", "Mysz bezprzewodowa nie paruje się z odbiornikiem", 
-        "Klawiatura numeryczna nie działa", "Problem z zasilaczem do laptopa Dell", 
-        "Słuchawki z mikrofonem nie są wykrywane przez system", "Uszkodzone gniazdo LAN w ścianie", 
-        "Drukarka sieciowa w biurze offline", "Zacięcie papieru w urządzeniu wielofunkcyjnym",
-        "Brak tonera w drukarce korytarzowej", "Skaner dokumentów nie pobiera kartek"
-    ],
-    "OPROGRAMOWANIE_BIUROWE": [
-        "Błąd uruchamiania Microsoft Outlook", "Excel zawiesza się przy otwieraniu pliku", 
-        "Brak dostępu do dysku sieciowego Z:", "Problem z certyfikatem VPN", 
-        "Nieudana aktualizacja systemu Windows", "Błąd licencji pakietu Office", 
-        "Przeglądarka Chrome nie ładuje stron intranetu", "Program antywirusowy blokuje aplikację", 
-        "Teams nie łączy z spotkaniem", "Adobe Reader nie otwiera plików PDF"
-    ],
-    "KONTA_I_DOSTEPIE": [
-        "Zablokowane konto domenowe AD", "Wygasło hasło do systemu Windows", 
-        "Brak dostępu do folderu współdzielonego", "Prośba o nadanie uprawnień do grupy", 
-        "Problem z uwierzytelnianiem dwuskładnikowym (MFA)", "Konto pocztowe przepełnione", 
-        "Nie działa logowanie do portalu pracowniczego", "Błąd synchronizacji hasła"
-    ],
-    "SIEC_I_INFRASTRUKTURA": [
-        "Brak dostępu do sieci Wi-Fi", "Niska przepustowość łącza internetowego", 
-        "Telefon VoIP nie ma sygnału", "Błąd konfiguracji adresu IP", 
-        "Utrata połączenia z serwerem plików", "Awaria switcha w szafie rack", 
-        "Brak dostępu do zasobów zewnętrznych"
-    ]
+    "SPRZET_BIUROWY": {
+        "type": "[System] Incident",
+        "templates": [
+            "Awaria stacji dokującej laptopa", "Monitor zewnętrzny nie wykrywa sygnału", 
+            "Uszkodzona matryca w laptopie służbowym", "Mysz bezprzewodowa nie paruje się z odbiornikiem", 
+            "Klawiatura numeryczna nie działa", "Problem z zasilaczem do laptopa Dell", 
+            "Słuchawki z mikrofonem nie są wykrywane przez system", "Uszkodzone gniazdo LAN w ścianie", 
+            "Drukarka sieciowa w biurze offline", "Zacięcie papieru w urządzeniu wielofunkcyjnym",
+            "Brak tonera w drukarce korytarzowej", "Skaner dokumentów nie pobiera kartek"
+        ]
+    },
+    "OPROGRAMOWANIE_BIUROWE": {
+        "type": "[System] Incident",
+        "templates": [
+            "Błąd uruchamiania Microsoft Outlook", "Excel zawiesza się przy otwieraniu pliku", 
+            "Brak dostępu do dysku sieciowego Z:", "Problem z certyfikatem VPN", 
+            "Nieudana aktualizacja systemu Windows", "Błąd licencji pakietu Office", 
+            "Przeglądarka Chrome nie ładuje stron intranetu", "Program antywirusowy blokuje aplikację", 
+            "Teams nie łączy z spotkaniem", "Adobe Reader nie otwiera plików PDF"
+        ]
+    },
+    "KONTA_I_DOSTEPIE": {
+        "type": "[System] Service request",
+        "templates": [
+            "Zablokowane konto domenowe AD", "Wygasło hasło do systemu Windows", 
+            "Brak dostępu do folderu współdzielonego", "Prośba o nadanie uprawnień do grupy", 
+            "Problem z uwierzytelnianiem dwuskładnikowym (MFA)", "Konto pocztowe przepełnione", 
+            "Nie działa logowanie do portalu pracowniczego", "Błąd synchronizacji hasła"
+        ]
+    },
+    "SIEC_I_INFRASTRUKTURA": {
+        "type": "[System] Incident",
+        "templates": [
+            "Brak dostępu do sieci Wi-Fi", "Niska przepustowość łącza internetowego", 
+            "Telefon VoIP nie ma sygnału", "Błąd konfiguracji adresu IP", 
+            "Utrata połączenia z serwerem plików", "Awaria switcha w szafie rack", 
+            "Brak dostępu do zasobów zewnętrznych"
+        ]
+    }
 }
+
+def introduce_typos(text):
+    """Wprowadza realistyczne literówki (brak polskich znaków)"""
+    if not isinstance(text, str): return text
+    
+    # Szansa na wystąpienie literówki w całym tekście
+    if random.random() > 0.15: # 15% szans na modyfikację
+        return text
+        
+    chars = list(text)
+    for i, char in enumerate(chars):
+        # Zamiana polskich znaków na łacińskie (np. ł -> l, ń -> n)
+        if char in 'ąęćłńóśźżĄĘĆŁŃÓŚŹŻ':
+            if random.random() < 0.3: # 30% szans na zmianę konkretnego znaku
+                replacements = {
+                    'ą': 'a', 'ć': 'c', 'ę': 'e', 'ł': 'l', 'ń': 'n', 
+                    'ó': 'o', 'ś': 's', 'ź': 'z', 'ż': 'z',
+                    'Ą': 'A', 'Ć': 'C', 'Ę': 'E', 'Ł': 'L', 'Ń': 'N',
+                    'Ó': 'O', 'Ś': 'S', 'Ź': 'Z', 'Ż': 'Z'
+                }
+                chars[i] = replacements.get(char, char)
+    
+    return "".join(chars)
+
+def lowercase_start(text):
+    """Zmienia pierwszą literę na małą"""
+    if not isinstance(text, str) or len(text) == 0: return text
+    
+    if random.random() < 0.15: # 15% szans na małą literę na początku
+        return text[0].lower() + text[1:]
+    return text
 
 def generate_dynamic_description(category_key):
     """Buduje unikalne zdanie z komponentów dla danej kategorii"""
@@ -484,8 +563,9 @@ def generate_dynamic_description(category_key):
 
 def generate_noise_description():
     """Generuje zgłoszenie typu szum (Profesjonalne IT)"""
-    noise_type = random.choice(list(NOISE_CATEGORIES.keys()))
-    base_template = random.choice(NOISE_CATEGORIES[noise_type])
+    noise_key = random.choice(list(NOISE_CATEGORIES.keys()))
+    noise_data = NOISE_CATEGORIES[noise_key]
+    base_template = random.choice(noise_data["templates"])
     
     parts = []
     if random.random() > 0.8:
@@ -496,7 +576,7 @@ def generate_noise_description():
     if random.random() > 0.8:
         parts.append(random.choice(SUFFIXES))
         
-    return " ".join(parts)
+    return " ".join(parts), noise_data["type"]
 
 def generate_dataset():
     """Główna funkcja generująca dane z weryfikacją punktacji"""
@@ -516,11 +596,13 @@ def generate_dataset():
             
             score = 0
             confidence = 0.0
+            issue_type = "[System] Incident" # Domyślnie
             
             if is_known:
                 category_key = random.choice(list(KNOWN_CATEGORIES.keys()))
                 rule = KNOWN_CATEGORIES[category_key]
                 min_score = rule.get('min_score', 3)
+                issue_type = rule.get('type', "[System] Incident")
                 
                 # Próba wygenerowania tytułu spełniającego reguły
                 attempts = 0
@@ -543,13 +625,16 @@ def generate_dataset():
                 category_label = category_key
                 confidence = min(0.9, 0.6 + score * 0.1)
             else:
-                title = generate_noise_description()
+                title, issue_type = generate_noise_description()
                 category_label = "Inne"
                 score = 0
                 confidence = 0.0
             
-            # Typ zgłoszenia
-            issue_type = "Incydent"
+            # --- HUMANIZACJA (LITERÓWKI I MAŁE LITERY) ---
+            # Aplikujemy PO wyliczeniu punktacji, ponieważ normalize_text w classifier.py
+            # i tak usuwa polskie znaki i zmienia wielkość liter, więc wynik się nie zmieni.
+            title = introduce_typos(title)
+            title = lowercase_start(title)
             
             # Data utworzenia
             hour = random.choices(
@@ -566,7 +651,7 @@ def generate_dataset():
             data.append({
                 "ID zgłoszenia": current_id,
                 "Tytuł zgłoszenia": title,
-                "Dopasowana kategoria": category_label,
+                "Dopasowana reguła": category_label,
                 "Typ zgłoszenia": issue_type,
                 "Data utworzenia zgłoszenia": creation_time,
                 "Oczekiwany wynik": score,
