@@ -9,7 +9,8 @@ from datetime import datetime, timedelta
 
 # Konfiguracja
 OUTPUT_DIR = os.path.dirname(os.path.abspath(__file__))
-EXCEL_FILENAME = os.path.join(OUTPUT_DIR, 'zgloszenia_testowe_v10.xlsx')
+EXCEL_FILENAME = os.path.join(OUTPUT_DIR, 'zgloszenia_testowe_v19.xlsx')
+CSV_FILENAME = os.path.join(OUTPUT_DIR, 'zgloszenia_testowe_v19.csv')
 JSON_FILENAME = os.path.join(OUTPUT_DIR, 'test_rules.json')
 
 START_DATE = datetime(2025, 11, 1)
@@ -109,342 +110,566 @@ SUFFIXES = [
 KNOWN_CATEGORIES = {
     "POS - Błąd zamknięcia doby": {
         "type": "[System] Incident",
+        "priority": "High",
+        "request_type": "Report a system problem",
         "min_score": 3,
         "keywords": [
-            "zamknięcie dnia", "raport dobowy", "zamknięcie doby", "z-report", 
-            "fiskalizacja doby", "procedura zamknięcia"
+            "zamknięcie", "doba", "raport", "z-report", "fiskalizacja", "dobowy"
         ],
         "forbidden": ["drukarka biurowa", "faktura", "excel"],
         "required_combinations": [
             ["zamknięcie", "dnia"],
             ["raport", "dobowy"],
             ["błąd", "zamknięcia"],
-            ["z-report", "błąd"]
+            ["z-report", "błąd"],
+            ["zamknięcie", "doby"]
         ],
         "components": [
             ["Błąd krytyczny bazy danych podczas zamknięcia dnia", "Niepowodzenie generowania raportu dobowego - timeout", "System zawiesza się przy zamykaniu doby (SQL Error)", "Błąd spójności danych przy Z-Report"],
             ["na stanowisku POS {n}", "na głównej kasie", "w systemie centralnym"],
             ["komunikat: Database Locked", "brak wydruku potwierdzenia", "proces zatrzymuje się na 90%"]
+        ],
+        "actions": [
+            "Wykonano restart usługi bazy danych SQL na serwerze lokalnym.",
+            "Przeprowadzono ręczne wymuszenie generowania raportu Z z poziomu narzędzi administracyjnych.",
+            "Oczyszczono pliki tymczasowe transakcji i ponowiono proces zamknięcia.",
+            "Zrestartowano stanowisko POS i zweryfikowano spójność bazy danych."
+        ],
+        "summaries": [
+            "Raport dobowy wygenerował się poprawnie po restarcie usług.",
+            "Problem rozwiązany, zamknięcie dnia zakończone sukcesem.",
+            "Wymagana była interwencja w strukturę bazy danych, system działa stabilnie.",
+            "Błąd jednorazowy, po ponowieniu procedury raport wydrukował się."
         ]
     },
     "RCP - Błąd synchronizacji": {
         "type": "[System] Incident",
+        "priority": "Medium",
+        "request_type": "Report a system problem",
         "min_score": 3,
         "keywords": [
-            "czas pracy", "ewidencja", "odbicie karty", "rejestracja czasu", 
-            "korekta godzin", "RCP"
+            "rcp", "ewidencja", "odbicie", "czas", "synchronizacja", "czytnik"
         ],
-        "forbidden": ["logowanie do windows", "hasło"],
+        "forbidden": ["logowanie do windows", "hasło", "korekta"],
         "required_combinations": [
             ["czas", "pracy"],
             ["odbicie", "karty"],
             ["rejestracja", "czasu"],
-            ["błąd", "rcp"]
+            ["błąd", "rcp"],
+            ["synchronizacja", "rcp"]
         ],
         "components": [
             ["Błąd synchronizacji ewidencji czasu pracy z serwerem", "Czytnik RCP nie przesyła odbić do systemu", "Nieprawidłowe naliczenie godzin - błąd algorytmu", "Brak rejestracji wejścia mimo poprawnego odbicia"],
             ["dla pracownika {name}", "dotyczy całego zespołu", "błąd systemowy"],
             ["karta pracownicza nie została zaczytana", "system nie uwzględnił nadgodzin", "błędna data w raporcie"]
+        ],
+        "actions": [
+            "Zrestartowano urządzenie RCP (hard reset).",
+            "Wymuszono ręczną synchronizację danych z serwerem centralnym.",
+            "Sprawdzono konfigurację sieciową czytnika, przywrócono połączenie.",
+            "Zaktualizowano firmware czytnika RCP do najnowszej wersji."
+        ],
+        "summaries": [
+            "Synchronizacja przywrócona, brakujące odbicia pojawiły się w systemie.",
+            "Urządzenie działa poprawnie, test karty pracowniczej pozytywny.",
+            "Problem wynikał z chwilowego braku sieci, dane uzupełnione.",
+            "Korekta godzin została wprowadzona, system przeliczył czas pracy."
         ]
     },
     "POS - Zawieszenie aplikacji": {
         "type": "[System] Incident",
+        "priority": "High",
+        "request_type": "Report a system problem",
         "min_score": 3,
         "keywords": [
-            "system pos", "aplikacja sprzedażowa", "zawieszenie systemu", 
-            "brak reakcji", "zamrożenie ekranu"
+            "pos", "zawieszenie", "aplikacja", "sprzedaż", "ekran", "freeze"
         ],
-        "forbidden": ["internet", "outlook", "excel"],
+        "forbidden": ["internet", "outlook", "excel", "kiosk"],
         "required_combinations": [
             ["system", "pos"],
             ["zawieszenie", "systemu"],
             ["brak", "reakcji"],
-            ["zamrożenie", "ekranu"]
+            ["zamrożenie", "ekranu"],
+            ["aplikacja", "sprzedażowa"]
         ],
         "components": [
             ["Całkowite zawieszenie procesu aplikacji sprzedażowej", "Aplikacja POS przestała odpowiadać (Not Responding)", "Brak reakcji interfejsu na dotyk - freeze", "Czarny ekran na stanowisku sprzedażowym - proces tła działa"],
             ["stanowisko nr {n}", "wszystkie kasy", "terminal kasjerski"],
             ["wymagany twardy reset", "wyciek pamięci RAM", "aplikacja zamknęła się samoistnie"]
+        ],
+        "actions": [
+            "Zabito proces aplikacji POS w menedżerze zadań i uruchomiono ponownie.",
+            "Wykonano pełny restart stanowiska kasowego.",
+            "Oczyszczono pamięć podręczną aplikacji i zaktualizowano sterowniki dotyku.",
+            "Przeinstalowano aplikację sprzedażową na stanowisku."
+        ],
+        "summaries": [
+            "Aplikacja działa płynnie po restarcie.",
+            "Stanowisko przywrócone do pracy, brak ponownych zawieszeń.",
+            "Problem rozwiązany, zalecana obserwacja wydajności.",
+            "Usunięto przyczynę wycieku pamięci, system stabilny."
         ]
     },
     "POS - Błąd interfejsu": {
         "type": "[System] Incident",
+        "priority": "Medium",
+        "request_type": "Report a system problem",
         "min_score": 3,
         "keywords": [
-            "ikona ostrzegawcza", "błąd graficzny", "interfejs użytkownika", 
-            "komunikat ekranowy", "GUI"
+            "interfejs", "gui", "ikona", "grafika", "ekran", "wyświetlanie"
         ],
-        "forbidden": ["drukarka", "toner"],
+        "forbidden": ["drukarka", "toner", "kiosk"],
         "required_combinations": [
             ["błąd", "graficzny"],
             ["ikona", "ostrzegawcza"],
             ["interfejs", "użytkownika"],
-            ["błąd", "gui"]
+            ["błąd", "gui"],
+            ["komunikat", "ekranowy"]
         ],
         "components": [
             ["Błąd renderowania ikon na pasku statusu", "Artefakty graficzne w interfejsie użytkownika", "Mrugający komunikat błędu UI na ekranie głównym", "Zniekształcony layout przycisków funkcyjnych"],
             ["zasłania przyciski funkcyjne", "uniemożliwia pracę", "na ekranie logowania"],
             ["kod błędu GUI-102", "pojawia się po zalogowaniu", "problem sterownika graficznego"]
+        ],
+        "actions": [
+            "Przeładowano interfejs użytkownika (UI Reload).",
+            "Zaktualizowano sterowniki karty graficznej na terminalu POS.",
+            "Zmieniono rozdzielczość ekranu i przywrócono ustawienia domyślne.",
+            "Wyczyszczono cache graficzny aplikacji."
+        ],
+        "summaries": [
+            "Interfejs wyświetla się poprawnie, artefakty zniknęły.",
+            "Problem rozwiązany po aktualizacji sterowników.",
+            "Przyciski funkcyjne są widoczne i aktywne.",
+            "Błąd graficzny ustąpił po restarcie aplikacji."
         ]
     },
     "Terminal - Błąd komunikacji": {
         "type": "[System] Incident",
+        "priority": "High",
+        "request_type": "Report broken hardware",
         "min_score": 3,
         "keywords": [
-            "terminal płatniczy", "pinpad", "transakcja odrzucona", 
-            "brak komunikacji z bankiem", "autoryzacja"
+            "terminal", "pinpad", "płatność", "karta", "autoryzacja", "transakcja"
         ],
-        "forbidden": ["karta pracownicza", "logowanie"],
+        "forbidden": ["karta pracownicza", "logowanie", "lojalnościowa"],
         "required_combinations": [
             ["terminal", "płatniczy"],
             ["transakcja", "odrzucona"],
             ["brak", "komunikacji"],
-            ["błąd", "autoryzacji"]
+            ["błąd", "autoryzacji"],
+            ["odrzucenie", "karty"]
         ],
         "components": [
             ["Utrata komunikacji z terminalem płatniczym (PED)", "Odrzucenie transakcji - błąd połączenia TCP/IP", "Pinpad nie otrzymuje zasilania z portu USB", "Błąd inicjalizacji protokołu płatniczego"],
             ["model Verifone", "model Ingenico", "na kasie nr {n}"],
             ["kod błędu ECR-TIMEOUT", "brak sygnału", "nie drukuje potwierdzenia"]
+        ],
+        "actions": [
+            "Zrestartowano terminal płatniczy (miękki reset).",
+            "Sprawdzono i dociśnięto okablowanie terminala.",
+            "Skonfigurowano ponownie adres IP terminala w ustawieniach POS.",
+            "Wykonano test połączenia z hostem autoryzacyjnym."
+        ],
+        "summaries": [
+            "Komunikacja z terminalem przywrócona, transakcja testowa OK.",
+            "Terminal loguje się do sieci poprawnie.",
+            "Problem z kablem USB rozwiązany, zasilanie przywrócone.",
+            "Autoryzacja kart działa bez opóźnień."
         ]
     },
     "Drukarka fiskalna - Błąd pamięci": {
         "type": "[System] Incident",
+        "priority": "High",
+        "request_type": "Report broken hardware",
         "min_score": 3,
         "keywords": [
-            "drukarka fiskalna", "moduł fiskalny", "brak wydruku paragonu", 
-            "błąd pamięci"
+            "drukarka", "fiskalna", "paragon", "pamięć", "moduł", "wydruk"
         ],
         "forbidden": ["drukarka sieciowa", "biurowa", "faktura"],
         "required_combinations": [
             ["drukarka", "fiskalna"],
             ["błąd", "pamięci"],
             ["brak", "wydruku"],
-            ["moduł", "fiskalny"]
+            ["moduł", "fiskalny"],
+            ["awaria", "drukarki"]
         ],
         "components": [
             ["Błąd sumy kontrolnej pamięci fiskalnej", "Awaria mechanizmu tnącego w drukarce fiskalnej", "Zablokowany bufor wydruku fiskalnego", "Błąd komunikacji RS232 z drukarką fiskalną"],
             ["stanowisko {n}", "drukarka Epson", "drukarka Posnet"],
             ["dioda Error świeci ciągle", "nie można zafiskalizować transakcji", "paragon nie wysuwa się"]
+        ],
+        "actions": [
+            "Wykonano reset sprzętowy drukarki fiskalnej.",
+            "Odblokowano mechanizm tnący i usunięto zacięty papier.",
+            "Sprawdzono połączenie kablowe RS232/USB.",
+            "Wezwano serwis zewnętrzny producenta drukarki."
+        ],
+        "summaries": [
+            "Drukarka fiskalna gotowa do pracy, paragon testowy wydrukowany.",
+            "Błąd pamięci ustąpił po restarcie.",
+            "Mechanizm odblokowany, drukarka nie zgłasza błędów.",
+            "Zgłoszenie przekazane do serwisu zewnętrznego."
         ]
     },
     "Dostęp - Błąd autoryzacji POS": {
         "type": "[System] Service request",
+        "priority": "Medium",
+        "request_type": "Report a system problem",
         "min_score": 3,
         "keywords": [
-            "logowanie do pos", "uprawnienia kasjera", "błąd autoryzacji", 
-            "konto użytkownika", "dostęp zablokowany"
+            "logowanie", "hasło", "uprawnienia", "konto", "dostęp", "autoryzacja"
         ],
-        "forbidden": ["domena", "windows", "vpn"],
+        "forbidden": ["domena", "windows", "vpn", "terminal"],
         "required_combinations": [
             ["błąd", "autoryzacji"],
             ["konto", "użytkownika"],
             ["dostęp", "zablokowany"],
-            ["logowanie", "pos"]
+            ["logowanie", "pos"],
+            ["reset", "hasła"]
         ],
         "components": [
             ["Zablokowane konto kasjera - przekroczona liczba prób", "Prośba o reset hasła użytkownika POS", "Brak uprawnień do funkcji kierowniczych", "Konto użytkownika wygasło"],
             ["użytkownik {name}", "stanowisko {n}"],
             ["komunikat: Invalid Credentials", "karta magnetyczna nieaktywna", "wymagany reset uprawnień"]
+        ],
+        "actions": [
+            "Zresetowano hasło użytkownika w systemie centralnym.",
+            "Odblokowano konto po weryfikacji tożsamości.",
+            "Nadano brakujące uprawnienia kierownicze.",
+            "Przeprogramowano kartę magnetyczną użytkownika."
+        ],
+        "summaries": [
+            "Użytkownik zalogował się poprawnie nowym hasłem.",
+            "Dostęp przywrócony, uprawnienia zaktualizowane.",
+            "Konto odblokowane, karta działa.",
+            "Problem rozwiązany, użytkownik może pracować."
         ]
     },
     "System - Opóźnienie replikacji": {
         "type": "[System] Incident",
+        "priority": "Medium",
+        "request_type": "Report a system problem",
         "min_score": 3,
         "keywords": [
-            "synchronizacja danych", "aktualizacja cennika", "błąd cen", 
-            "replikacja", "baza produktów"
+            "replikacja", "synchronizacja", "cennik", "ceny", "baza", "aktualizacja"
         ],
-        "forbidden": ["czas pracy"],
+        "forbidden": ["czas pracy", "rcp"],
         "required_combinations": [
             ["synchronizacja", "danych"],
             ["aktualizacja", "cennika"],
             ["błąd", "cen"],
-            ["replikacja", "danych"]
+            ["replikacja", "danych"],
+            ["baza", "produktów"]
         ],
         "components": [
             ["Opóźnienie replikacji cennika z serwera centralnego", "Niespójność sumy kontrolnej bazy produktów", "Błąd procedury aktualizacji PLU", "Zatrzymany serwis synchronizacji danych"],
             ["na wszystkich stanowiskach", "kasa nr {n}"],
             ["ceny nie zaktualizowały się", "brak pozycji promocyjnych", "błąd wersji bazy danych"]
+        ],
+        "actions": [
+            "Zrestartowano usługę replikacji danych.",
+            "Wymuszono pełną synchronizację bazy produktów.",
+            "Sprawdzono logi serwera i usunięto blokadę transakcji.",
+            "Pobrano paczkę aktualizacyjną ręcznie."
+        ],
+        "summaries": [
+            "Cennik zaktualizowany na wszystkich stanowiskach.",
+            "Replikacja przebiegła pomyślnie, ceny są poprawne.",
+            "Baza produktów spójna z systemem centralnym.",
+            "Problem rozwiązany, promocje są widoczne."
         ]
     },
     "Kiosk - Awaria dotyku": {
         "type": "[System] Incident",
+        "priority": "Medium",
+        "request_type": "Report broken hardware",
         "min_score": 3,
         "keywords": [
-            "kiosk samoobsługowy", "ngk", "ekran dotykowy kiosku", 
-            "terminal kiosku"
+            "kiosk", "dotyk", "ekran", "ngk", "samoobsługowy", "terminal"
         ],
-        "forbidden": ["kasa tradycyjna"],
+        "forbidden": ["kasa tradycyjna", "pos"],
         "required_combinations": [
             ["kiosk", "samoobsługowy"],
             ["ekran", "dotykowy"],
             ["terminal", "kiosku"],
-            ["awaria", "kiosku"]
+            ["awaria", "kiosku"],
+            ["nie", "działa", "dotyk"]
         ],
         "components": [
             ["Awaria kontrolera dotyku w kiosku samoobsługowym", "Zawieszenie aplikacji KioskApp.exe", "Błąd inicjalizacji urządzenia płatniczego w kiosku", "Czarny ekran kiosku - brak sygnału wideo"],
             ["urządzenie wyłączone z eksploatacji", "ekran czarny", "system nie startuje"],
             ["wymagany serwis on-site", "błąd krytyczny aplikacji", "nie przyjmuje zamówień"]
+        ],
+        "actions": [
+            "Zrestartowano kiosk (odcięcie zasilania).",
+            "Skalibrowano ekran dotykowy w menu serwisowym.",
+            "Sprawdzono połączenia wewnętrzne kiosku.",
+            "Zgłoszono awarię sprzętową do serwisu producenta."
+        ],
+        "summaries": [
+            "Kiosk uruchomił się poprawnie, dotyk działa.",
+            "Aplikacja działa stabilnie po restarcie.",
+            "Urządzenie wymaga wymiany ekranu, wyłączono z użycia.",
+            "Problem rozwiązany, kiosk przyjmuje zamówienia."
         ]
     },
     "Waga - Błąd kalibracji": {
         "type": "[System] Incident",
+        "priority": "Low",
+        "request_type": "Report broken hardware",
         "min_score": 3,
         "keywords": [
-            "waga systemowa", "moduł ważący", "błąd tarowania", 
-            "kalibracja wagi"
+            "waga", "kalibracja", "tarowanie", "szalka", "ważenie", "moduł"
         ],
-        "forbidden": ["towar"],
+        "forbidden": ["towar", "cena"],
         "required_combinations": [
             ["waga", "systemowa"],
             ["błąd", "tarowania"],
             ["kalibracja", "wagi"],
-            ["moduł", "ważący"]
+            ["moduł", "ważący"],
+            ["błąd", "wagi"]
         ],
         "components": [
             ["Błąd protokołu komunikacyjnego wagi systemowej", "Utrata kalibracji modułu ważącego", "Błąd tarowania - wartość poza zakresem", "Waga nie zwraca stabilnego odczytu"],
             ["stanowisko {n}", "waga Dibal", "waga CAS"],
             ["wymagana ponowna kalibracja", "wartość ujemna na wyświetlaczu", "blokuje sprzedaż produktów ważonych"]
+        ],
+        "actions": [
+            "Wykonano zerowanie i tarowanie wagi.",
+            "Odłączono i podłączono ponownie zasilanie wagi.",
+            "Sprawdzono czy szalka wagi nie jest zablokowana mechanicznie.",
+            "Przeprowadzono procedurę kalibracji serwisowej."
+        ],
+        "summaries": [
+            "Waga wskazuje poprawnie, odczyt stabilny.",
+            "Kalibracja zakończona sukcesem.",
+            "Usunięto przeszkodę blokującą szalkę, waga działa.",
+            "Komunikacja z POS przywrócona."
         ]
     },
     "KDS - Brak sygnału wideo": {
         "type": "[System] Incident",
         "min_score": 3,
         "keywords": [
-            "system kds", "ekran kuchenny", "kontroler wideo", 
-            "bumpbar", "wyświetlanie zamówień"
+            "kds", "kuchnia", "ekran", "wideo", "bumpbar", "kontroler"
         ],
-        "forbidden": ["biuro"],
+        "forbidden": ["biuro", "kiosk"],
         "required_combinations": [
             ["system", "kds"],
             ["ekran", "kuchenny"],
             ["kontroler", "wideo"],
-            ["wyświetlanie", "zamówień"]
+            ["wyświetlanie", "zamówień"],
+            ["brak", "sygnału"]
         ],
         "components": [
             ["Utrata sygnału wideo na kontrolerze KDS", "Błąd serwisu kolejkowania zamówień kuchennych", "Opóźnienia w renderowaniu na ekranach KDS", "Uszkodzony interfejs wejściowy Bumpbar"],
             ["stacja grill", "stacja napojów", "ekran ekspedycji"],
             ["zamówienia nie pojawiają się", "brak sygnału wideo", "system offline"]
+        ],
+        "actions": [
+            "Zrestartowano kontroler KDS.",
+            "Wymieniono kabel HDMI/VGA łączący kontroler z monitorem.",
+            "Zrestartowano usługę KDS Service na serwerze.",
+            "Podmieniono klawiaturę bumpbar na zapasową."
+        ],
+        "summaries": [
+            "Obraz na ekranie kuchennym powrócił.",
+            "Zamówienia wyświetlają się poprawnie i bez opóźnień.",
+            "Bumpbar reaguje na wciśnięcia, system sprawny.",
+            "Problem rozwiązany po restarcie kontrolera."
         ]
     },
     "Aplikacja mobilna - Błąd API": {
         "type": "[System] Incident",
         "min_score": 3,
         "keywords": [
-            "aplikacja lojalnościowa", "skaner qr", "kupon mobilny", 
-            "integracja mobile"
+            "aplikacja", "mobile", "api", "kupon", "lojalność", "qr"
         ],
-        "forbidden": ["kiosk", "skaner ręczny"],
+        "forbidden": ["kiosk", "skaner ręczny", "terminal"],
         "required_combinations": [
             ["aplikacja", "lojalnościowa"],
             ["skaner", "qr"],
             ["kupon", "mobilny"],
-            ["integracja", "mobile"]
+            ["integracja", "mobile"],
+            ["błąd", "api"]
         ],
         "components": [
             ["Błąd API podczas walidacji kuponu mobilnego", "Timeout połączenia z bramką zamówień mobilnych", "Nieprawidłowy format danych JSON z aplikacji", "Awaria mikroserwisu obsługi mobile"],
             ["zgłaszane przez klientów", "błąd API"],
             ["nie nalicza rabatów", "zamówienie nie dociera do POS", "błąd serwera"]
+        ],
+        "actions": [
+            "Zgłoszono problem do zespołu deweloperskiego aplikacji mobilnej.",
+            "Zrestartowano bramkę API integrującą mobile z POS.",
+            "Sprawdzono logi transakcji, błąd po stronie zewnętrznego dostawcy.",
+            "Poinstruowano personel o procedurze awaryjnej (rabat ręczny)."
+        ],
+        "summaries": [
+            "Usługa przywrócona przez dostawcę zewnętrznego.",
+            "Kupony są ponownie walidowane poprawnie.",
+            "Problem rozwiązany, komunikacja API stabilna.",
+            "Zgłoszenie zamknięte, błąd globalny usunięty."
         ]
     },
     "Loyalty - Niedostępność serwisu": {
         "type": "[System] Incident",
         "min_score": 3,
         "keywords": [
-            "system lojalnościowy", "karta klienta", "punkty loyalty", 
-            "serwer loyalty"
+            "loyalty", "punkty", "karta", "klient", "serwer", "lojalność"
         ],
-        "forbidden": ["karta płatnicza"],
+        "forbidden": ["karta płatnicza", "kredytowa"],
         "required_combinations": [
             ["system", "lojalnościowy"],
             ["karta", "klienta"],
             ["punkty", "loyalty"],
-            ["serwer", "loyalty"]
+            ["serwer", "loyalty"],
+            ["błąd", "autoryzacji"]
         ],
         "components": [
             ["Brak odpowiedzi z serwera lojalnościowego (Service Unavailable)", "Błąd autoryzacji tokena karty klienta", "Niemożność zapisu transakcji punktowej - błąd DB", "Awaria webserwisu obsługi nagród"],
             ["komunikat: system offline", "błąd bazy danych"],
             ["klient nie widzi punktów", "transakcja bez identyfikacji", "timeout połączenia"]
+        ],
+        "actions": [
+            "Sprawdzono status usługi Loyalty (globalna awaria).",
+            "Zrestartowano lokalny serwis proxy lojalnościowego.",
+            "Zweryfikowano połączenie internetowe z chmurą loyalty.",
+            "Zgłoszono incydent do dostawcy systemu lojalnościowego."
+        ],
+        "summaries": [
+            "Serwer lojalnościowy odpowiada, punkty naliczają się.",
+            "Awaria globalna usunięta przez dostawcę.",
+            "Połączenie przywrócone, system działa online.",
+            "Karty klientów są poprawnie autoryzowane."
         ]
     },
     "Skaner - Błąd sterownika": {
         "type": "[System] Incident",
         "min_score": 3,
         "keywords": [
-            "czytnik kodów", "skaner ręczny", "skaner stacjonarny", 
-            "brak odczytu kodu"
+            "skaner", "czytnik", "kod", "ean", "laser", "sterownik"
         ],
-        "forbidden": ["skaner dokumentów"],
+        "forbidden": ["skaner dokumentów", "biuro"],
         "required_combinations": [
             ["czytnik", "kodów"],
             ["skaner", "ręczny"],
             ["brak", "odczytu"],
-            ["skaner", "stacjonarny"]
+            ["skaner", "stacjonarny"],
+            ["błąd", "skanera"]
         ],
         "components": [
             ["Błąd sterownika HID skanera kodów", "Czytnik nie dekoduje standardu EAN-13", "Uszkodzenie modułu laserowego skanera", "Błąd enumeracji urządzenia USB (Skaner)"],
             ["stanowisko {n}", "skaner Zebra", "skaner Honeywell"],
             ["nie świeci wiązka lasera", "błąd interfejsu USB", "przerywa połączenie"]
+        ],
+        "actions": [
+            "Przepięto skaner do innego portu USB.",
+            "Zeskanowano kody konfiguracyjne przywracające ustawienia fabryczne.",
+            "Przeinstalowano sterownik urządzenia w systemie Windows.",
+            "Wymieniono kabel USB skanera."
+        ],
+        "summaries": [
+            "Skaner działa poprawnie, kody są odczytywane.",
+            "Problem rozwiązany po rekonfiguracji urządzenia.",
+            "Sterownik zainstalowany ponownie, urządzenie wykryte.",
+            "Wymiana kabla pomogła, skaner sprawny."
         ]
     },
     "Faktury - Błąd API": {
         "type": "[System] Incident",
         "min_score": 3,
         "keywords": [
-            "moduł faktur", "wystawianie faktury", "nip nabywcy", 
-            "wydruk faktury"
+            "faktura", "nip", "api", "gus", "wydruk", "moduł"
         ],
-        "forbidden": ["paragon"],
+        "forbidden": ["paragon", "fiskalna"],
         "required_combinations": [
             ["moduł", "faktur"],
             ["wystawianie", "faktury"],
             ["nip", "nabywcy"],
-            ["wydruk", "faktury"]
+            ["wydruk", "faktury"],
+            ["błąd", "api"]
         ],
         "components": [
             ["Wyjątek w module fakturowania - NullReferenceException", "Błąd walidacji NIP w zewnętrznym API GUS", "Błąd generowania pliku PDF faktury", "Niemożność zapisu faktury do repozytorium"],
             ["błąd walidacji danych", "problem z bazą GUS"],
             ["dokument nie został utworzony", "błędne dane kontrahenta", "zawieszenie modułu fakturowania"]
+        ],
+        "actions": [
+            "Sprawdzono dostępność serwisu GUS (baza NIP).",
+            "Zrestartowano moduł fakturowania.",
+            "Poprawiono błędne dane kontrahenta i ponowiono próbę.",
+            "Wyczyszczono cache plików tymczasowych PDF."
+        ],
+        "summaries": [
+            "Faktura wystawiona poprawnie po ponowieniu próby.",
+            "Błąd API GUS ustąpił, dane pobierają się.",
+            "Dokument wygenerowany i wydrukowany.",
+            "Problem rozwiązany, moduł działa stabilnie."
         ]
     },
     "Szuflada - Awaria otwarcia": {
         "type": "[System] Incident",
         "min_score": 3,
         "keywords": [
-            "szuflada kasowa", "elektromagnes", "otwarcie szuflady", 
-            "kasetka pieniężna"
+            "szuflada", "kasetka", "klucz", "zamek", "otwarcie", "elektromagnes"
         ],
-        "forbidden": ["sejf"],
+        "forbidden": ["sejf", "biurko"],
         "required_combinations": [
             ["szuflada", "kasowa"],
             ["otwarcie", "szuflady"],
             ["kasetka", "pieniężna"],
-            ["awaria", "szuflady"]
+            ["awaria", "szuflady"],
+            ["nie", "otwiera"]
         ],
         "components": [
             ["Awaria elektromagnesu otwierającego szufladę (Solenoid)", "Brak sygnału sterującego otwarciem szuflady (RJ11)", "Mechaniczne zablokowanie prowadnicy szuflady", "Błąd czujnika otwarcia szuflady"],
             ["stanowisko {n}", "klucz utknął w zamku"],
             ["nie można wydać reszty", "szuflada nie domyka się", "awaria mechaniczna"]
+        ],
+        "actions": [
+            "Sprawdzono podłączenie kabla RJ11 do drukarki fiskalnej.",
+            "Otwarto szufladę awaryjnie kluczem i sprawdzono mechanizm.",
+            "Usunięto monetę blokującą prowadnicę.",
+            "Wymieniono wkład szuflady na zapasowy."
+        ],
+        "summaries": [
+            "Szuflada otwiera się automatycznie.",
+            "Usunięto blokadę mechaniczną, sprzęt sprawny.",
+            "Kabel podłączony poprawnie, sygnał dociera.",
+            "Problem rozwiązany, zamek działa płynnie."
         ]
     },
     "RCP - Korekta czasu": {
         "type": "[System] Service request",
         "min_score": 3,
         "keywords": [
-            "korekta czasu", "zapomniałem odbić", "złe odbicie", "edycja czasu",
-            "wniosek o korektę", "błędne godziny"
+            "korekta", "czas", "wniosek", "odbicie", "godziny", "edycja"
         ],
-        "forbidden": ["błąd synchronizacji", "awaria", "czytnik"],
+        "forbidden": ["błąd synchronizacji", "awaria", "czytnik", "błąd rcp"],
         "required_combinations": [
             ["korekta", "czasu"],
             ["edycja", "czasu"],
             ["złe", "odbicie"],
-            ["wniosek", "korektę"]
+            ["wniosek", "korektę"],
+            ["zapomniane", "odbicie"]
         ],
         "components": [
             ["Prośba o korektę czasu pracy - zapomniane odbicie", "Wniosek o edycję godzin - błędnie wybrane wejście", "Prośba o anulowanie błędnego odbicia RCP", "Uzupełnienie brakującego czasu pracy"],
             ["pracownik {name}", "data wczorajsza"],
             ["zapomniałem karty", "odbicie prywatne zamiast służbowego", "pomyłka przy rejestracji"]
+        ],
+        "actions": [
+            "Zweryfikowano obecność pracownika na monitoringu.",
+            "Wprowadzono korektę czasu pracy w systemie HR.",
+            "Anulowano błędne odbicie zgodnie z wnioskiem.",
+            "Uzupełniono brakujące wejście/wyjście ręcznie."
+        ],
+        "summaries": [
+            "Korekta wprowadzona, czas pracy zgodny.",
+            "Wniosek rozpatrzony pozytywnie, dane zaktualizowane.",
+            "Błąd pracownika skorygowany.",
+            "Godziny pracy zostały wyrównane."
         ]
     }
 }
@@ -455,6 +680,8 @@ KNOWN_CATEGORIES = {
 NOISE_CATEGORIES = {
     "SPRZET_BIUROWY": {
         "type": "[System] Incident",
+        "priority": "Low",
+        "request_type": "Report broken hardware",
         "templates": [
             "Awaria stacji dokującej laptopa", "Monitor zewnętrzny nie wykrywa sygnału", 
             "Uszkodzona matryca w laptopie służbowym", "Mysz bezprzewodowa nie paruje się z odbiornikiem", 
@@ -462,34 +689,88 @@ NOISE_CATEGORIES = {
             "Słuchawki z mikrofonem nie są wykrywane przez system", "Uszkodzone gniazdo LAN w ścianie", 
             "Drukarka sieciowa w biurze offline", "Zacięcie papieru w urządzeniu wielofunkcyjnym",
             "Brak tonera w drukarce korytarzowej", "Skaner dokumentów nie pobiera kartek"
+        ],
+        "actions": [
+            "Wymieniono sprzęt na zapasowy z magazynu IT.",
+            "Zaktualizowano firmware urządzenia.",
+            "Przeczyszczono styki i sprawdzono okablowanie.",
+            "Zgłoszono naprawę gwarancyjną u producenta."
+        ],
+        "summaries": [
+            "Sprzęt działa poprawnie po wymianie.",
+            "Użytkownik potwierdził rozwiązanie problemu.",
+            "Urządzenie przywrócone do pełnej sprawności.",
+            "Zgłoszenie zamknięte, sprzęt sprawny."
         ]
     },
     "OPROGRAMOWANIE_BIUROWE": {
         "type": "[System] Incident",
+        "priority": "Medium",
+        "request_type": "Report a system problem",
         "templates": [
             "Błąd uruchamiania Microsoft Outlook", "Excel zawiesza się przy otwieraniu pliku", 
             "Brak dostępu do dysku sieciowego Z:", "Problem z certyfikatem VPN", 
             "Nieudana aktualizacja systemu Windows", "Błąd licencji pakietu Office", 
             "Przeglądarka Chrome nie ładuje stron intranetu", "Program antywirusowy blokuje aplikację", 
             "Teams nie łączy z spotkaniem", "Adobe Reader nie otwiera plików PDF"
+        ],
+        "actions": [
+            "Przeinstalowano pakiet oprogramowania biurowego.",
+            "Wyczyszczono profil użytkownika i pliki tymczasowe.",
+            "Zaktualizowano system operacyjny i sterowniki.",
+            "Dodano wyjątek w zaporze sieciowej."
+        ],
+        "summaries": [
+            "Aplikacja uruchamia się poprawnie.",
+            "Dostęp do zasobów sieciowych przywrócony.",
+            "Błąd nie występuje po aktualizacji.",
+            "Problem rozwiązany, użytkownik może pracować."
         ]
     },
     "KONTA_I_DOSTEPIE": {
         "type": "[System] Service request",
+        "priority": "Medium",
+        "request_type": "Report a system problem",
         "templates": [
             "Zablokowane konto domenowe AD", "Wygasło hasło do systemu Windows", 
             "Brak dostępu do folderu współdzielonego", "Prośba o nadanie uprawnień do grupy", 
             "Problem z uwierzytelnianiem dwuskładnikowym (MFA)", "Konto pocztowe przepełnione", 
             "Nie działa logowanie do portalu pracowniczego", "Błąd synchronizacji hasła"
+        ],
+        "actions": [
+            "Odblokowano konto w Active Directory.",
+            "Zresetowano hasło i wymuszono zmianę przy logowaniu.",
+            "Nadano wymagane uprawnienia do grupy bezpieczeństwa.",
+            "Zwiększono limit quota dla skrzynki pocztowej."
+        ],
+        "summaries": [
+            "Dostęp do konta przywrócony.",
+            "Użytkownik zalogował się pomyślnie.",
+            "Uprawnienia zostały zaktualizowane.",
+            "Problem z logowaniem rozwiązany."
         ]
     },
     "SIEC_I_INFRASTRUKTURA": {
         "type": "[System] Incident",
+        "priority": "High",
+        "request_type": "Report a system problem",
         "templates": [
             "Brak dostępu do sieci Wi-Fi", "Niska przepustowość łącza internetowego", 
             "Telefon VoIP nie ma sygnału", "Błąd konfiguracji adresu IP", 
             "Utrata połączenia z serwerem plików", "Awaria switcha w szafie rack", 
             "Brak dostępu do zasobów zewnętrznych"
+        ],
+        "actions": [
+            "Zrestartowano urządzenia sieciowe w lokalizacji.",
+            "Skonfigurowano ponownie parametry karty sieciowej.",
+            "Sprawdzono trasę pakietów i odblokowano porty.",
+            "Przełączono na łącze zapasowe."
+        ],
+        "summaries": [
+            "Połączenie sieciowe stabilne, parametry w normie.",
+            "Dostęp do internetu i intranetu przywrócony.",
+            "Telefon VoIP loguje się do centrali.",
+            "Awaria infrastruktury usunięta."
         ]
     }
 }
@@ -561,6 +842,58 @@ def generate_dynamic_description(category_key):
         
     return full_sentence
 
+def fuzz_priority(base_priority):
+    """Wprowadza losowość w priorytetach (błędy ludzkie/różne oceny) z dynamicznymi zakresami"""
+    r = random.random()
+    
+    # Dynamiczne zakresy prawdopodobieństwa dla każdego wywołania
+    # Symuluje zmienność dnia/konsultanta
+    
+    if base_priority == "High":
+        # High: 60-80% High, 15-25% Highest, reszta Medium
+        retention = random.uniform(0.60, 0.80)
+        upgrade = random.uniform(0.15, 0.25)
+        
+        if r < retention: return "High"
+        elif r < (retention + upgrade): return "Highest"
+        else: return "Medium"
+        
+    elif base_priority == "Medium":
+        # Medium: 60-80% Medium, 10-20% High, reszta Low
+        retention = random.uniform(0.60, 0.80)
+        upgrade = random.uniform(0.10, 0.20)
+        
+        if r < retention: return "Medium"
+        elif r < (retention + upgrade): return "High"
+        else: return "Low"
+        
+    elif base_priority == "Low":
+        # Low: 60-80% Low, 15-25% Lowest, reszta Medium
+        retention = random.uniform(0.60, 0.80)
+        downgrade = random.uniform(0.15, 0.25)
+        
+        if r < retention: return "Low"
+        elif r < (retention + downgrade): return "Lowest"
+        else: return "Medium"
+        
+    return base_priority
+
+def fuzz_request_type(base_type):
+    """Wprowadza rzadkie błędy w kategoryzacji typu żądania z dynamicznym zakresem"""
+    r = random.random()
+    
+    # Dokładność od 92% do 98% (zmienna)
+    accuracy_threshold = random.uniform(0.92, 0.98)
+    
+    if r < accuracy_threshold:
+        return base_type
+        
+    # Pomyłka
+    if base_type == "Report a system problem":
+        return "Report broken hardware"
+    else:
+        return "Report a system problem"
+
 def generate_noise_description():
     """Generuje zgłoszenie typu szum (Profesjonalne IT)"""
     noise_key = random.choice(list(NOISE_CATEGORIES.keys()))
@@ -575,8 +908,19 @@ def generate_noise_description():
     
     if random.random() > 0.8:
         parts.append(random.choice(SUFFIXES))
+    
+    # Pobierz akcję i podsumowanie (z domyślnymi wartościami dla bezpieczeństwa)
+    action = random.choice(noise_data.get("actions", ["Sprawdzono logi systemowe.", "Przekazano do II linii wsparcia."]))
+    summary = random.choice(noise_data.get("summaries", ["Zgłoszenie zamknięte.", "Problem rozwiązany."]))
+    
+    # Pobierz priorytet i typ żądania z losowością
+    base_priority = noise_data.get("priority", "Medium")
+    priority = fuzz_priority(base_priority)
+    
+    base_request_type = noise_data.get("request_type", "Report a system problem")
+    request_type = fuzz_request_type(base_request_type)
         
-    return " ".join(parts), noise_data["type"]
+    return " ".join(parts), noise_data["type"], action, summary, priority, request_type
 
 def generate_dataset():
     """Główna funkcja generująca dane z weryfikacją punktacji"""
@@ -597,12 +941,27 @@ def generate_dataset():
             score = 0
             confidence = 0.0
             issue_type = "[System] Incident" # Domyślnie
+            action = ""
+            summary = ""
+            priority = "Medium"
+            request_type = "Report a system problem"
             
             if is_known:
                 category_key = random.choice(list(KNOWN_CATEGORIES.keys()))
                 rule = KNOWN_CATEGORIES[category_key]
                 min_score = rule.get('min_score', 3)
                 issue_type = rule.get('type', "[System] Incident")
+                
+                # Pobierz priorytet i typ żądania z losowością
+                base_priority = rule.get('priority', "Medium")
+                priority = fuzz_priority(base_priority)
+                
+                base_request_type = rule.get('request_type', "Report a system problem")
+                request_type = fuzz_request_type(base_request_type)
+                
+                # Losowanie akcji i podsumowania
+                action = random.choice(rule.get("actions", ["Podjęto działania naprawcze."]))
+                summary = random.choice(rule.get("summaries", ["Problem rozwiązany."]))
                 
                 # Próba wygenerowania tytułu spełniającego reguły
                 attempts = 0
@@ -625,7 +984,7 @@ def generate_dataset():
                 category_label = category_key
                 confidence = min(0.9, 0.6 + score * 0.1)
             else:
-                title, issue_type = generate_noise_description()
+                title, issue_type, action, summary, priority, request_type = generate_noise_description()
                 category_label = "Inne"
                 score = 0
                 confidence = 0.0
@@ -648,12 +1007,21 @@ def generate_dataset():
                 seconds=random.randint(0, 59)
             )
             
+            # Formatowanie kolumny Deskrypcjon zgodnie z wymaganiami
+            full_description = f"Opis: {title} Działanie naprawcze: {action} Podsumowanie: {summary}"
+            
+            # Formatowanie daty: DD.MM.YYYY HH:MM:SS
+            formatted_date = creation_time.strftime("%d.%m.%Y %H:%M:%S")
+
             data.append({
                 "ID zgłoszenia": current_id,
                 "Tytuł zgłoszenia": title,
+                "Deskrypcjon": full_description,
                 "Dopasowana reguła": category_label,
                 "Typ zgłoszenia": issue_type,
-                "Data utworzenia zgłoszenia": creation_time,
+                "Priorytet": priority,
+                "Typ żądania": request_type,
+                "Data utworzenia zgłoszenia": formatted_date,
                 "Oczekiwany wynik": score,
                 "Pewność": round(confidence, 2)
             })
@@ -694,6 +1062,10 @@ def main():
     # Zapis do Excela
     print(f"Zapisywanie {len(df)} zgłoszeń do {EXCEL_FILENAME}...")
     df.to_excel(EXCEL_FILENAME, index=False)
+
+    # Zapis do CSV
+    print(f"Zapisywanie {len(df)} zgłoszeń do {CSV_FILENAME}...")
+    df.to_csv(CSV_FILENAME, index=False, sep=',', encoding='utf-8')
     
     # 2. Generowanie reguł JSON
     rules_structure = generate_rules_json()

@@ -2,12 +2,12 @@
     "classification_rules": {
         "POS - Błąd zamknięcia doby": {
             "keywords": [
-                "zamknięcie dnia",
-                "raport dobowy",
-                "zamknięcie doby",
+                "zamknięcie",
+                "doba",
+                "raport",
                 "z-report",
-                "fiskalizacja doby",
-                "procedura zamknięcia"
+                "fiskalizacja",
+                "dobowy"
             ],
             "min_score": 3,
             "required_combinations": [
@@ -26,6 +26,10 @@
                 [
                     "z-report",
                     "błąd"
+                ],
+                [
+                    "zamknięcie",
+                    "doby"
                 ]
             ],
             "forbidden": [
@@ -36,12 +40,12 @@
         },
         "RCP - Błąd synchronizacji": {
             "keywords": [
-                "czas pracy",
+                "rcp",
                 "ewidencja",
-                "odbicie karty",
-                "rejestracja czasu",
-                "korekta godzin",
-                "RCP"
+                "odbicie",
+                "czas",
+                "synchronizacja",
+                "czytnik"
             ],
             "min_score": 3,
             "required_combinations": [
@@ -60,20 +64,26 @@
                 [
                     "błąd",
                     "rcp"
+                ],
+                [
+                    "synchronizacja",
+                    "rcp"
                 ]
             ],
             "forbidden": [
                 "logowanie do windows",
-                "hasło"
+                "hasło",
+                "korekta"
             ]
         },
         "POS - Zawieszenie aplikacji": {
             "keywords": [
-                "system pos",
-                "aplikacja sprzedażowa",
-                "zawieszenie systemu",
-                "brak reakcji",
-                "zamrożenie ekranu"
+                "pos",
+                "zawieszenie",
+                "aplikacja",
+                "sprzedaż",
+                "ekran",
+                "freeze"
             ],
             "min_score": 3,
             "required_combinations": [
@@ -92,21 +102,27 @@
                 [
                     "zamrożenie",
                     "ekranu"
+                ],
+                [
+                    "aplikacja",
+                    "sprzedażowa"
                 ]
             ],
             "forbidden": [
                 "internet",
                 "outlook",
-                "excel"
+                "excel",
+                "kiosk"
             ]
         },
         "POS - Błąd interfejsu": {
             "keywords": [
-                "ikona ostrzegawcza",
-                "błąd graficzny",
-                "interfejs użytkownika",
-                "komunikat ekranowy",
-                "GUI"
+                "interfejs",
+                "gui",
+                "ikona",
+                "grafika",
+                "ekran",
+                "wyświetlanie"
             ],
             "min_score": 3,
             "required_combinations": [
@@ -125,20 +141,26 @@
                 [
                     "błąd",
                     "gui"
+                ],
+                [
+                    "komunikat",
+                    "ekranowy"
                 ]
             ],
             "forbidden": [
                 "drukarka",
-                "toner"
+                "toner",
+                "kiosk"
             ]
         },
         "Terminal - Błąd komunikacji": {
             "keywords": [
-                "terminal płatniczy",
+                "terminal",
                 "pinpad",
-                "transakcja odrzucona",
-                "brak komunikacji z bankiem",
-                "autoryzacja"
+                "płatność",
+                "karta",
+                "autoryzacja",
+                "transakcja"
             ],
             "min_score": 3,
             "required_combinations": [
@@ -157,19 +179,26 @@
                 [
                     "błąd",
                     "autoryzacji"
+                ],
+                [
+                    "odrzucenie",
+                    "karty"
                 ]
             ],
             "forbidden": [
                 "karta pracownicza",
-                "logowanie"
+                "logowanie",
+                "lojalnościowa"
             ]
         },
         "Drukarka fiskalna - Błąd pamięci": {
             "keywords": [
-                "drukarka fiskalna",
-                "moduł fiskalny",
-                "brak wydruku paragonu",
-                "błąd pamięci"
+                "drukarka",
+                "fiskalna",
+                "paragon",
+                "pamięć",
+                "moduł",
+                "wydruk"
             ],
             "min_score": 3,
             "required_combinations": [
@@ -188,6 +217,10 @@
                 [
                     "moduł",
                     "fiskalny"
+                ],
+                [
+                    "awaria",
+                    "drukarki"
                 ]
             ],
             "forbidden": [
@@ -198,11 +231,12 @@
         },
         "Dostęp - Błąd autoryzacji POS": {
             "keywords": [
-                "logowanie do pos",
-                "uprawnienia kasjera",
-                "błąd autoryzacji",
-                "konto użytkownika",
-                "dostęp zablokowany"
+                "logowanie",
+                "hasło",
+                "uprawnienia",
+                "konto",
+                "dostęp",
+                "autoryzacja"
             ],
             "min_score": 3,
             "required_combinations": [
@@ -221,21 +255,27 @@
                 [
                     "logowanie",
                     "pos"
+                ],
+                [
+                    "reset",
+                    "hasła"
                 ]
             ],
             "forbidden": [
                 "domena",
                 "windows",
-                "vpn"
+                "vpn",
+                "terminal"
             ]
         },
         "System - Opóźnienie replikacji": {
             "keywords": [
-                "synchronizacja danych",
-                "aktualizacja cennika",
-                "błąd cen",
                 "replikacja",
-                "baza produktów"
+                "synchronizacja",
+                "cennik",
+                "ceny",
+                "baza",
+                "aktualizacja"
             ],
             "min_score": 3,
             "required_combinations": [
@@ -254,18 +294,25 @@
                 [
                     "replikacja",
                     "danych"
+                ],
+                [
+                    "baza",
+                    "produktów"
                 ]
             ],
             "forbidden": [
-                "czas pracy"
+                "czas pracy",
+                "rcp"
             ]
         },
         "Kiosk - Awaria dotyku": {
             "keywords": [
-                "kiosk samoobsługowy",
+                "kiosk",
+                "dotyk",
+                "ekran",
                 "ngk",
-                "ekran dotykowy kiosku",
-                "terminal kiosku"
+                "samoobsługowy",
+                "terminal"
             ],
             "min_score": 3,
             "required_combinations": [
@@ -284,18 +331,26 @@
                 [
                     "awaria",
                     "kiosku"
+                ],
+                [
+                    "nie",
+                    "działa",
+                    "dotyk"
                 ]
             ],
             "forbidden": [
-                "kasa tradycyjna"
+                "kasa tradycyjna",
+                "pos"
             ]
         },
         "Waga - Błąd kalibracji": {
             "keywords": [
-                "waga systemowa",
-                "moduł ważący",
-                "błąd tarowania",
-                "kalibracja wagi"
+                "waga",
+                "kalibracja",
+                "tarowanie",
+                "szalka",
+                "ważenie",
+                "moduł"
             ],
             "min_score": 3,
             "required_combinations": [
@@ -314,19 +369,25 @@
                 [
                     "moduł",
                     "ważący"
+                ],
+                [
+                    "błąd",
+                    "wagi"
                 ]
             ],
             "forbidden": [
-                "towar"
+                "towar",
+                "cena"
             ]
         },
         "KDS - Brak sygnału wideo": {
             "keywords": [
-                "system kds",
-                "ekran kuchenny",
-                "kontroler wideo",
+                "kds",
+                "kuchnia",
+                "ekran",
+                "wideo",
                 "bumpbar",
-                "wyświetlanie zamówień"
+                "kontroler"
             ],
             "min_score": 3,
             "required_combinations": [
@@ -345,18 +406,25 @@
                 [
                     "wyświetlanie",
                     "zamówień"
+                ],
+                [
+                    "brak",
+                    "sygnału"
                 ]
             ],
             "forbidden": [
-                "biuro"
+                "biuro",
+                "kiosk"
             ]
         },
         "Aplikacja mobilna - Błąd API": {
             "keywords": [
-                "aplikacja lojalnościowa",
-                "skaner qr",
-                "kupon mobilny",
-                "integracja mobile"
+                "aplikacja",
+                "mobile",
+                "api",
+                "kupon",
+                "lojalność",
+                "qr"
             ],
             "min_score": 3,
             "required_combinations": [
@@ -375,19 +443,26 @@
                 [
                     "integracja",
                     "mobile"
+                ],
+                [
+                    "błąd",
+                    "api"
                 ]
             ],
             "forbidden": [
                 "kiosk",
-                "skaner ręczny"
+                "skaner ręczny",
+                "terminal"
             ]
         },
         "Loyalty - Niedostępność serwisu": {
             "keywords": [
-                "system lojalnościowy",
-                "karta klienta",
-                "punkty loyalty",
-                "serwer loyalty"
+                "loyalty",
+                "punkty",
+                "karta",
+                "klient",
+                "serwer",
+                "lojalność"
             ],
             "min_score": 3,
             "required_combinations": [
@@ -406,18 +481,25 @@
                 [
                     "serwer",
                     "loyalty"
+                ],
+                [
+                    "błąd",
+                    "autoryzacji"
                 ]
             ],
             "forbidden": [
-                "karta płatnicza"
+                "karta płatnicza",
+                "kredytowa"
             ]
         },
         "Skaner - Błąd sterownika": {
             "keywords": [
-                "czytnik kodów",
-                "skaner ręczny",
-                "skaner stacjonarny",
-                "brak odczytu kodu"
+                "skaner",
+                "czytnik",
+                "kod",
+                "ean",
+                "laser",
+                "sterownik"
             ],
             "min_score": 3,
             "required_combinations": [
@@ -436,18 +518,25 @@
                 [
                     "skaner",
                     "stacjonarny"
+                ],
+                [
+                    "błąd",
+                    "skanera"
                 ]
             ],
             "forbidden": [
-                "skaner dokumentów"
+                "skaner dokumentów",
+                "biuro"
             ]
         },
         "Faktury - Błąd API": {
             "keywords": [
-                "moduł faktur",
-                "wystawianie faktury",
-                "nip nabywcy",
-                "wydruk faktury"
+                "faktura",
+                "nip",
+                "api",
+                "gus",
+                "wydruk",
+                "moduł"
             ],
             "min_score": 3,
             "required_combinations": [
@@ -466,18 +555,25 @@
                 [
                     "wydruk",
                     "faktury"
+                ],
+                [
+                    "błąd",
+                    "api"
                 ]
             ],
             "forbidden": [
-                "paragon"
+                "paragon",
+                "fiskalna"
             ]
         },
         "Szuflada - Awaria otwarcia": {
             "keywords": [
-                "szuflada kasowa",
-                "elektromagnes",
-                "otwarcie szuflady",
-                "kasetka pieniężna"
+                "szuflada",
+                "kasetka",
+                "klucz",
+                "zamek",
+                "otwarcie",
+                "elektromagnes"
             ],
             "min_score": 3,
             "required_combinations": [
@@ -496,20 +592,25 @@
                 [
                     "awaria",
                     "szuflady"
+                ],
+                [
+                    "nie",
+                    "otwiera"
                 ]
             ],
             "forbidden": [
-                "sejf"
+                "sejf",
+                "biurko"
             ]
         },
         "RCP - Korekta czasu": {
             "keywords": [
-                "korekta czasu",
-                "zapomniałem odbić",
-                "złe odbicie",
-                "edycja czasu",
-                "wniosek o korektę",
-                "błędne godziny"
+                "korekta",
+                "czas",
+                "wniosek",
+                "odbicie",
+                "godziny",
+                "edycja"
             ],
             "min_score": 3,
             "required_combinations": [
@@ -528,17 +629,22 @@
                 [
                     "wniosek",
                     "korektę"
+                ],
+                [
+                    "zapomniane",
+                    "odbicie"
                 ]
             ],
             "forbidden": [
                 "błąd synchronizacji",
                 "awaria",
-                "czytnik"
+                "czytnik",
+                "błąd rcp"
             ]
         }
     },
     "metadata": {
-        "last_updated": "2025-12-02T21:09:31.247889",
+        "last_updated": "2025-12-05T11:28:51.664673",
         "version": "2.0",
         "rules_count": 17
     }
