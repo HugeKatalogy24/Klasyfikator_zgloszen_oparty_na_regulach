@@ -1,13 +1,13 @@
 ﻿{% extends "base.html" %}
 
-{% block title %}Analizator Problemów Jira - Strona Główna{% endblock %}
+{% block title %}Aplikacja Klasyfikacji Zgłoszeń - Strona Główna{% endblock %}
 
 {% block content %}
 <div class="form-wrapper">
-    <h1>🔍 Analizator Problemów Jira</h1>
+    <h1>🔍 Aplikacja Klasyfikacji Zgłoszeń</h1>
     
     <div class="description">
-        <p>Ta aplikacja analizuje zgłoszenia z systemu Jira i automatycznie klasyfikuje je do <strong>kategorii problemów bieżących</strong> używając zaawansowanych reguł biznesowych oraz umożliwia zmianę typów zgłoszeń, żądań.</p>
+        <p>Ta aplikacja analizuje zgłoszenia i automatycznie klasyfikuje je do <strong>kategorii problemów</strong> używając zaawansowanych reguł klasyfikacji oraz umożliwia zmianę typów zgłoszeń.</p>
         <div class="features">
             <div class="feature">
                 <span class="feature-icon">📊</span>
@@ -960,8 +960,10 @@ function updateCategoriesTable() {
         if (progressEta) {
             if (etaSeconds > 0) {
                 progressEta.textContent = `Pozostało: ${formatTime(etaSeconds)}`;
+                progressEta.style.display = 'inline';
             } else {
-                progressEta.textContent = 'Zakończenie...';
+                // Ukryj ETA jeśli 0 lub brak
+                progressEta.style.display = 'none';
             }
         }
     }
@@ -1144,14 +1146,25 @@ function populateRequestTypeSelect() {
 }
 
 function validateIssues() {
+    console.log('validateIssues() called');
+    
     // Sprawdź uwierzytelnienie administratora
     if (!checkAdminAuth()) {
+        console.log('Admin auth failed');
         alert('Wymagane uwierzytelnienie administratora');
         window.location.href = "{{ url_for('admin_login') }}";
         return;
     }
     
-    const issueKeysText = document.getElementById('issue_keys').value.trim();
+    const issueKeysTextarea = document.getElementById('issue_keys');
+    if (!issueKeysTextarea) {
+        console.error('Element issue_keys not found');
+        alert('Błąd: nie znaleziono pola tekstowego');
+        return;
+    }
+    
+    const issueKeysText = issueKeysTextarea.value.trim();
+    console.log('Issue keys text:', issueKeysText);
     
     if (!issueKeysText) {
         alert('Proszę wprowadzić klucze zgłoszeń');
@@ -1165,12 +1178,21 @@ function validateIssues() {
     const formData = new FormData();
     formData.append('issue_keys', issueKeysText);
     
+    console.log('Sending request to /api/validate-issues');
+    
     fetch('/api/validate-issues', {
         method: 'POST',
         body: formData
     })
-    .then(response => response.json())
+    .then(response => {
+        console.log('Response status:', response.status);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
     .then(data => {
+        console.log('Response data:', data);
         hideChangeTypeProgress();
         
         if (data.success) {
@@ -1184,13 +1206,13 @@ function validateIssues() {
                 showStep2();
             }
         } else {
-            alert('Błąd walidacji: ' + data.error);
+            alert('Błąd walidacji: ' + (data.error || 'Nieznany błąd'));
         }
     })
     .catch(error => {
         hideChangeTypeProgress();
         console.error('Błąd walidacji:', error);
-        alert('Błąd połączenia podczas walidacji zgłoszeń');
+        alert('Błąd połączenia podczas walidacji zgłoszeń: ' + error.message);
     });
 }
 
@@ -1609,24 +1631,30 @@ function showChangeTypeProgress(percentage, text) {
     const progressText = document.getElementById('changeTypeProgressText');
     const progressPercentage = document.getElementById('changeTypeProgressPercentage');
     
+    if (!progressContainer) {
+        console.error('Element changeTypeProgress not found!');
+        return;
+    }
+    
     progressContainer.style.display = 'block';
-    progressFill.style.width = percentage + '%';
-    progressText.textContent = text;
-    progressPercentage.textContent = Math.round(percentage) + '%';
+    if (progressFill) progressFill.style.width = percentage + '%';
+    if (progressText) progressText.textContent = text;
+    if (progressPercentage) progressPercentage.textContent = Math.round(percentage) + '%';
 }
 
 function hideChangeTypeProgress() {
     const progressContainer = document.getElementById('changeTypeProgress');
-    progressContainer.style.display = 'none';
+    if (progressContainer) {
+        progressContainer.style.display = 'none';
+    }
 }
 
 function checkAdminAuth() {
     // Sprawdź czy użytkownik jest zalogowany jako administrator
-    {% if session.get('admin_authenticated') %}
-        return true;
-    {% else %}
-        return false;
-    {% endif %}
+    // Wartość renderowana przez Jinja2 po stronie serwera
+    const isAdmin = {% if session.get('admin_authenticated') %}true{% else %}false{% endif %};
+    console.log('checkAdminAuth() - isAdmin:', isAdmin);
+    return isAdmin;
 }
 </script>
 

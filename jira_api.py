@@ -39,9 +39,10 @@ class JiraAPI:
         headers = {"Accept": "application/json"}
         auth = (self.email, self.token)
         
+        # Próba 1: maxResults=0 aby pobrać tylko metadane (total)
         params = {
             "jql": jql,
-            "maxResults": 100,  # Pobieramy pierwszą stronę dla oszacowania
+            "maxResults": 0,
             "fields": "key"
         }
         
@@ -49,18 +50,36 @@ class JiraAPI:
             response = requests.get(url, headers=headers, auth=auth, params=params, timeout=10)
             if response.status_code == 200:
                 data = response.json()
+                
+                # Jeśli API zwraca 'total', używamy tego
+                if 'total' in data:
+                    total = data['total']
+                    jira_logger.info(f"Oszacowano liczbę zgłoszeń (z pola total): {total}")
+                    return total
+            
+            # Próba 2: maxResults=1 jeśli 0 nie zadziałało
+            params['maxResults'] = 1
+            response = requests.get(url, headers=headers, auth=auth, params=params, timeout=10)
+            if response.status_code == 200:
+                data = response.json()
+                if 'total' in data:
+                    total = data['total']
+                    jira_logger.info(f"Oszacowano liczbę zgłoszeń (z pola total, maxResults=1): {total}")
+                    return total
+                
+                # Fallback do starej metody jeśli nie ma total
                 issues_in_first_page = len(data.get('issues', []))
                 is_last = data.get('isLast', True)
                 
                 if is_last:
-                    # Wszystkie zgłoszenia w pierwszej stronie
                     estimated_count = issues_in_first_page
+                    jira_logger.info(f"Oszacowano liczbę zgłoszeń (dokładna, jedna strona): {estimated_count}")
+                    return estimated_count
                 else:
-                    # Szacujemy na podstawie pierwszej strony (konserwatywnie 2-5 stron)
-                    estimated_count = issues_in_first_page * 3  # Szacunek: 3 strony średnio
-                
-                jira_logger.info(f"Szacowana liczba zgłoszeń: {estimated_count} (pierwsza strona: {issues_in_first_page}, ostatnia: {is_last})")
-                return estimated_count
+                    # Nie zgadujemy. Jeśli nie ma total i jest więcej stron, zwracamy None.
+                    # Pozwoli to funkcji fetch_issues_with_progress pobrać total z właściwego zapytania
+                    jira_logger.warning("Brak pola 'total' w odpowiedzi API. Nie można oszacować liczby zgłoszeń.")
+                    return None
             else:
                 jira_logger.warning(f"Nie udało się oszacować liczby zgłoszeń: Status {response.status_code}")
                 return None
@@ -68,7 +87,7 @@ class JiraAPI:
             jira_logger.warning(f"Błąd podczas szacowania liczby zgłoszeń: {e}")
             return None
 
-    def fetch_issues_with_progress(self, start_date, end_date, analysis_id=None, progress_dict=None):
+    def fetch_issues_with_progress(self, start_date, end_date, analysis_id=None, progress_dict=None, total_estimated=None):
         """Pobiera zgłoszenia z Jira w podanym zakresie dat z raportowaniem postępu"""
         
         # Jeśli start_date == end_date, pobieramy cały ten dzień
@@ -95,7 +114,6 @@ class JiraAPI:
         all_issues = []
         next_page_token = None
         batch_size = 100
-        total_issues = None  # Nie znamy z góry łącznej liczby
         
         while True:
             # Przygotuj parametry dla API v3 (cursor-based pagination)
@@ -123,6 +141,15 @@ class JiraAPI:
                     raise Exception(f"Błąd API: {response.status_code}")
                 
                 data = response.json()
+                
+                # ZAWSZE aktualizuj total_estimated jeśli API zwraca 'total'
+                # To naprawia sytuację, gdy szacowanie się nie powiodło lub było niedokładne
+                if 'total' in data:
+                    real_total = data['total']
+                    if total_estimated != real_total:
+                        jira_logger.info(f"Aktualizacja total_estimated: {total_estimated} -> {real_total}")
+                        total_estimated = real_total
+                
                 issues = data.get('issues', [])
                 
                 if not issues:
@@ -138,34 +165,28 @@ class JiraAPI:
                 # Aktualizuj postęp, jeśli przekazano parametry
                 if analysis_id and progress_dict and analysis_id in progress_dict:
                     # Szacowanie postępu na podstawie liczby pobranych zgłoszeń
-                    # Postęp pobierania: od 15% do 75%
-                    if len(all_issues) < 50:
-                        fetch_progress = 15 + (len(all_issues) / 50) * 30  # Pierwsze 50: 15-45%
-                    elif len(all_issues) < 200:
-                        fetch_progress = 45 + ((len(all_issues) - 50) / 150) * 20  # 50-200: 45-65%
-                    else:
-                        fetch_progress = min(75, 65 + (len(all_issues) - 200) / 100 * 10)  # 200+: 65-75%
                     
-                    start_time = progress_dict[analysis_id].get('start_time', time.time())
-                    elapsed = time.time() - start_time
-                    
-                    # Szacowanie czasu pozostałego
-                    if len(all_issues) > 10:
-                        # Oblicz rzeczywisty czas na zgłoszenie
-                        time_per_issue = elapsed / len(all_issues)
-                        # Szacuj że zostało jeszcze maksymalnie 200 zgłoszeń (konserwatywnie)
-                        estimated_remaining_issues = min(200, len(all_issues) * 0.5) if not is_last else 0
-                        estimated_remaining_fetch = estimated_remaining_issues * time_per_issue
-                        # Dodaj czas na klasyfikację
-                        classify_time = max(2, min(len(all_issues) * 0.002, 8))
-                        eta = max(1, estimated_remaining_fetch + classify_time)
+                    if total_estimated and total_estimated > 0:
+                        # Jeśli mamy szacowaną liczbę (z estymacji lub z pierwszej strony wyników)
+                        # Skalujemy od 0% do 90% (zostawiamy 10% na klasyfikację i zapis)
+                        ratio = min(1.0, len(all_issues) / total_estimated)
+                        fetch_progress = ratio * 90
+                        
+                        status_msg = f'Pobrano {len(all_issues)} z {total_estimated} zgłoszeń...'
                     else:
-                        eta = max(10, 25 - elapsed)  # Konserwatywne szacowanie na początku
+                        # Fallback ostateczny: jeśli API nie zwraca total (bardzo rzadkie)
+                        # Zakładamy dużą liczbę żeby pasek szedł powoli
+                        # Nie używamy skoków, tylko powolny przyrost logarytmiczny
+                        # Zakładamy np. 1000 zgłoszeń jako bazę
+                        ratio = min(0.8, len(all_issues) / 1000.0)
+                        fetch_progress = ratio * 90
+                        
+                        status_msg = f'Pobrano {len(all_issues)} zgłoszeń...'
                     
                     progress_dict[analysis_id].update({
                         'progress': fetch_progress,
-                        'status': f'Pobrano {len(all_issues)} zgłoszeń...',
-                        'eta_seconds': int(max(1, eta))
+                        'status': status_msg,
+                        'eta_seconds': 0 # Wyłączamy czas zgodnie z życzeniem
                     })
                 
                 # Zakończ jeśli to ostatnia strona

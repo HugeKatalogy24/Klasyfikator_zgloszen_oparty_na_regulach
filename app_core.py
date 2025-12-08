@@ -33,43 +33,34 @@ def perform_analysis_background(analysis_id, start_dt, end_dt, start_date_str, e
         
         # Aktualizacja postępu: rozpoczęcie
         analysis_progress[analysis_id].update({
-            'progress': 5,
-            'status': 'Szacowanie zakresu danych...',
-            'eta_seconds': 30  # Konserwatywne początkowe szacowanie
+            'progress': 1,
+            'status': 'Szacowanie liczby zgłoszeń...',
+            'eta_seconds': 0
         })
         
         # Szybkie oszacowanie liczby zgłoszeń
         estimated_count = jira_api.estimate_issues_count(start_dt, end_dt)
         
         if estimated_count is not None:
-            # Bardziej realistyczne szacowanie czasu na podstawie rzeczywistej liczby zgłoszeń
-            # Szacujemy ~0.05 sekundy na zgłoszenie dla pobierania + 2-3 sekundy na klasyfikację
-            estimated_fetch_time = max(5, min(estimated_count * 0.05 + 5, 60))  # min 5s, max 60s
-            estimated_classify_time = max(2, min(estimated_count * 0.002 + 2, 10))  # min 2s, max 10s
-            total_estimated_time = estimated_fetch_time + estimated_classify_time + 3  # +3s na overhead
-            
-            app_logger.info(f"Szacowana liczba zgłoszeń: {estimated_count}, szacowany czas: {total_estimated_time:.1f}s")
+            app_logger.info(f"Szacowana liczba zgłoszeń: {estimated_count}")
         else:
             # Fallback do konserwatywnego szacowania na podstawie zakresu dat
             time_diff = abs(end_dt - start_dt).days + 1
-            estimated_fetch_time = max(8, min(time_diff * 3, 45))  # 3 sekundy na dzień, max 45s
-            estimated_classify_time = 5
-            total_estimated_time = estimated_fetch_time + estimated_classify_time
-            
-            app_logger.info(f"Używam szacowania na podstawie zakresu dat: {time_diff} dni, szacowany czas: {total_estimated_time:.1f}s")
+            app_logger.info(f"Używam szacowania na podstawie zakresu dat: {time_diff} dni")
         
         if refresh_data or not os.path.exists(data_file):
             app_logger.info(f"Pobieranie danych z Jira dla okresu {start_date_str} - {end_date_str}")
             
             # Aktualizacja postępu: pobieranie danych
+            # Nie ustawiamy sztywnego procentu, czekamy na pierwsze dane z fetch_issues_with_progress
             analysis_progress[analysis_id].update({
-                'progress': 15,
-                'status': f'Pobieranie danych zgłoszeń z Jira...',
-                'eta_seconds': int(max(0, total_estimated_time - (time.time() - start_time)))
+                'progress': 1,
+                'status': f'Rozpoczynam pobieranie zgłoszeń...',
+                'eta_seconds': 0
             })
             
             # Pobieranie danych z raportowaniem postępu
-            df = jira_api.fetch_issues_with_progress(start_dt, end_dt, analysis_id, analysis_progress)
+            df = jira_api.fetch_issues_with_progress(start_dt, end_dt, analysis_id, analysis_progress, estimated_count)
             
             if df.empty:
                 analysis_progress[analysis_id].update({
@@ -80,14 +71,17 @@ def perform_analysis_background(analysis_id, start_dt, end_dt, start_date_str, e
                 return
             
             # Aktualizacja postępu: klasyfikacja
-            elapsed_so_far = time.time() - start_time
-            # Szacowanie czasu klasyfikacji na podstawie rzeczywistej liczby zgłoszeń
-            estimated_classify_time = max(2, min(len(df) * 0.003, 8))  # 2-8 sekund
+            # Pobierz aktualny postęp, żeby nie cofać paska
+            current_progress = analysis_progress[analysis_id].get('progress', 0)
+            # Ustawiamy na 90%, chyba że już jesteśmy dalej (wtedy dodajemy 1%)
+            next_progress = max(90, current_progress + 1)
+            # Ale nie więcej niż 95% przed zapisywaniem
+            next_progress = min(95, next_progress)
             
             analysis_progress[analysis_id].update({
-                'progress': 80,
+                'progress': next_progress,
                 'status': f'Klasyfikacja {len(df)} problemów...',
-                'eta_seconds': int(estimated_classify_time + 2)  # +2s na zapisywanie
+                'eta_seconds': 0
             })
             
             app_logger.info(f"Rozpoczynam klasyfikację {len(df)} problemów")
@@ -95,9 +89,9 @@ def perform_analysis_background(analysis_id, start_dt, end_dt, start_date_str, e
             
             # Aktualizacja postępu: zapisywanie
             analysis_progress[analysis_id].update({
-                'progress': 95,
+                'progress': 98,
                 'status': 'Zapisywanie wyników...',
-                'eta_seconds': 2  # Realistyczne 2 sekundy na zapisywanie
+                'eta_seconds': 0
             })
             
             # Sanityzacja i zapisanie danych
