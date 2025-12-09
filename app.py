@@ -44,46 +44,51 @@ def main():
                     threaded=True,
                     use_reloader=False  # Wyłącz auto-reload żeby uniknąć spamu z .venv
                 )
-            else:
-                # Tryb produkcyjny - z SSL
-                ssl_context, ssl_port = configure_ssl_production()
-                
-                # Konfiguracja dla udostępnienia w sieci lokalnej
-                hostname = socket.gethostname()
-                local_ip = socket.gethostbyname(hostname)
-                
-                # Wybierz port i protokół
-                port = ssl_port if ssl_context else 5000
-                protocol = "https" if ssl_context else "http"
-                
-                app_logger.info("=== TRYB PRODUKCYJNY ===")
-                app_logger.info("Aplikacja dostępna pod adresami:")
-                app_logger.info(f"   • Lokalnie: {protocol}://localhost:{port}")
-                app_logger.info(f"   • W sieci lokalnej: {protocol}://{local_ip}:{port}")
-                app_logger.info(f"   • Wszystkie interfejsy: {protocol}://0.0.0.0:{port}")
-                
-                if ssl_context:
-                    app_logger.info("   • SSL/HTTPS: WŁĄCZONY [OK]")
-                    ssl_cert_path = os.getenv('SSL_CERT_PATH', 'ssl/pl.mcd.com.pem')
-                    app_logger.info(f"   • Certyfikat: {ssl_cert_path}")
-                else:
-                    app_logger.warning("   • SSL/HTTPS: WYŁĄCZONY [WARNING]")
-                
             
-            app_logger.info("Udostępnij kolegom adres IP w sieci lokalnej (tylko w trybie produkcyjnym)")
+            # TODO: Production only - disabled for localhost thesis presentation
+            # === TRYB PRODUKCYJNY WYŁĄCZONY ===
+            # Poniższy kod jest przeznaczony dla wdrożenia produkcyjnego z SSL
+            # Dla prezentacji pracy inżynierskiej używamy tylko trybu development
+            # 
+            # else:
+            #     # Tryb produkcyjny - z SSL
+            #     ssl_context, ssl_port = configure_ssl_production()
+            #     
+            #     # Konfiguracja dla udostępnienia w sieci lokalnej
+            #     hostname = socket.gethostname()
+            #     local_ip = socket.gethostbyname(hostname)
+            #     
+            #     # Wybierz port i protokół
+            #     port = ssl_port if ssl_context else 5000
+            #     protocol = "https" if ssl_context else "http"
+            #     
+            #     app_logger.info("=== TRYB PRODUKCYJNY ===")
+            #     app_logger.info("Aplikacja dostępna pod adresami:")
+            #     app_logger.info(f"   • Lokalnie: {protocol}://localhost:{port}")
+            #     app_logger.info(f"   • W sieci lokalnej: {protocol}://{local_ip}:{port}")
+            #     app_logger.info(f"   • Wszystkie interfejsy: {protocol}://0.0.0.0:{port}")
+            #     
+            #     if ssl_context:
+            #         app_logger.info("   • SSL/HTTPS: WŁĄCZONY [OK]")
+            #         ssl_cert_path = os.getenv('SSL_CERT_PATH', 'ssl/pl.mcd.com.pem')
+            #         app_logger.info(f"   • Certyfikat: {ssl_cert_path}")
+            #     else:
+            #         app_logger.warning("   • SSL/HTTPS: WYŁĄCZONY [WARNING]")
+            
             app_logger.info("Panel administracyjny: /admin/login (login: admin)")
             
-            # Uruchom aplikację
-            if flask_env != 'development':
-                # Tryb produkcyjny z konfiguracją SSL
-                app.run(
-                    debug=False,  # Wyłącz debug dla bezpieczeństwa
-                    host='0.0.0.0',  # Nasłuchuj na wszystkich interfejsach
-                    port=port,  # Port aplikacji (443 dla HTTPS, 5000 dla HTTP)
-                    threaded=True,  # Obsługa wielu użytkowników jednocześnie
-                    use_reloader=False,  # Wyłącz auto-reload
-                    ssl_context=ssl_context  # Kontekst SSL jeśli dostępny
-                )
+            # TODO: Production only - disabled for localhost thesis presentation
+            # === URUCHOMIENIE PRODUKCYJNE WYŁĄCZONE ===
+            # if flask_env != 'development':
+            #     # Tryb produkcyjny z konfiguracją SSL
+            #     app.run(
+            #         debug=False,  # Wyłącz debug dla bezpieczeństwa
+            #         host='0.0.0.0',  # Nasłuchuj na wszystkich interfejsach
+            #         port=port,  # Port aplikacji (443 dla HTTPS, 5000 dla HTTP)
+            #         threaded=True,  # Obsługa wielu użytkowników jednocześnie
+            #         use_reloader=False,  # Wyłącz auto-reload
+            #         ssl_context=ssl_context  # Kontekst SSL jeśli dostępny
+            #     )
         
         return app
         

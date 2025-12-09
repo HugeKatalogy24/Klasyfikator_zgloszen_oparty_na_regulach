@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 """
-Główna klasa SecurityManager - punkt wejścia dla wszystkich funkcji bezpieczeństwa
-Zrefaktoryzowana na modułową strukturę dla lepszej organizacji kodu
+SecurityManager - centralne zarządzanie bezpieczeństwem aplikacji.
 """
 
 import os
@@ -14,27 +12,23 @@ from flask import request, session, g
 from security_auth import AuthenticationManager
 from security_validation import ValidationManager
 
-# Import stałej walidacji kategorii z classifier.py
+# Stała walidacji kategorii
 try:
     from classifier import ALLOWED_CATEGORY_CHARS
 except ImportError:
-    # Fallback w przypadku problemów z importem
     import string
     ALLOWED_CATEGORY_CHARS = string.ascii_letters + string.digits + "_- /," + "ąćęłńóśźżĄĆĘŁŃÓŚŹŻ"
 
-# Konfiguracja loggera dla security - z bezpiecznym kodowaniem
+# Logger z obsługą UTF-8 dla Windows
 sec_logger = logging.getLogger('security')
 sec_logger.setLevel(logging.INFO)
 
-# Handler z kodowaniem UTF-8 dla Windows
 import sys
 if sys.platform == 'win32':
     try:
         console_handler = logging.StreamHandler(sys.stdout)
-        # Spróbuj ustawić bezpieczne kodowanie
         sys.stdout.reconfigure(encoding='utf-8', errors='replace')
     except (AttributeError, OSError):
-        # Fallback dla starszych wersji
         import codecs
         console_handler = logging.StreamHandler(
             codecs.getwriter('utf-8')(sys.stdout.buffer, 'replace')
@@ -48,12 +42,10 @@ console_handler.setFormatter(formatter)
 sec_logger.addHandler(console_handler)
 
 class SecurityManager:
-    """Główna klasa zarządzająca bezpieczeństwem aplikacji"""
+    """Centralne zarządzanie bezpieczeństwem aplikacji."""
     
     def __init__(self, app=None):
         self.app = app
-        
-        # Inicjalizacja komponentów
         self.auth_manager = AuthenticationManager()
         self.validation_manager = ValidationManager()
         
@@ -61,28 +53,27 @@ class SecurityManager:
             self.init_app(app)
     
     def init_app(self, app):
-        """Inicjalizacja zabezpieczeń dla aplikacji Flask"""
+        """Konfiguracja zabezpieczeń Flask."""
         self.app = app
         
-        # Enhanced Session Configuration
+        # Konfiguracja sesji
         app.config['SESSION_COOKIE_SECURE'] = os.getenv('SESSION_COOKIE_SECURE', 'False').lower() == 'true'
         app.config['SESSION_COOKIE_HTTPONLY'] = os.getenv('SESSION_COOKIE_HTTPONLY', 'True').lower() == 'true'
         app.config['SESSION_COOKIE_SAMESITE'] = os.getenv('SESSION_COOKIE_SAMESITE', 'Strict')
         app.config['PERMANENT_SESSION_LIFETIME'] = int(os.getenv('PERMANENT_SESSION_LIFETIME', 28800))
         
-        # File Upload Security
+        # Limit rozmiaru uploadów
         app.config['MAX_CONTENT_LENGTH'] = int(os.getenv('MAX_CONTENT_LENGTH', 16 * 1024 * 1024))
         
-        # Enhanced Security Headers - ZAWSZE włączone
+        # Nagłówki bezpieczeństwa
         @app.after_request
         def add_security_headers(response):
-            # Podstawowe nagłówki bezpieczeństwa - zawsze aktywne
             response.headers['X-Content-Type-Options'] = 'nosniff'
             response.headers['X-Frame-Options'] = 'DENY'
             response.headers['X-XSS-Protection'] = '1; mode=block'
             response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
             
-            # Content Security Policy z nonce
+            # CSP z nonce
             nonce = None
             try:
                 nonce = getattr(g, 'csp_nonce', None)
@@ -90,7 +81,6 @@ class SecurityManager:
                 pass
             
             if nonce:
-                # CSP z nonce - bezpieczny, bez 'unsafe-inline'
                 response.headers['Content-Security-Policy'] = (
                     f"default-src 'self'; "
                     f"script-src 'self' 'nonce-{nonce}' https://cdn.plot.ly; "

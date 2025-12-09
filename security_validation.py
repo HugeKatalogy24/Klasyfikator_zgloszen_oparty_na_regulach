@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 """
-Moduł walidacji danych i zarządzania SSL
-Wydzielony z security.py dla lepszej organizacji kodu
+Moduł walidacji danych wejściowych i zarządzania SSL.
 """
 
 import os
@@ -14,24 +12,21 @@ from datetime import datetime, timedelta
 from pathlib import Path
 import pandas as pd
 
-# Konfiguracja loggera dla walidacji
 val_logger = logging.getLogger('security_validation')
 val_logger.setLevel(logging.INFO)
 
 class ValidationManager:
-    """Klasa zarządzająca walidacją danych i bezpieczeństwem"""
+    """Zarządzanie walidacją danych i bezpieczeństwem."""
     
     def __init__(self):
         pass
     
     def generate_csp_nonce(self):
-        """Generuje nonce dla Content Security Policy"""
+        """Generuje nonce dla CSP."""
         return secrets.token_urlsafe(16)
     
     def validate_text_input(self, text, field_name="Pole", min_length=0, max_length=1000, allow_html=False):
-        """
-        Waliduje dane tekstowe wejściowe z konfigurowalnymi parametrami
-        """
+        """Waliduje dane tekstowe z konfigurowalnymi parametrami."""
         errors = []
         
         # Sprawdź czy tekst jest podany
@@ -80,19 +75,14 @@ class ValidationManager:
         }
     
     def validate_file_path(self, file_path, allowed_dirs):
-        """
-        BEZPIECZEŃSTWO: Waliduje ścieżkę pliku przeciwko path traversal i ogranicza do dozwolonych katalogów
-        """
+        """Waliduje ścieżkę pliku (ochrona przed path traversal)."""
         try:
-            # Normalizuj ścieżkę
             normalized_path = os.path.normpath(file_path)
             
-            # Sprawdź na path traversal
             if '..' in normalized_path:
                 val_logger.warning(f"Path traversal attempt detected: {file_path}")
                 return False
             
-            # Sprawdź czy ścieżka jest w dozwolonych katalogach
             abs_file_path = os.path.abspath(normalized_path)
             
             for allowed_dir in allowed_dirs:
@@ -108,34 +98,25 @@ class ValidationManager:
             return False
     
     def sanitize_and_validate_form_data(self, form_data):
-        """
-        Sanityzuje i waliduje dane formularza
-        """
+        """Sanityzuje i waliduje dane formularza."""
         sanitized_data = {}
         errors = []
         
         for key, value in form_data.items():
-            # Podstawowa walidacja klucza
             if not re.match(r'^[a-zA-Z0-9_\-]+$', key):
                 errors.append(f"Nieprawidłowa nazwa pola: {key}")
                 continue
             
-            # Walidacja i sanityzacja wartości
             if isinstance(value, str):
-                # Ogranicz długość
-                if len(value) > 10000:  # Rozumny limit
+                if len(value) > 10000:
                     errors.append(f"Wartość pola {key} zbyt długa")
                     continue
                 
-                # Podstawowa sanityzacja
                 sanitized_value = value.strip()
-                
-                # Usuń potencjalnie niebezpieczne znaki z wartości
                 sanitized_value = re.sub(r'[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]', '', sanitized_value)
                 
                 sanitized_data[key] = sanitized_value
             else:
-                # Dla nie-string wartości, konwertuj na string i sanityzuj
                 sanitized_data[key] = str(value).strip()
         
         return {
@@ -145,32 +126,25 @@ class ValidationManager:
         }
     
     def validate_date_range(self, start_date_str, end_date_str, max_days=365):
-        """
-        Waliduje zakres dat z ograniczeniami bezpieczeństwa
-        """
+        """Waliduje zakres dat."""
         errors = []
         
         try:
-            # Sprawdź format dat
             start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
             end_date = datetime.strptime(end_date_str, '%Y-%m-%d').date()
             
-            # Sprawdź logiczne ograniczenia
             if start_date > end_date:
                 errors.append("Data początkowa nie może być późniejsza niż data końcowa")
             
-            # Sprawdź na zbyt duży zakres (ochrona przed przeciążeniem)
             date_diff = (end_date - start_date).days
             if date_diff > max_days:
                 errors.append(f"Zakres dat nie może być większy niż {max_days} dni")
             
-            # Sprawdź na przyszłe daty (opcjonalnie) - umożliwiamy dzisiejszą datę
             today = datetime.now().date()
             if end_date > today:
                 errors.append("Data końcowa nie może być z przyszłości")
             
-            # Sprawdź na zbyt stare daty (ochrona przed nadmiernym obciążeniem)
-            oldest_allowed = today - timedelta(days=365*2)  # 2 lata wstecz
+            oldest_allowed = today - timedelta(days=365*2)  # Max 2 lata wstecz
             if start_date < oldest_allowed:
                 errors.append("Data początkowa nie może być starsza niż 2 lata")
             
@@ -180,9 +154,7 @@ class ValidationManager:
         return errors
     
     def validate_query_parameters(self, args):
-        """
-        Waliduje parametry URL query string
-        """
+        """Waliduje parametry URL query string."""
         errors = []
         suspicious_patterns = [
             r'<script[^>]*>',
@@ -197,14 +169,12 @@ class ValidationManager:
         ]
         
         for key, value in args.items():
-            # Sprawdź długość parametrów
             if len(key) > 100:
                 errors.append(f"Zbyt długa nazwa parametru: {key[:20]}...")
             
             if len(str(value)) > 1000:
                 errors.append(f"Zbyt długa wartość parametru {key}: {str(value)[:20]}...")
             
-            # Sprawdź na podejrzane wzorce
             combined_param = f"{key}={value}"
             for pattern in suspicious_patterns:
                 if re.search(pattern, combined_param, re.IGNORECASE):
@@ -217,37 +187,31 @@ class ValidationManager:
         }
     
     def sanitize_csv_dataframe(self, df):
-        """
-        BEZPIECZEŃSTWO: Sanityzuje DataFrame przed eksportem CSV
-        """
+        """Sanityzuje DataFrame przed eksportem CSV."""
         df_clean = df.copy()
         
-        # Sanityzuj kolumny tekstowe
+        # Sanityzacja kolumn tekstowych
         for col in df_clean.select_dtypes(include=['object']).columns:
-            # Usuń potencjalnie niebezpieczne znaki z CSV
-            # Zachowaj polskie znaki ale usuń znaki kontrolne i formulas
             df_clean[col] = df_clean[col].astype(str).apply(
-                lambda x: re.sub(r'^[@+\-]', '', str(x))  # Usuń znaki formuł na początku
+                lambda x: re.sub(r'^[@+\-]', '', str(x))  # Usunięcie znaków formuł
             ).apply(
-                lambda x: re.sub(r'[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]', '', str(x))  # Usuń znaki kontrolne
+                lambda x: re.sub(r'[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]', '', str(x))
             ).apply(
-                lambda x: x.replace('\r\n', ' ').replace('\n', ' ').replace('\r', ' ')  # Usuń line breaks
+                lambda x: x.replace('\r\n', ' ').replace('\n', ' ').replace('\r', ' ')
             )
         
         return df_clean
     
     def validate_rule_data(self, rule_name, keywords_str, combinations_str, forbidden_str, min_score_str):
-        """
-        Waliduje dane reguły klasyfikacji
-        """
+        """Waliduje dane reguły klasyfikacji."""
         errors = []
         
-        # Walidacja nazwy reguły
+        # Nazwa reguły
         name_validation = self.validate_text_input(rule_name, "Nazwa reguły", min_length=1, max_length=100)
         if not name_validation['valid']:
             errors.extend(name_validation['errors'])
         
-        # Walidacja słów kluczowych
+        # Słowa kluczowe
         if not keywords_str or not keywords_str.strip():
             errors.append("Słowa kluczowe są wymagane")
         else:
@@ -255,7 +219,7 @@ class ValidationManager:
             if not keywords_validation['valid']:
                 errors.extend(keywords_validation['errors'])
         
-        # Walidacja min_score
+        # Min score
         try:
             min_score = int(min_score_str)
             if min_score < 1 or min_score > 20:
@@ -263,13 +227,13 @@ class ValidationManager:
         except (ValueError, TypeError):
             errors.append("Minimalny wynik musi być liczbą całkowitą")
         
-        # Walidacja kombinacji (opcjonalnie)
+        # Kombinacje (opcjonalne)
         if combinations_str and combinations_str.strip():
             combinations_validation = self.validate_text_input(combinations_str, "Kombinacje wymagane", max_length=2000)
             if not combinations_validation['valid']:
                 errors.extend(combinations_validation['errors'])
         
-        # Walidacja słów zabronionych (opcjonalnie)
+        # Słowa zabronione (opcjonalne)
         if forbidden_str and forbidden_str.strip():
             forbidden_validation = self.validate_text_input(forbidden_str, "Słowa zabronione", max_length=1000)
             if not forbidden_validation['valid']:
@@ -278,11 +242,11 @@ class ValidationManager:
         return errors
     
     def is_host_allowed(self, request_host, allowed_hosts):
-        """Sprawdza czy host jest na liście dozwolonych"""
+        """Sprawdza czy host jest dozwolony."""
         return request_host in allowed_hosts
     
     def validate_ssl_production_requirements(self):
-        """Waliduje wymagania SSL dla środowiska produkcyjnego"""
+        """Waliduje wymagania SSL dla produkcji."""
         flask_env = os.getenv('FLASK_ENV', 'development').lower()
         
         if flask_env != 'production':
@@ -291,29 +255,28 @@ class ValidationManager:
                 'reason': f'Tryb {flask_env} - sprawdzenie SSL pominięte'
             }
         
-        # W produkcji wymagane są certyfikaty SSL
         cert_path = os.getenv('SSL_CERT_PATH', 'ssl/pl.mcd.com.crt')
         key_path = os.getenv('SSL_KEY_PATH', 'ssl/pl.mcd.com.key')
         
         if not os.path.exists(cert_path):
             return {
                 'can_start': False,
-                'reason': f'BŁĄD KRYTYCZNY: Brak certyfikatu SSL: {cert_path}. Aplikacja nie może być uruchomiona w produkcji bez certyfikatu SSL.'
+                'reason': f'BŁĄD KRYTYCZNY: Brak certyfikatu SSL: {cert_path}'
             }
         
         if not os.path.exists(key_path):
             return {
                 'can_start': False,
-                'reason': f'BŁĄD KRYTYCZNY: Brak klucza prywatnego SSL: {key_path}. Aplikacja nie może być uruchomiona w produkcji bez klucza prywatnego SSL.'
+                'reason': f'BŁĄD KRYTYCZNY: Brak klucza prywatnego SSL: {key_path}'
             }
         
         return {
             'can_start': True,
-            'reason': 'SSL jest prawidłowo skonfigurowany dla produkcji'
+            'reason': 'SSL prawidłowo skonfigurowany'
         }
     
     def check_certificate_expiry(self):
-        """Sprawdza datę wygaśnięcia certyfikatu SSL"""
+        """Sprawdza datę wygaśnięcia certyfikatu SSL."""
         try:
             from cryptography import x509
             from cryptography.hazmat.backends import default_backend
@@ -368,14 +331,13 @@ class ValidationManager:
             return {'status': 'error', 'message': f'Błąd sprawdzania certyfikatu: {str(e)}'}
     
     def secure_ssl_file_permissions(self):
-        """Ustawia bezpieczne uprawnienia dla plików SSL (Unix/Linux)"""
+        """Ustawia bezpieczne uprawnienia dla plików SSL (Unix)."""
         try:
             cert_path = os.getenv('SSL_CERT_PATH', 'ssl/pl.mcd.com.crt')
             key_path = os.getenv('SSL_KEY_PATH', 'ssl/pl.mcd.com.key')
             
             success = True
             
-            # Ustaw uprawnienia dla certyfikatu (readable by all, writable by owner)
             if os.path.exists(cert_path):
                 try:
                     os.chmod(cert_path, 0o644)
@@ -384,19 +346,18 @@ class ValidationManager:
                     val_logger.warning(f"Nie można ustawić uprawnień dla certyfikatu: {e}")
                     success = False
             
-            # Ustaw uprawnienia dla klucza prywatnego (readable/writable only by owner)
             if os.path.exists(key_path):
                 try:
                     os.chmod(key_path, 0o600)
-                    val_logger.info(f"Ustawiono uprawnienia 600 dla klucza prywatnego: {key_path}")
+                    val_logger.info(f"Ustawiono uprawnienia 600 dla klucza: {key_path}")
                 except OSError as e:
-                    val_logger.warning(f"Nie można ustawić uprawnień dla klucza prywatnego: {e}")
+                    val_logger.warning(f"Nie można ustawić uprawnień dla klucza: {e}")
                     success = False
             
             return success
             
         except Exception as e:
-            val_logger.exception(f"Błąd ustawiania uprawnień plików SSL: {e}")
+            val_logger.exception(f"Błąd ustawiania uprawnień SSL: {e}")
             return False
 
 # Globalna instancja dla kompatybilności

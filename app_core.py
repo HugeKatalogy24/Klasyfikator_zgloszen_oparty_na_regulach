@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Główne routy i logika biznesowa aplikacji Flask
-Wydzielone z app.py dla lepszej organizacji kodu
+Główne routy i logika biznesowa aplikacji Flask.
 """
 
 from flask import render_template, request, flash, redirect, url_for, session, send_file, jsonify, abort, g, Response, stream_with_context
@@ -23,16 +22,15 @@ logger = logging.getLogger(__name__)
 analysis_progress = {}
 
 def perform_analysis_background(analysis_id, start_dt, end_dt, start_date_str, end_date_str, jira_api, classifier, app_logger):
-    """Wykonuje analizę w tle z raportowaniem postępu"""
+    """Wykonuje analizę w wątku w tle z raportowaniem postępu."""
     try:
-        # Przygotowanie ścieżki pliku
         data_file = f'data/jira_data_{start_date_str}_{end_date_str}.csv'
         os.makedirs('data', exist_ok=True)
         
         start_time = time.time()
-        refresh_data = True  # Zawsze pobieraj świeże dane
+        refresh_data = True
         
-        # Aktualizacja postępu: rozpoczęcie
+        # Początkowy status
         analysis_progress[analysis_id].update({
             'progress': 0,
             'status': 'Sprawdzanie liczby zgłoszeń...',
@@ -41,7 +39,7 @@ def perform_analysis_background(analysis_id, start_dt, end_dt, start_date_str, e
             'eta_seconds': 0
         })
         
-        # KROK 1: Pobierz DOKŁADNĄ liczbę zgłoszeń (to jest kluczowe!)
+        # Pobranie dokładnej liczby zgłoszeń
         app_logger.info("Pobieranie dokładnej liczby zgłoszeń...")
         estimated_count = jira_api.get_total_issues_count(start_dt, end_dt)
         
@@ -172,30 +170,30 @@ def perform_analysis_background(analysis_id, start_dt, end_dt, start_date_str, e
         })
 
 def register_routes(app, security, limiter, jira_api, classifier, app_logger):
-    """Rejestruje wszystkie routy aplikacji"""
+    """Rejestracja wszystkich route'ów aplikacji."""
     
     @app.context_processor
     def inject_csrf_token():
-        """Udostępnia token CSRF we wszystkich szablonach."""
+        """Token CSRF dostępny we wszystkich szablonach."""
         return {
             'csrf_token': security.generate_csrf_token()
         }
 
     @app.template_filter('to_datetime')
     def to_datetime_filter(date_string):
-        """Konwertuje string daty do obiektu datetime."""
+        """Konwersja stringa daty do datetime."""
         try:
             return datetime.strptime(date_string, '%Y-%m-%d')
         except:
             return datetime.now()
 
     def get_data_from_session():
-        """Wczytuje dane z pliku CSV, którego ścieżka jest zapisana w sesji."""
+        """Wczytuje dane CSV ze ścieżki zapisanej w sesji."""
         data_file_path = session.get('last_analysis_file')
         if not data_file_path:
             return None
         
-        # BEZPIECZEŃSTWO: Walidacja ścieżki pliku
+        # Walidacja ścieżki pliku
         allowed_dirs = [
             os.path.join(os.getcwd(), 'data'),
             os.path.join(os.getcwd(), 'backups'),
@@ -292,147 +290,9 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                 'error': 'Błąd serwera'
             }), 500
 
-    @app.route('/api/analyze-stream', methods=['POST'])
-    @security.require_csrf
-    @limiter.limit("10 per 10 minutes")
-    def analyze_stream():
-        """
-        Endpoint ze streamingiem SSE (Server-Sent Events) - PRAWDZIWY postęp.
-        Zwraca strumień eventów z danymi o postępie analizy.
-        """
-        try:
-            # Walidacja danych formularza
-            form_validation = security.sanitize_and_validate_form_data(request.form)
-            if not form_validation['valid']:
-                return jsonify({
-                    'success': False,
-                    'errors': form_validation['errors']
-                }), 400
-            
-            form_data = form_validation['data']
-            start_date_str = form_data.get('start_date')
-            end_date_str = form_data.get('end_date')
-            
-            if not start_date_str or not end_date_str:
-                return jsonify({
-                    'success': False,
-                    'errors': ['Proszę wybrać datę początkową i końcową.']
-                }), 400
-            
-            date_errors = security.validate_date_range(start_date_str, end_date_str)
-            if date_errors:
-                return jsonify({
-                    'success': False,
-                    'errors': date_errors
-                }), 400
-            
-            start_dt = datetime.strptime(start_date_str, '%Y-%m-%d').date()
-            end_dt = datetime.strptime(end_date_str, '%Y-%m-%d').date()
-            
-            if jira_api is None:
-                return jsonify({
-                    'success': False,
-                    'errors': ['JiraAPI nie został zainicjalizowany.']
-                }), 500
-            
-            if classifier is None:
-                return jsonify({
-                    'success': False,
-                    'errors': ['Klasyfikator nie został zainicjalizowany.']
-                }), 500
-            
-            def generate_progress():
-                """Generator streamujący postęp analizy jako SSE"""
-                try:
-                    # KROK 1: Pobierz liczbę zgłoszeń
-                    yield f"data: {json.dumps({'type': 'status', 'progress': 0, 'status': 'Sprawdzanie liczby zgłoszeń...', 'current': 0, 'total': 0})}\n\n"
-                    
-                    total_count = jira_api.get_total_issues_count(start_dt, end_dt)
-                    
-                    if total_count is None or total_count == 0:
-                        yield f"data: {json.dumps({'type': 'error', 'error': 'Nie znaleziono zgłoszeń w podanym zakresie dat.'})}\n\n"
-                        return
-                    
-                    yield f"data: {json.dumps({'type': 'status', 'progress': 2, 'status': f'Znaleziono {total_count} zgłoszeń. Rozpoczynam pobieranie...', 'current': 0, 'total': total_count})}\n\n"
-                    
-                    # KROK 2: Pobieranie zgłoszeń ze streamowaniem postępu
-                    all_issues = []
-                    for progress_data in jira_api.fetch_issues_streaming(start_dt, end_dt, total_count):
-                        if progress_data['type'] == 'progress':
-                            # Oblicz procent (0-80% dla pobierania)
-                            pct = (progress_data['current'] / progress_data['total']) * 80 if progress_data['total'] > 0 else 0
-                            yield f"data: {json.dumps({'type': 'status', 'progress': round(pct, 1), 'status': 'Pobieranie zgłoszeń z Jira...', 'current': progress_data['current'], 'total': progress_data['total']})}\n\n"
-                        elif progress_data['type'] == 'batch':
-                            all_issues.extend(progress_data['issues'])
-                        elif progress_data['type'] == 'done':
-                            all_issues = progress_data['all_issues']
-                    
-                    if not all_issues:
-                        yield f"data: {json.dumps({'type': 'error', 'error': 'Nie udało się pobrać zgłoszeń.'})}\n\n"
-                        return
-                    
-                    # KROK 3: Konwersja do DataFrame
-                    yield f"data: {json.dumps({'type': 'status', 'progress': 82, 'status': 'Przetwarzanie danych...', 'current': len(all_issues), 'total': total_count})}\n\n"
-                    
-                    df = jira_api.issues_to_dataframe(all_issues)
-                    
-                    if df.empty:
-                        yield f"data: {json.dumps({'type': 'error', 'error': 'Nie udało się przekształcić danych.'})}\n\n"
-                        return
-                    
-                    # KROK 4: Klasyfikacja
-                    yield f"data: {json.dumps({'type': 'status', 'progress': 85, 'status': f'Klasyfikacja {len(df)} zgłoszeń...', 'current': len(df), 'total': len(df)})}\n\n"
-                    
-                    classified_data = classifier.classify_issues(df)
-                    
-                    # KROK 5: Zapisywanie
-                    yield f"data: {json.dumps({'type': 'status', 'progress': 95, 'status': 'Zapisywanie wyników...', 'current': len(df), 'total': len(df)})}\n\n"
-                    
-                    data_file = f'data/jira_data_{start_date_str}_{end_date_str}.csv'
-                    os.makedirs('data', exist_ok=True)
-                    
-                    # Sanityzacja danych
-                    try:
-                        from security_validation import ValidationManager
-                        security_validator = ValidationManager()
-                        if hasattr(security_validator, 'sanitize_csv_dataframe'):
-                            classified_data = security_validator.sanitize_csv_dataframe(classified_data)
-                    except Exception as e:
-                        app_logger.warning(f"Błąd sanityzacji CSV: {e}")
-                    
-                    # Zapisz plik
-                    if os.path.exists(data_file):
-                        try:
-                            os.remove(data_file)
-                        except OSError:
-                            pass
-                    
-                    classified_data.to_csv(data_file, index=False, encoding='utf-8-sig')
-                    
-                    # KROK 6: Sukces!
-                    redirect_url = f'/results?period={start_date_str}_{end_date_str}&file={data_file}'
-                    yield f"data: {json.dumps({'type': 'complete', 'progress': 100, 'status': 'Analiza zakończona!', 'current': len(df), 'total': len(df), 'redirect_url': redirect_url})}\n\n"
-                    
-                except Exception as e:
-                    app_logger.exception(f"Błąd podczas streamowanej analizy: {e}")
-                    yield f"data: {json.dumps({'type': 'error', 'error': str(e)})}\n\n"
-            
-            return Response(
-                stream_with_context(generate_progress()),
-                mimetype='text/event-stream',
-                headers={
-                    'Cache-Control': 'no-cache',
-                    'X-Accel-Buffering': 'no',
-                    'Connection': 'keep-alive'
-                }
-            )
-        
-        except Exception as e:
-            app_logger.exception(f"Błąd krytyczny w analyze_stream: {e}")
-            return jsonify({
-                'success': False,
-                'errors': [str(e)]
-            }), 500
+    # === USUNIĘTO: Martwy kod SSE (Server-Sent Events) ===
+    # Endpoint /api/analyze-stream został usunięty - nieużywany po rollbacku do polling
+    # Jeśli potrzebujesz SSE, sprawdź historię git
 
     @app.route('/analyze', methods=['POST'])
     @security.require_csrf

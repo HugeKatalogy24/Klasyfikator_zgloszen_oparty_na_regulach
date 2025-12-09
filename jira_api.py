@@ -6,10 +6,8 @@ import time
 from datetime import datetime
 from dotenv import load_dotenv
 
-# Ładowanie zmiennych środowiskowych
 load_dotenv()
 
-# Konfiguracja loggera dla Jira API
 jira_logger = logging.getLogger('jira_api')
 jira_logger.setLevel(logging.INFO)
 console_handler = logging.StreamHandler()
@@ -28,25 +26,20 @@ class JiraAPI:
             raise ValueError("JIRA_TOKEN nie został ustawiony w zmiennych środowiskowych")
     
     def get_total_issues_count(self, start_date, end_date):
-        """
-        Pobiera DOKŁADNĄ liczbę zgłoszeń w zakresie dat.
-        Ta funkcja musi zwrócić poprawną liczbę zanim rozpocznie się pobieranie.
-        """
+        """Pobiera dokładną liczbę zgłoszeń w zakresie dat."""
         start_str = start_date.strftime('%Y-%m-%d 00:00')
         end_str = end_date.strftime('%Y-%m-%d 23:59')
         
         jql = f'project = SD AND created >= "{start_str}" AND created <= "{end_str}"'
         
-        # Użyj standardowego endpointu search (v2/v3) który zwraca 'total'
-        # Endpoint /rest/api/3/search zwraca total w odpowiedzi
         url = f"{self.domain}/rest/api/3/search"
         headers = {"Accept": "application/json"}
         auth = (self.email, self.token)
         
         params = {
             "jql": jql,
-            "maxResults": 0,  # Nie pobieraj żadnych zgłoszeń, tylko metadane
-            "fields": "key"   # Minimalne pole
+            "maxResults": 0,
+            "fields": "key"
         }
         
         try:
@@ -66,7 +59,7 @@ class JiraAPI:
             else:
                 jira_logger.error(f"Błąd API: {response.status_code} - {response.text[:200]}")
             
-            # Fallback - spróbuj pobrać pierwszą stronę i policzyć
+            # Fallback - pobieranie pierwszej strony
             jira_logger.info("Próba fallback - pobieranie pierwszej strony...")
             params['maxResults'] = 100
             response = requests.get(url, headers=headers, auth=auth, params=params, timeout=15)
@@ -86,184 +79,18 @@ class JiraAPI:
             return None
 
     def estimate_issues_count(self, start_date, end_date):
-        """Alias dla kompatybilności wstecznej"""
+        """Alias dla kompatybilności wstecznej."""
         return self.get_total_issues_count(start_date, end_date)
 
-    def fetch_issues_streaming(self, start_date, end_date, total_count):
-        """
-        Generator streamujący pobieranie zgłoszeń z Jira.
-        Zwraca (yield) słowniki z postępem i danymi.
-        
-        Typy zwracanych danych:
-        - {'type': 'progress', 'current': N, 'total': M} - postęp
-        - {'type': 'batch', 'issues': [...]} - batch danych
-        - {'type': 'done', 'all_issues': [...]} - zakończenie
-        - {'type': 'error', 'error': 'msg'} - błąd
-        """
-        start_str = start_date.strftime('%Y-%m-%d 00:00')
-        end_str = end_date.strftime('%Y-%m-%d 23:59')
-        
-        jql = f'project = SD AND created >= "{start_str}" AND created <= "{end_str}"'
-        url = f"{self.domain}/rest/api/3/search/jql"
-        headers = {"Accept": "application/json"}
-        auth = (self.email, self.token)
-        
-        all_issues = []
-        next_page_token = None
-        batch_size = 100
-        
-        jira_logger.info(f"[STREAMING] Start pobierania dla: {jql}")
-        
-        while True:
-            params = {
-                "jql": jql,
-                "maxResults": batch_size,
-                "fields": "summary,created,key,issuetype,reporter,status,priority,updated,assignee,creator"
-            }
-            
-            if next_page_token:
-                params["nextPageToken"] = next_page_token
-            
-            try:
-                response = requests.get(url, headers=headers, auth=auth, params=params, timeout=30)
-                
-                if response.status_code == 429:
-                    jira_logger.warning("Rate limit hit, czekam 60s...")
-                    time.sleep(60)
-                    continue
-                
-                if response.status_code != 200:
-                    jira_logger.error(f"Błąd API: {response.status_code}")
-                    yield {'type': 'error', 'error': f'Błąd API Jira: {response.status_code}'}
-                    return
-                
-                data = response.json()
-                issues = data.get('issues', [])
-                
-                if not issues and not all_issues:
-                    yield {'type': 'error', 'error': 'Brak zgłoszeń do pobrania'}
-                    return
-                
-                all_issues.extend(issues)
-                
-                # Yield postępu
-                yield {
-                    'type': 'progress',
-                    'current': len(all_issues),
-                    'total': total_count
-                }
-                
-                # Yield batch danych (dla trybu przyrostowego)
-                yield {
-                    'type': 'batch',
-                    'issues': issues
-                }
-                
-                jira_logger.info(f"[STREAMING] Pobrano: {len(all_issues)}/{total_count}")
-                
-                # Sprawdź czy to ostatnia strona
-                is_last = data.get('isLast', True)
-                next_page_token = data.get('nextPageToken')
-                
-                if is_last or not next_page_token:
-                    break
-                    
-            except requests.exceptions.Timeout:
-                jira_logger.error("Timeout podczas pobierania z Jira")
-                yield {'type': 'error', 'error': 'Timeout połączenia z Jira'}
-                return
-            except Exception as e:
-                jira_logger.exception(f"Błąd podczas streaming fetch: {e}")
-                yield {'type': 'error', 'error': str(e)}
-                return
-        
-        jira_logger.info(f"[STREAMING] Zakończono - łącznie {len(all_issues)} zgłoszeń")
-        yield {'type': 'done', 'all_issues': all_issues}
-
-    def issues_to_dataframe(self, issues):
-        """
-        Konwertuje listę issues z API do DataFrame.
-        Wydzielone z fetch_issues dla reużywalności.
-        """
-        if not issues:
-            return pd.DataFrame()
-        
-        records = []
-        for issue in issues:
-            try:
-                # Reporter
-                reporter_info = issue['fields'].get('reporter', {})
-                reporter_name = reporter_info.get('displayName', 'Nieznany') if reporter_info else 'Nieznany'
-                
-                # Assignee
-                assignee_info = issue['fields'].get('assignee', {})
-                assignee_name = assignee_info.get('displayName', 'Nieprzypisany') if assignee_info else 'Nieprzypisany'
-                
-                # Creator
-                creator_info = issue['fields'].get('creator', {})
-                creator_name = creator_info.get('displayName', 'Nieznany') if creator_info else 'Nieznany'
-                
-                # Status
-                status_info = issue['fields'].get('status', {})
-                status_name = status_info.get('name', 'Nieznany') if status_info else 'Nieznany'
-                
-                # Priority
-                priority_info = issue['fields'].get('priority', {})
-                priority_name = priority_info.get('name', 'Nieznany') if priority_info else 'Nieznany'
-                
-                # Site extraction
-                site = self.extract_site_from_reporter(reporter_name)
-                site_name = self.extract_site_name_from_reporter(reporter_name)
-                
-                # Custom fields
-                team = self.safe_get_field(issue['fields'], 'customfield_10100', 'Nieznany')
-                category = self.safe_get_field(issue['fields'], 'customfield_10010', 'Nieznana')
-                request_type = self.safe_get_field(issue['fields'], 'customfield_10010', 'Nieznany')
-                organisation = self.safe_get_field(issue['fields'], 'customfield_10002', 'Nieznana')
-                agent = self.safe_get_field(issue['fields'], 'customfield_10227', 'Nieznany')
-                
-                records.append({
-                    'key': issue['key'],
-                    'title': issue['fields']['summary'],
-                    'created': issue['fields']['created'],
-                    'issue_type': issue['fields']['issuetype']['name'],
-                    'reporter': reporter_name,
-                    'site': site,
-                    'site_name': site_name,
-                    'status': status_name,
-                    'priority': priority_name,
-                    'last_update': issue['fields'].get('updated', ''),
-                    'assignee': assignee_name,
-                    'creator': creator_name,
-                    'team': team,
-                    'category': category,
-                    'request_type': request_type,
-                    'organisation': organisation,
-                    'agent': agent
-                })
-            except Exception as e:
-                jira_logger.warning(f"Błąd przetwarzania issue {issue.get('key', 'unknown')}: {e}")
-                continue
-        
-        df = pd.DataFrame(records)
-        
-        # Czyszczenie tytułów
-        if not df.empty and 'title' in df.columns:
-            df['title_clean'] = df['title'].str.strip()
-            df['title_lower'] = df['title_clean'].str.lower()
-        
-        jira_logger.info(f"[DF] Utworzono DataFrame z {len(df)} rekordami")
-        return df
+    # Usunięto: metody SSE (streaming) - kod pozostawiony w historii git
 
     def fetch_issues_with_progress(self, start_date, end_date, analysis_id=None, progress_dict=None, total_estimated=None):
-        """Pobiera zgłoszenia z Jira w podanym zakresie dat z raportowaniem postępu"""
+        """Pobiera zgłoszenia z raportowaniem postępu."""
         
-        # Jeśli start_date == end_date, pobieramy cały ten dzień
-        # Jeśli start_date != end_date, pobieramy od początku start_date do końca end_date
+        # Zakres dat
         start_str = start_date.strftime('%Y-%m-%d 00:00')
         end_str = end_date.strftime('%Y-%m-%d 23:59')
         
-        # Uproszczone zapytanie - pobiera wszystkie zgłoszenia z projektu SD w zakresie dat
         jql = f'project = SD AND created >= "{start_str}" AND created <= "{end_str}"'
 
         url = f"{self.domain}/rest/api/3/search/jql"
@@ -277,22 +104,18 @@ class JiraAPI:
         jira_logger.info(f"Pobieranie danych z Jira dla okresu {start_str} - {end_str}")
         jira_logger.info(f"Używane JQL: {jql}")
         
-        # API v3 używa cursor-based pagination - nie można z góry sprawdzić total
-        # Rozpoczynamy pobieranie bez wstępnego szacowania
         all_issues = []
         next_page_token = None
         batch_size = 100
         
         while True:
-            # Przygotuj parametry dla API v3 (cursor-based pagination)
-            # Uproszczone pola - pobieramy tylko podstawowe informacje
             params = {
                 "jql": jql,
                 "maxResults": batch_size,
                 "fields": "summary,created,key,issuetype,reporter,status,priority,updated,assignee,creator"
             }
             
-            # Dodaj token dla następnej strony jeśli istnieje
+            # Token paginacji
             if next_page_token:
                 params["nextPageToken"] = next_page_token
             
@@ -310,8 +133,7 @@ class JiraAPI:
                 
                 data = response.json()
                 
-                # ZAWSZE aktualizuj total_estimated jeśli API zwraca 'total'
-                # To naprawia sytuację, gdy szacowanie się nie powiodło lub było niedokładne
+                # Aktualizacja total_estimated na podstawie odpowiedzi API
                 if 'total' in data:
                     real_total = data['total']
                     if total_estimated != real_total:
@@ -330,13 +152,10 @@ class JiraAPI:
                 is_last = data.get('isLast', True)
                 next_page_token = data.get('nextPageToken')
                 
-                # Aktualizuj postęp, jeśli przekazano parametry
+                # Aktualizacja postępu
                 if analysis_id and progress_dict and analysis_id in progress_dict:
-                    # Oblicz postęp na podstawie liczby pobranych zgłoszeń
-                    
                     if total_estimated and total_estimated > 0:
-                        # Mamy dokładną liczbę zgłoszeń - oblicz procent
-                        # Pobieranie to 0-85%, klasyfikacja i zapis to 85-100%
+                        # Pobieranie = 0-85%, reszta = 85-100%
                         ratio = min(1.0, len(all_issues) / total_estimated)
                         fetch_progress = ratio * 85
                         
@@ -350,11 +169,11 @@ class JiraAPI:
                             'eta_seconds': 0
                         })
                     else:
-                        # Fallback - nie mamy total (bardzo rzadkie)
+                        # Fallback bez total
                         status_msg = f'Pobrano {len(all_issues)} zgłoszeń...'
                         
                         progress_dict[analysis_id].update({
-                            'progress': min(50, len(all_issues) / 10),  # Powoli rośnie
+                            'progress': min(50, len(all_issues) / 10),
                             'status': status_msg,
                             'current_count': len(all_issues),
                             'total_count': 0,
@@ -372,46 +191,44 @@ class JiraAPI:
                     jira_logger.error(f"Response text: {e.response.text}")
                 break
         
-        # Konwersja do DataFrame (ta sama logika jak w fetch_issues)
+        # Konwersja do DataFrame
         if not all_issues:
             return pd.DataFrame()
             
         records = []
         for issue in all_issues:
-            # [Pozostała część kodu identyczna jak w fetch_issues...]
-            # Pobierz informacje o zgłaszającym (reporter)
+            # Reporter
             reporter_info = issue['fields'].get('reporter', {})
             reporter_name = reporter_info.get('displayName', 'Nieznany') if reporter_info else 'Nieznany'
             
-            # Pobierz informacje o assignee
+            # Assignee
             assignee_info = issue['fields'].get('assignee', {})
             assignee_name = assignee_info.get('displayName', 'Nieprzypisany') if assignee_info else 'Nieprzypisany'
             
-            # Pobierz informacje o creator
+            # Creator
             creator_info = issue['fields'].get('creator', {})
             creator_name = creator_info.get('displayName', 'Nieznany') if creator_info else 'Nieznany'
             
-            # Pobierz status
+            # Status
             status_info = issue['fields'].get('status', {})
             status_name = status_info.get('name', 'Nieznany') if status_info else 'Nieznany'
             
-            # Pobierz priority
+            # Priority
             priority_info = issue['fields'].get('priority', {})
             priority_name = priority_info.get('name', 'Nieznany') if priority_info else 'Nieznany'
             
-            # Wyciągnij numer restauracji z reportera
+            # Numer restauracji
             site = self.extract_site_from_reporter(reporter_name)
             
-            # Wyciągnij nazwę restauracji z reportera
+            # Nazwa restauracji
             site_name = self.extract_site_name_from_reporter(reporter_name)
             
-            # Pobierz custom fields - te mogą mieć różne ID w różnych instancjach Jira
-            # Sprawdzimy które pola są dostępne
-            team = self.safe_get_field(issue['fields'], 'customfield_10100', 'Nieznany')  # Team
-            category = self.safe_get_field(issue['fields'], 'customfield_10010', 'Nieznana')  # Category (z customfield_10010)
-            request_type = self.safe_get_field(issue['fields'], 'customfield_10010', 'Nieznany')  # Request Type (surowa wartość customfield_10010)
-            organisation = self.safe_get_field(issue['fields'], 'customfield_10002', 'Nieznana')  # Organisation
-            agent = self.safe_get_field(issue['fields'], 'customfield_10227', 'Nieznany')  # Agent
+            # Custom fields
+            team = self.safe_get_field(issue['fields'], 'customfield_10100', 'Nieznany')
+            category = self.safe_get_field(issue['fields'], 'customfield_10010', 'Nieznana')
+            request_type = self.safe_get_field(issue['fields'], 'customfield_10010', 'Nieznany')
+            organisation = self.safe_get_field(issue['fields'], 'customfield_10002', 'Nieznana')
+            agent = self.safe_get_field(issue['fields'], 'customfield_10227', 'Nieznany')
             
             records.append({
                 'key': issue['key'],
@@ -435,8 +252,7 @@ class JiraAPI:
         
         df = pd.DataFrame(records)
         
-        # Usunięto filtrowanie exclude_phrases - pobieramy wszystkie zgłoszenia
-        # Podstawowe czyszczenie tylko dla title
+        # Czyszczenie tytułów
         df['title_clean'] = df['title'].str.strip()
         df['title_lower'] = df['title_clean'].str.lower()
         
@@ -444,14 +260,11 @@ class JiraAPI:
         return df
 
     def fetch_issues(self, start_date, end_date):
-        """Pobiera zgłoszenia z Jira w podanym zakresie dat"""
+        """Pobiera zgłoszenia z Jira w zakresie dat."""
         
-        # Jeśli start_date == end_date, pobieramy cały ten dzień
-        # Jeśli start_date != end_date, pobieramy od początku start_date do końca end_date
         start_str = start_date.strftime('%Y-%m-%d 00:00')
         end_str = end_date.strftime('%Y-%m-%d 23:59')
         
-        # Uproszczone zapytanie - pobiera wszystkie zgłoszenia z projektu SD w zakresie dat
         jql = f'project = SD AND created >= "{start_str}" AND created <= "{end_str}"'
 
         url = f"{self.domain}/rest/api/3/search/jql"
@@ -466,14 +279,12 @@ class JiraAPI:
         jira_logger.info(f"Używane JQL: {jql}")
         
         while True:
-            # Przygotuj parametry dla API v3 (cursor-based pagination)
             params = {
                 "jql": jql,
                 "maxResults": batch_size,
                 "fields": "summary,created,key,issuetype,reporter,status,priority,updated,assignee,creator"
             }
             
-            # Dodaj token dla następnej strony jeśli istnieje
             if next_page_token:
                 params["nextPageToken"] = next_page_token
             
@@ -520,39 +331,29 @@ class JiraAPI:
             
         records = []
         for issue in all_issues:
-            # Pobierz informacje o zgłaszającym (reporter)
             reporter_info = issue['fields'].get('reporter', {})
             reporter_name = reporter_info.get('displayName', 'Nieznany') if reporter_info else 'Nieznany'
             
-            # Pobierz informacje o assignee
             assignee_info = issue['fields'].get('assignee', {})
             assignee_name = assignee_info.get('displayName', 'Nieprzypisany') if assignee_info else 'Nieprzypisany'
             
-            # Pobierz informacje o creator
             creator_info = issue['fields'].get('creator', {})
             creator_name = creator_info.get('displayName', 'Nieznany') if creator_info else 'Nieznany'
             
-            # Pobierz status
             status_info = issue['fields'].get('status', {})
             status_name = status_info.get('name', 'Nieznany') if status_info else 'Nieznany'
             
-            # Pobierz priority
             priority_info = issue['fields'].get('priority', {})
             priority_name = priority_info.get('name', 'Nieznany') if priority_info else 'Nieznany'
             
-            # Wyciągnij numer restauracji z reportera
             site = self.extract_site_from_reporter(reporter_name)
-            
-            # Wyciągnij nazwę restauracji z reportera
             site_name = self.extract_site_name_from_reporter(reporter_name)
             
-            # Pobierz custom fields - te mogą mieć różne ID w różnych instancjach Jira
-            # Sprawdzimy które pola są dostępne
-            team = self.safe_get_field(issue['fields'], 'customfield_10100', 'Nieznany')  # Team
-            category = self.safe_get_field(issue['fields'], 'customfield_10010', 'Nieznana')  # Category (z customfield_10010)
-            request_type = self.safe_get_field(issue['fields'], 'customfield_10010', 'Nieznany')  # Request Type (surowa wartość customfield_10010)
-            organisation = self.safe_get_field(issue['fields'], 'customfield_10002', 'Nieznana')  # Organisation
-            agent = self.safe_get_field(issue['fields'], 'customfield_10227', 'Nieznany')  # Agent
+            team = self.safe_get_field(issue['fields'], 'customfield_10100', 'Nieznany')
+            category = self.safe_get_field(issue['fields'], 'customfield_10010', 'Nieznana')
+            request_type = self.safe_get_field(issue['fields'], 'customfield_10010', 'Nieznany')
+            organisation = self.safe_get_field(issue['fields'], 'customfield_10002', 'Nieznana')
+            agent = self.safe_get_field(issue['fields'], 'customfield_10227', 'Nieznany')
             
             records.append({
                 'key': issue['key'],
@@ -576,8 +377,6 @@ class JiraAPI:
         
         df = pd.DataFrame(records)
         
-        # Usunięto filtrowanie exclude_phrases - pobieramy wszystkie zgłoszenia
-        # Podstawowe czyszczenie tylko dla title
         df['title_clean'] = df['title'].str.strip()
         df['title_lower'] = df['title_clean'].str.lower()
         
@@ -585,29 +384,25 @@ class JiraAPI:
         return df
     
     def safe_get_field(self, fields, field_name, default_value):
-        """Bezpiecznie pobiera wartość pola, obsługując różne typy danych"""
+        """Bezpiecznie pobiera wartość pola z obsługą różnych typów."""
         try:
             field_value = fields.get(field_name)
             if field_value is None:
                 return default_value
             
-            # Specjalna obsługa dla customfield_10010 (Request Type) - wyciągnij 'name'
+            # Obsługa customfield_10010 (Request Type)
             if field_name == 'customfield_10010' and isinstance(field_value, dict):
-                # Na podstawie podanej struktury: szukaj requestType.name
                 if 'requestType' in field_value:
                     request_type = field_value['requestType']
                     if isinstance(request_type, dict) and 'name' in request_type:
                         return request_type['name']
                 
-                # Fallback: szukaj bezpośrednio 'name'
                 if 'name' in field_value:
                     return field_value['name']
                 
-                # Jeśli nie znaleziono, zwróć skróconą wersję
                 return str(field_value)[:100] + "..." if len(str(field_value)) > 100 else str(field_value)
             
-            # Standardowa obsługa dla innych pól
-            # Jeśli to obiekt z 'value' lub 'name'
+            # Standardowa obsługa
             if isinstance(field_value, dict):
                 if 'value' in field_value:
                     return field_value['value']
@@ -643,40 +438,30 @@ class JiraAPI:
             return default_value
     
     def extract_site_from_reporter(self, reporter_name):
-        """Wyciąga numer restauracji z nazwy reportera"""
+        """Wyciąga numer restauracji z nazwy reportera."""
         if not reporter_name or reporter_name == 'Nieznany':
             return 'Nieznany'
         
         import re
         
-        # Wykluczenie asystenta systemowego
         if reporter_name.lower() in ['pl-asista', 'asista', 'system', 'admin']:
             return 'Asystent'
         
-        # Wzorce do wyciągania numeru restauracji w kolejności od najbardziej specyficznych
+        # Wzorce do wyciągania numeru restauracji
         patterns = [
-            # Format McDonald's PL-00XXX (3-cyfrowy efektywny numer)
-            r'PL-00(\d{3})',  # PL-00624 -> 624
-            r'pl-00(\d{3})',  # pl-00624 -> 624
-            
-            # Format McDonald's PL-0XXXX (4-cyfrowy efektywny numer)
-            r'PL-0(\d{4})',   # PL-01234 -> 1234
-            r'pl-0(\d{4})',   # pl-01234 -> 1234
-            
-            # Format McDonald's PL-XXXXX (5-cyfrowy efektywny numer)
-            r'PL-(\d{5})',    # PL-12345 -> 12345
-            r'pl-(\d{5})',    # pl-12345 -> 12345
-            
-            # Format McDonald's na końcu nazwy
-            r'PL-00(\d{3})\s',  # "Warszawa Reguly PL-00689" -> 689
-            r'PL-0(\d{4})\s',   # "Warszawa Reguly PL-01234" -> 1234
-            
-            # Ogólne wzorce numerów
-            r'(\d{4})',       # 4-cyfrowy numer restauracji
-            r'(\d{3})',       # 3-cyfrowy numer restauracji
-            r'R(\d+)',        # R123 format
-            r'Rest(\d+)',     # Rest123 format
-            r'Restauracja\s*(\d+)', # Restauracja 123
+            r'PL-00(\d{3})',
+            r'pl-00(\d{3})',
+            r'PL-0(\d{4})',
+            r'pl-0(\d{4})',
+            r'PL-(\d{5})',
+            r'pl-(\d{5})',
+            r'PL-00(\d{3})\s',
+            r'PL-0(\d{4})\s',
+            r'(\d{4})',
+            r'(\d{3})',
+            r'R(\d+)',
+            r'Rest(\d+)',
+            r'Restauracja\s*(\d+)',
         ]
         
         for pattern in patterns:
@@ -688,27 +473,23 @@ class JiraAPI:
         return 'Nieznany'
     
     def extract_site_name_from_reporter(self, reporter_name):
-        """Wyciąga nazwę restauracji z nazwy reportera"""
+        """Wyciąga nazwę restauracji z nazwy reportera."""
         if not reporter_name or reporter_name == 'Nieznany':
             return 'Nieznana'
         
         import re
         
-        # Wykluczenie asystenta systemowego
         if reporter_name.lower() in ['pl-asista', 'asista', 'system', 'admin']:
             return 'Asystent systemowy'
         
         # Wzorce do wyciągania nazwy restauracji
         patterns = [
-            # Format: "PL-00XXX Nazwa Miasto"
-            r'PL-\d{5}\s+(.+)',   # PL-00266 Krakow 13 Mogilany -> Krakow 13 Mogilany
-            r'PL-\d{4}\s+(.+)',   # PL-0266 Krakow 13 Mogilany -> Krakow 13 Mogilany
-            r'PL-\d{3}\s+(.+)',   # PL-266 Krakow 13 Mogilany -> Krakow 13 Mogilany
-            r'pl-\d{5}\s+(.+)',   # pl-00266 Krakow 13 Mogilany -> Krakow 13 Mogilany
-            r'pl-\d{4}\s+(.+)',   # pl-0266 Krakow 13 Mogilany -> Krakow 13 Mogilany
-            r'pl-\d{3}\s+(.+)',   # pl-266 Krakow 13 Mogilany -> Krakow 13 Mogilany
-            
-            # Format: "Nazwa PL-00XXX"
+            r'PL-\d{5}\s+(.+)',
+            r'PL-\d{4}\s+(.+)',
+            r'PL-\d{3}\s+(.+)',
+            r'pl-\d{5}\s+(.+)',
+            r'pl-\d{4}\s+(.+)',
+            r'pl-\d{3}\s+(.+)',
             r'(.+)\s+PL-\d{3,5}',  # Warszawa Reguly PL-00689 -> Warszawa Reguly
             r'(.+)\s+pl-\d{3,5}',  # Warszawa Reguly pl-00689 -> Warszawa Reguly
         ]
@@ -724,7 +505,7 @@ class JiraAPI:
         return reporter_name[:50]
     
     def get_issue_types(self):
-        """Pobiera wszystkie dostępne typy zgłoszeń z Jira"""
+        """Pobiera dostępne typy zgłoszeń z Jira."""
         url = f"{self.domain}/rest/api/3/issuetype"
         headers = {"Accept": "application/json"}
         auth = (self.email, self.token)
@@ -737,10 +518,9 @@ class JiraAPI:
                 return []
             
             issue_types = response.json()
-            # Filtruj tylko typy używane w projekcie SD
             relevant_types = []
             for issue_type in issue_types:
-                if issue_type.get('id') in ['10004', '10011', '10066']:  # Incydent, Poważny Incydent, Usługa
+                if issue_type.get('id') in ['10004', '10011', '10066']:
                     relevant_types.append({
                         'id': issue_type['id'],
                         'name': issue_type['name'],
@@ -755,8 +535,7 @@ class JiraAPI:
             return []
     
     def get_request_types(self, issue_type_id=None):
-        """Pobiera dostępne typy żądań z Jira Service Desk, opcjonalnie filtrowane po typie zgłoszenia"""
-        # Najpierw pobierz service desk ID dla projektu SD
+        """Pobiera typy żądań z Jira Service Desk."""
         url = f"{self.domain}/rest/servicedeskapi/servicedesk"
         headers = {"Accept": "application/json"}
         auth = (self.email, self.token)
@@ -771,7 +550,6 @@ class JiraAPI:
             service_desks = response.json().get('values', [])
             sd_service_desk_id = None
             
-            # Znajdź service desk dla projektu SD
             for sd in service_desks:
                 if sd.get('projectKey') == 'SD':
                     sd_service_desk_id = sd.get('id')
@@ -781,7 +559,6 @@ class JiraAPI:
                 jira_logger.error("Nie znaleziono service desk dla projektu SD")
                 return []
             
-            # Pobierz typy żądań dla znalezionego service desk
             url = f"{self.domain}/rest/servicedeskapi/servicedesk/{sd_service_desk_id}/requesttype"
             response = requests.get(url, headers=headers, auth=auth, timeout=30)
             
@@ -791,12 +568,10 @@ class JiraAPI:
             
             request_types = response.json().get('values', [])
             
-            # Przefiltruj i sformatuj typy żądań
             formatted_types = []
             for rt in request_types:
                 rt_issue_type_id = rt.get('issueTypeId')
                 
-                # Jeśli podano issue_type_id, filtruj tylko pasujące typy żądań
                 if issue_type_id and rt_issue_type_id != issue_type_id:
                     continue
                 
@@ -807,10 +582,7 @@ class JiraAPI:
                     'issueTypeId': rt_issue_type_id
                 })
             
-            if issue_type_id:
-                jira_logger.info(f"Pobrano {len(formatted_types)} typów żądań dla typu zgłoszenia {issue_type_id}")
-            else:
-                jira_logger.info(f"Pobrano {len(formatted_types)} typów żądań (wszystkie)")
+            jira_logger.info(f"Pobrano {len(formatted_types)} typów żądań")
             return formatted_types
             
         except Exception as e:
@@ -818,7 +590,7 @@ class JiraAPI:
             return []
     
     def update_issue_type(self, issue_key, new_issue_type_id):
-        """Aktualizuje typ zgłoszenia dla podanego klucza"""
+        """Aktualizuje typ zgłoszenia."""
         url = f"{self.domain}/rest/api/3/issue/{issue_key}"
         headers = {
             "Accept": "application/json",
@@ -850,19 +622,16 @@ class JiraAPI:
             return False
     
     def update_request_type(self, issue_key, new_request_type_id):
-        """Aktualizuje typ żądania (customfield_10010) dla podanego klucza"""
-        
-        # Najpierw spróbuj standardowego Jira API
+        """Aktualizuje typ żądania (customfield_10010)."""
         success = self._update_request_type_standard(issue_key, new_request_type_id)
         if success:
             return True
         
-        # Jeśli standardowe API nie działa, spróbuj Service Desk API
         jira_logger.info(f"Standardowe API nie powiodło się dla {issue_key}, próbuję Service Desk API...")
         return self.update_request_type_servicedesk(issue_key, new_request_type_id)
     
     def _update_request_type_standard(self, issue_key, new_request_type_id):
-        """Próbuje aktualizować typ żądania przez standardowe Jira API"""
+        """Próbuje aktualizować typ żądania przez standardowe API."""
         url = f"{self.domain}/rest/api/3/issue/{issue_key}"
         headers = {
             "Accept": "application/json",
@@ -870,15 +639,13 @@ class JiraAPI:
         }
         auth = (self.email, self.token)
         
-        # Spróbuj różnych struktur dla customfield_10010
+        # Różne struktury payloadu
         payloads_to_try = [
-            # Struktura 1: Proste ID
             {
                 "fields": {
                     "customfield_10010": new_request_type_id
                 }
             },
-            # Struktura 2: Object z id
             {
                 "fields": {
                     "customfield_10010": {
@@ -886,7 +653,6 @@ class JiraAPI:
                     }
                 }
             },
-            # Struktura 3: requestType zagnieżdżone (obecne)
             {
                 "fields": {
                     "customfield_10010": {
@@ -916,8 +682,7 @@ class JiraAPI:
         return False
     
     def update_request_type_servicedesk(self, issue_key, new_request_type_id):
-        """Alternatywna metoda aktualizacji typu żądania używając Service Desk API"""
-        # Najpierw pobierz Service Desk ID
+        """Aktualizacja typu żądania przez Service Desk API."""
         url = f"{self.domain}/rest/servicedeskapi/servicedesk"
         headers = {"Accept": "application/json"}
         auth = (self.email, self.token)
@@ -965,11 +730,10 @@ class JiraAPI:
             return False
     
     def validate_issue_keys(self, issue_keys):
-        """Waliduje i pobiera informacje o zgłoszeniach na podstawie kluczy"""
+        """Waliduje klucze zgłoszeń i pobiera informacje."""
         valid_issues = []
         invalid_issues = []
         
-        # Utwórz JQL do pobrania wszystkich zgłoszeń jednym zapytaniem
         keys_str = ",".join(issue_keys)
         jql = f'key IN ({keys_str})'
         
