@@ -89,6 +89,172 @@ class JiraAPI:
         """Alias dla kompatybilności wstecznej"""
         return self.get_total_issues_count(start_date, end_date)
 
+    def fetch_issues_streaming(self, start_date, end_date, total_count):
+        """
+        Generator streamujący pobieranie zgłoszeń z Jira.
+        Zwraca (yield) słowniki z postępem i danymi.
+        
+        Typy zwracanych danych:
+        - {'type': 'progress', 'current': N, 'total': M} - postęp
+        - {'type': 'batch', 'issues': [...]} - batch danych
+        - {'type': 'done', 'all_issues': [...]} - zakończenie
+        - {'type': 'error', 'error': 'msg'} - błąd
+        """
+        start_str = start_date.strftime('%Y-%m-%d 00:00')
+        end_str = end_date.strftime('%Y-%m-%d 23:59')
+        
+        jql = f'project = SD AND created >= "{start_str}" AND created <= "{end_str}"'
+        url = f"{self.domain}/rest/api/3/search/jql"
+        headers = {"Accept": "application/json"}
+        auth = (self.email, self.token)
+        
+        all_issues = []
+        next_page_token = None
+        batch_size = 100
+        
+        jira_logger.info(f"[STREAMING] Start pobierania dla: {jql}")
+        
+        while True:
+            params = {
+                "jql": jql,
+                "maxResults": batch_size,
+                "fields": "summary,created,key,issuetype,reporter,status,priority,updated,assignee,creator"
+            }
+            
+            if next_page_token:
+                params["nextPageToken"] = next_page_token
+            
+            try:
+                response = requests.get(url, headers=headers, auth=auth, params=params, timeout=30)
+                
+                if response.status_code == 429:
+                    jira_logger.warning("Rate limit hit, czekam 60s...")
+                    time.sleep(60)
+                    continue
+                
+                if response.status_code != 200:
+                    jira_logger.error(f"Błąd API: {response.status_code}")
+                    yield {'type': 'error', 'error': f'Błąd API Jira: {response.status_code}'}
+                    return
+                
+                data = response.json()
+                issues = data.get('issues', [])
+                
+                if not issues and not all_issues:
+                    yield {'type': 'error', 'error': 'Brak zgłoszeń do pobrania'}
+                    return
+                
+                all_issues.extend(issues)
+                
+                # Yield postępu
+                yield {
+                    'type': 'progress',
+                    'current': len(all_issues),
+                    'total': total_count
+                }
+                
+                # Yield batch danych (dla trybu przyrostowego)
+                yield {
+                    'type': 'batch',
+                    'issues': issues
+                }
+                
+                jira_logger.info(f"[STREAMING] Pobrano: {len(all_issues)}/{total_count}")
+                
+                # Sprawdź czy to ostatnia strona
+                is_last = data.get('isLast', True)
+                next_page_token = data.get('nextPageToken')
+                
+                if is_last or not next_page_token:
+                    break
+                    
+            except requests.exceptions.Timeout:
+                jira_logger.error("Timeout podczas pobierania z Jira")
+                yield {'type': 'error', 'error': 'Timeout połączenia z Jira'}
+                return
+            except Exception as e:
+                jira_logger.exception(f"Błąd podczas streaming fetch: {e}")
+                yield {'type': 'error', 'error': str(e)}
+                return
+        
+        jira_logger.info(f"[STREAMING] Zakończono - łącznie {len(all_issues)} zgłoszeń")
+        yield {'type': 'done', 'all_issues': all_issues}
+
+    def issues_to_dataframe(self, issues):
+        """
+        Konwertuje listę issues z API do DataFrame.
+        Wydzielone z fetch_issues dla reużywalności.
+        """
+        if not issues:
+            return pd.DataFrame()
+        
+        records = []
+        for issue in issues:
+            try:
+                # Reporter
+                reporter_info = issue['fields'].get('reporter', {})
+                reporter_name = reporter_info.get('displayName', 'Nieznany') if reporter_info else 'Nieznany'
+                
+                # Assignee
+                assignee_info = issue['fields'].get('assignee', {})
+                assignee_name = assignee_info.get('displayName', 'Nieprzypisany') if assignee_info else 'Nieprzypisany'
+                
+                # Creator
+                creator_info = issue['fields'].get('creator', {})
+                creator_name = creator_info.get('displayName', 'Nieznany') if creator_info else 'Nieznany'
+                
+                # Status
+                status_info = issue['fields'].get('status', {})
+                status_name = status_info.get('name', 'Nieznany') if status_info else 'Nieznany'
+                
+                # Priority
+                priority_info = issue['fields'].get('priority', {})
+                priority_name = priority_info.get('name', 'Nieznany') if priority_info else 'Nieznany'
+                
+                # Site extraction
+                site = self.extract_site_from_reporter(reporter_name)
+                site_name = self.extract_site_name_from_reporter(reporter_name)
+                
+                # Custom fields
+                team = self.safe_get_field(issue['fields'], 'customfield_10100', 'Nieznany')
+                category = self.safe_get_field(issue['fields'], 'customfield_10010', 'Nieznana')
+                request_type = self.safe_get_field(issue['fields'], 'customfield_10010', 'Nieznany')
+                organisation = self.safe_get_field(issue['fields'], 'customfield_10002', 'Nieznana')
+                agent = self.safe_get_field(issue['fields'], 'customfield_10227', 'Nieznany')
+                
+                records.append({
+                    'key': issue['key'],
+                    'title': issue['fields']['summary'],
+                    'created': issue['fields']['created'],
+                    'issue_type': issue['fields']['issuetype']['name'],
+                    'reporter': reporter_name,
+                    'site': site,
+                    'site_name': site_name,
+                    'status': status_name,
+                    'priority': priority_name,
+                    'last_update': issue['fields'].get('updated', ''),
+                    'assignee': assignee_name,
+                    'creator': creator_name,
+                    'team': team,
+                    'category': category,
+                    'request_type': request_type,
+                    'organisation': organisation,
+                    'agent': agent
+                })
+            except Exception as e:
+                jira_logger.warning(f"Błąd przetwarzania issue {issue.get('key', 'unknown')}: {e}")
+                continue
+        
+        df = pd.DataFrame(records)
+        
+        # Czyszczenie tytułów
+        if not df.empty and 'title' in df.columns:
+            df['title_clean'] = df['title'].str.strip()
+            df['title_lower'] = df['title_clean'].str.lower()
+        
+        jira_logger.info(f"[DF] Utworzono DataFrame z {len(df)} rekordami")
+        return df
+
     def fetch_issues_with_progress(self, start_date, end_date, analysis_id=None, progress_dict=None, total_estimated=None):
         """Pobiera zgłoszenia z Jira w podanym zakresie dat z raportowaniem postępu"""
         

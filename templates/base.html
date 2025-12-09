@@ -95,9 +95,9 @@
             });
         });
         
-        // Add loading states for forms
+        // Add loading states for forms (excluding analysis form which has custom handling)
         document.addEventListener('DOMContentLoaded', function() {
-            const forms = document.querySelectorAll('form');
+            const forms = document.querySelectorAll('form:not(.analysis-form)');
             forms.forEach(function(form) {
                 form.addEventListener('submit', function(e) {
                     const submitBtn = form.querySelector('button[type="submit"]');

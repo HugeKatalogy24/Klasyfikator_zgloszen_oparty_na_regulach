@@ -548,6 +548,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     analysisForm.addEventListener('submit', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         
         // Sprawdź walidację formularza
         if (!this.checkValidity()) {
@@ -929,14 +930,13 @@ function updateCategoriesTable() {
         });
 }
 
-    // ===== FUNKCJE PASKA POSTĘPU (NOWE - RZECZYWISTE ŚLEDZENIE) =====
+    // ===== FUNKCJE PASKA POSTĘPU (POLLING) =====
     
     let currentAnalysisId = null;
     let progressInterval = null;
 
     // Funkcja do formatowania czasu
     function formatTime(seconds) {
-        // Nie pokazuj bardzo małych czasów
         if (seconds < 3) {
             return 'kilka sekund';
         }
@@ -1007,10 +1007,8 @@ function updateCategoriesTable() {
                         progressInterval = null;
                         
                         if (data.error) {
-                            // Pokaż błąd
                             showError(data.error);
                         } else if (data.redirect_url) {
-                            // Przekieruj do wyników po krótkiej przerwie
                             setTimeout(() => {
                                 window.location.href = data.redirect_url;
                             }, 1500);
@@ -1020,7 +1018,6 @@ function updateCategoriesTable() {
                     clearInterval(progressInterval);
                     progressInterval = null;
                     
-                    // Sprawdź czy powinniśmy odświeżyć stronę
                     if (data.should_reload) {
                         showError(data.error || 'Sesja analizy wygasła. Strona zostanie odświeżona...');
                         setTimeout(() => {
@@ -1044,13 +1041,25 @@ function updateCategoriesTable() {
         document.getElementById('progressContainer').style.display = 'none';
         document.getElementById('errorMessage').textContent = errorMessage;
         document.getElementById('errorContainer').style.display = 'block';
+        
+        // Przywróć przycisk do stanu początkowego
+        const btn = document.getElementById('analyzeBtn');
+        btn.style.display = 'inline-flex';
+        btn.disabled = false;
+        btn.innerHTML = '<span class="btn-icon">🚀</span> Rozpocznij analizę';
     }
 
     // Funkcja do resetowania analizy
     function resetAnalysis() {
         document.getElementById('errorContainer').style.display = 'none';
         document.getElementById('progressContainer').style.display = 'none';
-        document.getElementById('analyzeBtn').style.display = 'inline-flex';
+        
+        // Przywróć przycisk do stanu początkowego
+        const btn = document.getElementById('analyzeBtn');
+        btn.style.display = 'inline-flex';
+        btn.disabled = false;
+        btn.innerHTML = '<span class="btn-icon">🚀</span> Rozpocznij analizę';
+        
         currentAnalysisId = null;
         if (progressInterval) {
             clearInterval(progressInterval);
@@ -1068,7 +1077,7 @@ function updateCategoriesTable() {
         // Pierwsze sprawdzenie po 500ms
         setTimeout(checkProgress, 500);
         
-        // Następnie sprawdzaj co 1 sekundę dla płynnego paska
+        // Następnie sprawdzaj co 1 sekundę
         progressInterval = setInterval(checkProgress, 1000);
     }
 

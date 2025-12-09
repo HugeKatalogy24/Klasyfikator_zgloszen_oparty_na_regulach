@@ -188,20 +188,21 @@
     transform: translateY(-2px);
 }
 
-/* ===== PASKI POSTĘPU ===== */
+/* ===== PASKI POSTĘPU - PROFESJONALNY STREAMING ===== */
 .progress-bar {
     margin-top: 1rem;
-    height: 8px;
+    height: 12px;
     background: var(--border-color);
-    border-radius: 4px;
+    border-radius: 6px;
     overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 .progress {
     height: 100%;
     background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
-    border-radius: 4px;
-    transition: width 1s ease-in-out;
+    border-radius: 6px;
+    transition: width 0.4s ease-out;
 }
 
 .mini-progress {
@@ -223,38 +224,53 @@
 .progress-container {
     margin-top: 2rem;
     padding: 2rem;
-    background-color: rgba(88, 166, 255, 0.05);
-    border: 1px solid rgba(88, 166, 255, 0.2);
-    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(88, 166, 255, 0.08) 0%, rgba(63, 185, 80, 0.05) 100%);
+    border: 1px solid rgba(88, 166, 255, 0.25);
+    border-radius: 12px;
     animation: fadeIn 0.3s ease-in;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .progress-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 .progress-header h3 {
     margin: 0;
     color: var(--accent-blue);
-    font-size: 1.3rem;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 #progressText {
     color: var(--text-secondary);
     font-size: 1rem;
     font-style: italic;
+    max-width: 60%;
+    text-align: right;
 }
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
-    border-radius: 10px;
+    background: linear-gradient(90deg, 
+        var(--accent-blue) 0%, 
+        #4da6ff 25%,
+        var(--accent-green) 75%, 
+        #5ce68a 100%
+    );
+    background-size: 200% 100%;
+    border-radius: 6px;
     width: 0%;
-    transition: width 0.3s ease;
+    transition: width 0.3s ease-out;
     position: relative;
+    animation: gradientShift 3s ease infinite;
 }
 
 .progress-fill::after {
@@ -264,8 +280,13 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    animation: shimmer 2s infinite;
+    background: linear-gradient(
+        90deg, 
+        transparent 0%, 
+        rgba(255,255,255,0.4) 50%, 
+        transparent 100%
+    );
+    animation: shimmer 1.5s ease-in-out infinite;
 }
 
 .progress-details {
@@ -273,12 +294,14 @@
     justify-content: space-between;
     align-items: center;
     font-size: 0.95rem;
+    margin-top: 1rem;
 }
 
 #progressPercentage {
-    font-weight: 600;
+    font-weight: 700;
     color: var(--accent-blue);
-    font-size: 1.1rem;
+    font-size: 1.3rem;
+    text-shadow: 0 0 10px rgba(88, 166, 255, 0.3);
 }
 
 #progressEta {
@@ -291,37 +314,41 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 1rem;
-    margin: 1rem 0;
-    background: rgba(88, 166, 255, 0.1);
-    border-radius: 8px;
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem 0;
+    background: linear-gradient(135deg, rgba(63, 185, 80, 0.15) 0%, rgba(88, 166, 255, 0.1) 100%);
+    border-radius: 10px;
     font-size: 1.2rem;
+    border: 1px solid rgba(63, 185, 80, 0.2);
 }
 
 .progress-counter .counter-label {
     color: var(--text-secondary);
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .progress-counter .counter-current {
     color: var(--accent-green);
     font-weight: 700;
-    font-size: 1.4rem;
-    min-width: 60px;
+    font-size: 1.6rem;
+    min-width: 70px;
     text-align: right;
+    text-shadow: 0 0 8px rgba(63, 185, 80, 0.4);
 }
 
 .progress-counter .counter-separator {
     color: var(--text-secondary);
     font-weight: 400;
+    font-size: 1.1rem;
 }
 
 .progress-counter .counter-total {
     color: var(--accent-blue);
     font-weight: 700;
-    font-size: 1.4rem;
-    min-width: 60px;
+    font-size: 1.6rem;
+    min-width: 70px;
     text-align: left;
+    text-shadow: 0 0 8px rgba(88, 166, 255, 0.4);
 }
 
 .progress-status-text {
@@ -337,7 +364,13 @@
 
 @keyframes shimmer {
     0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+    100% { transform: translateX(200%); }
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 /* ===== SYSTEM ZAKŁADEK ===== */
