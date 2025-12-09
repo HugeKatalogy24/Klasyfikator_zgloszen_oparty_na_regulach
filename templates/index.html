@@ -78,14 +78,20 @@
                 <div id="progressContainer" class="progress-container" style="display: none;">
                     <div class="progress-header">
                         <h3 id="progressTitle">📊 Analiza w toku...</h3>
-                        <span id="progressText">Przygotowywanie...</span>
+                        <span id="progressText" class="progress-status-text">Przygotowywanie...</span>
+                    </div>
+                    <div id="progressCounterContainer" class="progress-counter" style="display: none;">
+                        <span class="counter-label">Pobrano:</span>
+                        <span id="progressCurrent" class="counter-current">0</span>
+                        <span class="counter-separator">z</span>
+                        <span id="progressTotal" class="counter-total">0</span>
+                        <span class="counter-label">zgłoszeń</span>
                     </div>
                     <div class="progress-bar">
                         <div class="progress-fill" id="progressFill"></div>
                     </div>
                     <div class="progress-details">
                         <span id="progressPercentage">0%</span>
-                        <span id="progressEta">Szacowany czas: obliczanie...</span>
                     </div>
                 </div>
 
@@ -947,24 +953,36 @@ function updateCategoriesTable() {
     }
 
     // Funkcja do aktualizacji paska postępu
-    function updateProgress(progress, status, etaSeconds) {
+    function updateProgress(progress, status, etaSeconds, currentCount, totalCount) {
         const progressFill = document.getElementById('progressFill');
         const progressText = document.getElementById('progressText');
         const progressPercentage = document.getElementById('progressPercentage');
-        const progressEta = document.getElementById('progressEta');
+        const progressCounterContainer = document.getElementById('progressCounterContainer');
+        const progressCurrent = document.getElementById('progressCurrent');
+        const progressTotal = document.getElementById('progressTotal');
         
-        if (progressFill) progressFill.style.width = progress + '%';
-        if (progressText) progressText.textContent = status;
-        if (progressPercentage) progressPercentage.textContent = Math.round(progress) + '%';
+        // Aktualizuj pasek postępu z płynną animacją
+        if (progressFill) {
+            progressFill.style.width = progress + '%';
+        }
         
-        if (progressEta) {
-            if (etaSeconds > 0) {
-                progressEta.textContent = `Pozostało: ${formatTime(etaSeconds)}`;
-                progressEta.style.display = 'inline';
-            } else {
-                // Ukryj ETA jeśli 0 lub brak
-                progressEta.style.display = 'none';
-            }
+        // Aktualizuj procent
+        if (progressPercentage) {
+            progressPercentage.textContent = Math.round(progress) + '%';
+        }
+        
+        // Aktualizuj status tekstowy
+        if (progressText) {
+            progressText.textContent = status;
+        }
+        
+        // Aktualizuj licznik zgłoszeń jeśli mamy dane
+        if (currentCount !== undefined && totalCount !== undefined && totalCount > 0) {
+            if (progressCounterContainer) progressCounterContainer.style.display = 'flex';
+            if (progressCurrent) progressCurrent.textContent = currentCount.toLocaleString('pl-PL');
+            if (progressTotal) progressTotal.textContent = totalCount.toLocaleString('pl-PL');
+        } else {
+            if (progressCounterContainer) progressCounterContainer.style.display = 'none';
         }
     }
 
@@ -976,7 +994,13 @@ function updateCategoriesTable() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    updateProgress(data.progress, data.status, data.eta_seconds);
+                    updateProgress(
+                        data.progress, 
+                        data.status, 
+                        data.eta_seconds,
+                        data.current_count,
+                        data.total_count
+                    );
                     
                     if (data.completed) {
                         clearInterval(progressInterval);
@@ -1039,13 +1063,13 @@ function updateCategoriesTable() {
         currentAnalysisId = analysisId;
         document.getElementById('analyzeBtn').style.display = 'none';
         document.getElementById('progressContainer').style.display = 'block';
-        updateProgress(0, 'Przygotowywanie analizy...', 0);
+        updateProgress(0, 'Przygotowywanie analizy...', 0, 0, 0);
         
-        // Pierwsze sprawdzenie po 1 sekundzie
-        setTimeout(checkProgress, 1000);
+        // Pierwsze sprawdzenie po 500ms
+        setTimeout(checkProgress, 500);
         
-        // Następnie sprawdzaj co 2 sekundy
-        progressInterval = setInterval(checkProgress, 2000);
+        // Następnie sprawdzaj co 1 sekundę dla płynnego paska
+        progressInterval = setInterval(checkProgress, 1000);
     }
 
 // ===== FUNKCJONALNOŚĆ ZMIANY TYPU ZGŁOSZENIA =====

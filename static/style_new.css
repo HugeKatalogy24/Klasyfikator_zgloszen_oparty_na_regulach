@@ -285,6 +285,51 @@
     color: var(--text-secondary);
 }
 
+/* Licznik zgłoszeń - wyświetla "Pobrano: X z Y zgłoszeń" */
+.progress-counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    background: rgba(88, 166, 255, 0.1);
+    border-radius: 8px;
+    font-size: 1.2rem;
+}
+
+.progress-counter .counter-label {
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+.progress-counter .counter-current {
+    color: var(--accent-green);
+    font-weight: 700;
+    font-size: 1.4rem;
+    min-width: 60px;
+    text-align: right;
+}
+
+.progress-counter .counter-separator {
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+.progress-counter .counter-total {
+    color: var(--accent-blue);
+    font-weight: 700;
+    font-size: 1.4rem;
+    min-width: 60px;
+    text-align: left;
+}
+
+.progress-status-text {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    font-style: italic;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }

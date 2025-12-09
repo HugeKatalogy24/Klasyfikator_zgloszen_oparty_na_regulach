@@ -33,33 +33,39 @@ def perform_analysis_background(analysis_id, start_dt, end_dt, start_date_str, e
         
         # Aktualizacja postępu: rozpoczęcie
         analysis_progress[analysis_id].update({
-            'progress': 1,
-            'status': 'Szacowanie liczby zgłoszeń...',
+            'progress': 0,
+            'status': 'Sprawdzanie liczby zgłoszeń...',
+            'current_count': 0,
+            'total_count': 0,
             'eta_seconds': 0
         })
         
-        # Szybkie oszacowanie liczby zgłoszeń
-        estimated_count = jira_api.estimate_issues_count(start_dt, end_dt)
+        # KROK 1: Pobierz DOKŁADNĄ liczbę zgłoszeń (to jest kluczowe!)
+        app_logger.info("Pobieranie dokładnej liczby zgłoszeń...")
+        estimated_count = jira_api.get_total_issues_count(start_dt, end_dt)
         
-        if estimated_count is not None:
-            app_logger.info(f"Szacowana liczba zgłoszeń: {estimated_count}")
+        if estimated_count is not None and estimated_count > 0:
+            app_logger.info(f"✓ Dokładna liczba zgłoszeń do pobrania: {estimated_count}")
+            # Zaktualizuj frontend z dokładną liczbą
+            analysis_progress[analysis_id].update({
+                'progress': 1,
+                'status': f'Znaleziono {estimated_count} zgłoszeń. Rozpoczynam pobieranie...',
+                'current_count': 0,
+                'total_count': estimated_count
+            })
         else:
-            # Fallback do konserwatywnego szacowania na podstawie zakresu dat
-            time_diff = abs(end_dt - start_dt).days + 1
-            app_logger.info(f"Używam szacowania na podstawie zakresu dat: {time_diff} dni")
+            app_logger.warning("Nie udało się pobrać dokładnej liczby zgłoszeń")
+            analysis_progress[analysis_id].update({
+                'progress': 1,
+                'status': 'Rozpoczynam pobieranie zgłoszeń...',
+                'current_count': 0,
+                'total_count': 0
+            })
         
         if refresh_data or not os.path.exists(data_file):
             app_logger.info(f"Pobieranie danych z Jira dla okresu {start_date_str} - {end_date_str}")
             
-            # Aktualizacja postępu: pobieranie danych
-            # Nie ustawiamy sztywnego procentu, czekamy na pierwsze dane z fetch_issues_with_progress
-            analysis_progress[analysis_id].update({
-                'progress': 1,
-                'status': f'Rozpoczynam pobieranie zgłoszeń...',
-                'eta_seconds': 0
-            })
-            
-            # Pobieranie danych z raportowaniem postępu
+            # KROK 2: Pobieranie danych z raportowaniem postępu
             df = jira_api.fetch_issues_with_progress(start_dt, end_dt, analysis_id, analysis_progress, estimated_count)
             
             if df.empty:
@@ -71,16 +77,11 @@ def perform_analysis_background(analysis_id, start_dt, end_dt, start_date_str, e
                 return
             
             # Aktualizacja postępu: klasyfikacja
-            # Pobierz aktualny postęp, żeby nie cofać paska
-            current_progress = analysis_progress[analysis_id].get('progress', 0)
-            # Ustawiamy na 90%, chyba że już jesteśmy dalej (wtedy dodajemy 1%)
-            next_progress = max(90, current_progress + 1)
-            # Ale nie więcej niż 95% przed zapisywaniem
-            next_progress = min(95, next_progress)
-            
             analysis_progress[analysis_id].update({
-                'progress': next_progress,
+                'progress': 88,
                 'status': f'Klasyfikacja {len(df)} problemów...',
+                'current_count': len(df),
+                'total_count': len(df),
                 'eta_seconds': 0
             })
             
@@ -89,7 +90,7 @@ def perform_analysis_background(analysis_id, start_dt, end_dt, start_date_str, e
             
             # Aktualizacja postępu: zapisywanie
             analysis_progress[analysis_id].update({
-                'progress': 98,
+                'progress': 95,
                 'status': 'Zapisywanie wyników...',
                 'eta_seconds': 0
             })
@@ -276,6 +277,8 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                 'progress': progress_data['progress'],
                 'status': progress_data['status'],
                 'eta_seconds': progress_data.get('eta_seconds', 0),
+                'current_count': progress_data.get('current_count', 0),
+                'total_count': progress_data.get('total_count', 0),
                 'completed': progress_data.get('completed', False),
                 'error': progress_data.get('error'),
                 'redirect_url': progress_data.get('redirect_url')

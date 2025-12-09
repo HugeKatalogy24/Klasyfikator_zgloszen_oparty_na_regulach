@@ -27,65 +27,67 @@ class JiraAPI:
         if not self.token:
             raise ValueError("JIRA_TOKEN nie został ustawiony w zmiennych środowiskowych")
     
-    def estimate_issues_count(self, start_date, end_date):
-        """Szybkie oszacowanie liczby zgłoszeń bez pobierania pełnych danych"""
+    def get_total_issues_count(self, start_date, end_date):
+        """
+        Pobiera DOKŁADNĄ liczbę zgłoszeń w zakresie dat.
+        Ta funkcja musi zwrócić poprawną liczbę zanim rozpocznie się pobieranie.
+        """
         start_str = start_date.strftime('%Y-%m-%d 00:00')
         end_str = end_date.strftime('%Y-%m-%d 23:59')
         
-        # Uproszczone zapytanie - pobiera wszystkie zgłoszenia z projektu SD w zakresie dat
         jql = f'project = SD AND created >= "{start_str}" AND created <= "{end_str}"'
-
-        url = f"{self.domain}/rest/api/3/search/jql"
+        
+        # Użyj standardowego endpointu search (v2/v3) który zwraca 'total'
+        # Endpoint /rest/api/3/search zwraca total w odpowiedzi
+        url = f"{self.domain}/rest/api/3/search"
         headers = {"Accept": "application/json"}
         auth = (self.email, self.token)
         
-        # Próba 1: maxResults=0 aby pobrać tylko metadane (total)
         params = {
             "jql": jql,
-            "maxResults": 0,
-            "fields": "key"
+            "maxResults": 0,  # Nie pobieraj żadnych zgłoszeń, tylko metadane
+            "fields": "key"   # Minimalne pole
         }
         
         try:
-            response = requests.get(url, headers=headers, auth=auth, params=params, timeout=10)
+            jira_logger.info(f"Sprawdzanie liczby zgłoszeń dla: {jql}")
+            response = requests.get(url, headers=headers, auth=auth, params=params, timeout=15)
+            
             if response.status_code == 200:
                 data = response.json()
+                jira_logger.info(f"Odpowiedź API (klucze): {list(data.keys())}")
                 
-                # Jeśli API zwraca 'total', używamy tego
                 if 'total' in data:
                     total = data['total']
-                    jira_logger.info(f"Oszacowano liczbę zgłoszeń (z pola total): {total}")
+                    jira_logger.info(f"✓ Dokładna liczba zgłoszeń: {total}")
+                    return total
+                else:
+                    jira_logger.warning(f"Brak pola 'total' w odpowiedzi. Dane: {data}")
+            else:
+                jira_logger.error(f"Błąd API: {response.status_code} - {response.text[:200]}")
+            
+            # Fallback - spróbuj pobrać pierwszą stronę i policzyć
+            jira_logger.info("Próba fallback - pobieranie pierwszej strony...")
+            params['maxResults'] = 100
+            response = requests.get(url, headers=headers, auth=auth, params=params, timeout=15)
+            
+            if response.status_code == 200:
+                data = response.json()
+                if 'total' in data:
+                    total = data['total']
+                    jira_logger.info(f"✓ Liczba zgłoszeń (fallback): {total}")
                     return total
             
-            # Próba 2: maxResults=1 jeśli 0 nie zadziałało
-            params['maxResults'] = 1
-            response = requests.get(url, headers=headers, auth=auth, params=params, timeout=10)
-            if response.status_code == 200:
-                data = response.json()
-                if 'total' in data:
-                    total = data['total']
-                    jira_logger.info(f"Oszacowano liczbę zgłoszeń (z pola total, maxResults=1): {total}")
-                    return total
-                
-                # Fallback do starej metody jeśli nie ma total
-                issues_in_first_page = len(data.get('issues', []))
-                is_last = data.get('isLast', True)
-                
-                if is_last:
-                    estimated_count = issues_in_first_page
-                    jira_logger.info(f"Oszacowano liczbę zgłoszeń (dokładna, jedna strona): {estimated_count}")
-                    return estimated_count
-                else:
-                    # Nie zgadujemy. Jeśli nie ma total i jest więcej stron, zwracamy None.
-                    # Pozwoli to funkcji fetch_issues_with_progress pobrać total z właściwego zapytania
-                    jira_logger.warning("Brak pola 'total' w odpowiedzi API. Nie można oszacować liczby zgłoszeń.")
-                    return None
-            else:
-                jira_logger.warning(f"Nie udało się oszacować liczby zgłoszeń: Status {response.status_code}")
-                return None
-        except Exception as e:
-            jira_logger.warning(f"Błąd podczas szacowania liczby zgłoszeń: {e}")
+            jira_logger.error("Nie udało się pobrać liczby zgłoszeń")
             return None
+            
+        except Exception as e:
+            jira_logger.exception(f"Błąd podczas pobierania liczby zgłoszeń: {e}")
+            return None
+
+    def estimate_issues_count(self, start_date, end_date):
+        """Alias dla kompatybilności wstecznej"""
+        return self.get_total_issues_count(start_date, end_date)
 
     def fetch_issues_with_progress(self, start_date, end_date, analysis_id=None, progress_dict=None, total_estimated=None):
         """Pobiera zgłoszenia z Jira w podanym zakresie dat z raportowaniem postępu"""
@@ -164,30 +166,34 @@ class JiraAPI:
                 
                 # Aktualizuj postęp, jeśli przekazano parametry
                 if analysis_id and progress_dict and analysis_id in progress_dict:
-                    # Szacowanie postępu na podstawie liczby pobranych zgłoszeń
+                    # Oblicz postęp na podstawie liczby pobranych zgłoszeń
                     
                     if total_estimated and total_estimated > 0:
-                        # Jeśli mamy szacowaną liczbę (z estymacji lub z pierwszej strony wyników)
-                        # Skalujemy od 0% do 90% (zostawiamy 10% na klasyfikację i zapis)
+                        # Mamy dokładną liczbę zgłoszeń - oblicz procent
+                        # Pobieranie to 0-85%, klasyfikacja i zapis to 85-100%
                         ratio = min(1.0, len(all_issues) / total_estimated)
-                        fetch_progress = ratio * 90
+                        fetch_progress = ratio * 85
                         
-                        status_msg = f'Pobrano {len(all_issues)} z {total_estimated} zgłoszeń...'
+                        status_msg = 'Pobieranie zgłoszeń z Jira...'
+                        
+                        progress_dict[analysis_id].update({
+                            'progress': fetch_progress,
+                            'status': status_msg,
+                            'current_count': len(all_issues),
+                            'total_count': total_estimated,
+                            'eta_seconds': 0
+                        })
                     else:
-                        # Fallback ostateczny: jeśli API nie zwraca total (bardzo rzadkie)
-                        # Zakładamy dużą liczbę żeby pasek szedł powoli
-                        # Nie używamy skoków, tylko powolny przyrost logarytmiczny
-                        # Zakładamy np. 1000 zgłoszeń jako bazę
-                        ratio = min(0.8, len(all_issues) / 1000.0)
-                        fetch_progress = ratio * 90
-                        
+                        # Fallback - nie mamy total (bardzo rzadkie)
                         status_msg = f'Pobrano {len(all_issues)} zgłoszeń...'
-                    
-                    progress_dict[analysis_id].update({
-                        'progress': fetch_progress,
-                        'status': status_msg,
-                        'eta_seconds': 0 # Wyłączamy czas zgodnie z życzeniem
-                    })
+                        
+                        progress_dict[analysis_id].update({
+                            'progress': min(50, len(all_issues) / 10),  # Powoli rośnie
+                            'status': status_msg,
+                            'current_count': len(all_issues),
+                            'total_count': 0,
+                            'eta_seconds': 0
+                        })
                 
                 # Zakończ jeśli to ostatnia strona
                 if is_last or not next_page_token:
