@@ -173,10 +173,11 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
     """Rejestracja wszystkich route'ów aplikacji."""
     
     @app.context_processor
-    def inject_csrf_token():
-        """Token CSRF dostępny we wszystkich szablonach."""
+    def inject_security_context():
+        """Tokeny bezpieczeństwa dostępne we wszystkich szablonach."""
         return {
-            'csrf_token': security.generate_csrf_token()
+            'csrf_token': security.generate_csrf_token(),
+            'csp_nonce': getattr(g, 'csp_nonce', None)
         }
 
     @app.template_filter('to_datetime')
@@ -886,6 +887,49 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                             'critical_incidents': other_critical_count
                         }
         
+        # --- DANE DO WIZUALIZACJI (DASHBOARD) ---
+        
+        # 1. Treemap Data (Mapa Częstości)
+        treemap_data = {
+            'labels': [],
+            'values': []
+        }
+        for cat, count in top_problems.items():
+            treemap_data['labels'].append(cat)
+            treemap_data['values'].append(int(count))
+            
+        # 2. Trend Zgłoszeń w Czasie (Line Chart)
+        daily_trend = {}
+        daily_category_trend = {}
+        
+        if 'created' in data.columns and not data.empty:
+            try:
+                # Upewnij się, że created jest datetime
+                if data['created'].dtype == 'object':
+                    data['created'] = pd.to_datetime(data['created'], format='mixed')
+                
+                # Sortuj po dacie
+                data_sorted = data.sort_values('created')
+                
+                # Grupuj po dacie (sam dzień) - Łącznie
+                daily_counts = data_sorted.groupby(data_sorted['created'].dt.date).size()
+                # Konwersja kluczy (date) na stringi dla JSON
+                daily_trend = {str(k): int(v) for k, v in daily_counts.items()}
+                
+                # Grupuj po dacie i kategorii (dla top 5 kategorii)
+                top_cats = [c for c in top_problems.keys() if c != 'inne'][:5]
+                if not top_cats and top_problems:
+                    top_cats = list(top_problems.keys())[:5]
+                
+                for cat in top_cats:
+                    cat_data = data_sorted[data_sorted['category'] == cat]
+                    if not cat_data.empty:
+                        cat_daily = cat_data.groupby(cat_data['created'].dt.date).size()
+                        daily_category_trend[cat] = {str(k): int(v) for k, v in cat_daily.items()}
+                        
+            except Exception as e:
+                app_logger.exception(f"Błąd generowania trendów czasowych: {e}")
+
         return {
             'total_issues': total_issues,
             'classified_count': classified_count,
@@ -898,7 +942,10 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
             'category_dominant_types': category_dominant_types,
             'actual_days': actual_days,
             'top_sites': top_sites,
-            'confidence_values': confidence_values
+            'confidence_values': confidence_values,
+            'treemap_data': treemap_data,
+            'daily_trend': daily_trend,
+            'daily_category_trend': daily_category_trend
         }
 
     @app.errorhandler(404)

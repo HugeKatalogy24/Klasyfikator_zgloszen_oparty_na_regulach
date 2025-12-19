@@ -133,7 +133,7 @@
                 <a href="{{ url_for('export_csv') }}" class="export-btn">
                     📊 Eksportuj CSV
                 </a>
-                <button onclick="refreshData()" class="refresh-btn">
+                <button id="refreshBtn" class="refresh-btn">
                     🔄 Odśwież dane
                 </button>
                 <a href="{{ url_for('index') }}" class="back-link">
@@ -213,12 +213,18 @@
         </div>
     </div>
 
-    <!-- Sekcja wizualizacji - Histogram Pewności Klasyfikacji -->
-    <div class="chart-section">
-        <h2>📊 Rozkład Pewności Klasyfikacji</h2>
-        <div class="chart-container">
-            <div id="confidenceHistogram" style="width: 100%; height: 400px;"></div>
+    <!-- Sekcja wizualizacji - Dashboard -->
+    <div class="dashboard-charts-section" style="display: grid; grid-template-columns: 1fr; gap: 30px; margin: 30px 0;">
+
+        <!-- 2. Trend Zgłoszeń w Czasie -->
+        <div class="chart-section">
+            <h2>📈 Trend Zgłoszeń w Czasie</h2>
+            <p class="chart-description" style="color: #a0a0a0; margin-bottom: 15px;">Liczba zgłoszeń w poszczególnych dniach analizowanego okresu.</p>
+            <div class="chart-container">
+                <div id="trendChart" style="width: 100%; height: 400px;"></div>
+            </div>
         </div>
+        
     </div>
 
     <!-- Sekcja typów zgłoszeń -->
@@ -441,6 +447,12 @@
 let refreshInProgress = false;
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Obsługa przycisku odświeżania
+    const refreshBtn = document.getElementById('refreshBtn');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', refreshData);
+    }
+
     // Animacja liczników statystyk
     const statNumbers = document.querySelectorAll('.stat-number');
     statNumbers.forEach(element => {
@@ -709,130 +721,137 @@ async function simulateRefreshProgress() {
     }
 }
 
-// ===== PLOTLY.JS - HISTOGRAM PEWNOŚCI KLASYFIKACJI =====
-function renderConfidenceHistogram() {
-    // Dane pewności klasyfikacji przekazane z backendu
-    const confidenceValues = {{ stats.confidence_values | tojson | safe }};
-    
-    if (!confidenceValues || confidenceValues.length === 0) {
-        document.getElementById('confidenceHistogram').innerHTML = 
-            '<div style="text-align: center; padding: 40px; color: #888;">'
-            + '<p>📉 Brak danych pewności klasyfikacji do wyświetlenia</p></div>';
-        return;
-    }
-    
-    // Konfiguracja histogramu
-    const trace = {
-        x: confidenceValues,
-        type: 'histogram',
-        marker: {
-            color: 'rgba(102, 126, 234, 0.7)',
+// Dane do wykresów Dashboard
+const treemapData = {{ stats.treemap_data | tojson }};
+const dailyTrend = {{ stats.daily_trend | tojson }};
+const dailyCategoryTrend = {{ stats.daily_category_trend | tojson }};
+
+function renderDashboardCharts() {
+    console.log("Rendering Dashboard Charts...");
+    console.log("Daily Trend Data:", dailyTrend);
+
+    // 2. Render Trend Chart
+    if (dailyTrend && Object.keys(dailyTrend).length > 0) {
+        const dates = Object.keys(dailyTrend).sort();
+        const totalCounts = dates.map(d => dailyTrend[d]);
+        
+        const traces = [];
+        
+        // Linia całkowita
+        traces.push({
+            x: dates,
+            y: totalCounts,
+            type: 'scatter',
+            mode: 'lines+markers',
+            name: 'Łącznie',
             line: {
-                color: 'rgba(102, 126, 234, 1)',
-                width: 1
-            }
-        },
-        xbins: {
-            start: 0,
-            end: 1,
-            size: 0.05  // Przedziały co 5%
-        },
-        hovertemplate: 'Pewność: %{x:.0%}<br>Liczba zgłoszeń: %{y}<extra></extra>'
-    };
-    
-    const layout = {
-        title: {
-            text: 'Rozkład Pewności Klasyfikacji',
-            font: {
-                family: 'Inter, sans-serif',
-                size: 18,
-                color: '#e0e0e0'
-            }
-        },
-        xaxis: {
-            title: {
-                text: 'Pewność klasyfikacji',
-                font: {
-                    family: 'Inter, sans-serif',
-                    size: 14,
-                    color: '#a0a0a0'
-                }
+                color: '#58a6ff',
+                width: 3,
+                shape: 'spline'
             },
-            tickformat: '.0%',
-            range: [0, 1],
-            gridcolor: 'rgba(255, 255, 255, 0.1)',
-            tickfont: { color: '#a0a0a0' }
-        },
-        yaxis: {
-            title: {
-                text: 'Liczba zgłoszeń',
-                font: {
-                    family: 'Inter, sans-serif',
-                    size: 14,
-                    color: '#a0a0a0'
-                }
-            },
-            gridcolor: 'rgba(255, 255, 255, 0.1)',
-            tickfont: { color: '#a0a0a0' }
-        },
-        paper_bgcolor: 'rgba(26, 26, 46, 0.8)',
-        plot_bgcolor: 'rgba(26, 26, 46, 0.5)',
-        font: {
-            family: 'Inter, sans-serif',
-            color: '#e0e0e0'
-        },
-        bargap: 0.05,
-        showlegend: false,
-        margin: {
-            l: 60,
-            r: 30,
-            t: 50,
-            b: 60
+            marker: {
+                size: 8,
+                color: '#58a6ff'
+            }
+        });
+        
+        // Obliczanie linii regresji (Trend Liniowy)
+        if (dates.length > 1) {
+            const xValues = dates.map(d => new Date(d).getTime());
+            const yValues = totalCounts;
+            const n = xValues.length;
+            
+            let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0;
+            for (let i = 0; i < n; i++) {
+                sumX += xValues[i];
+                sumY += yValues[i];
+                sumXY += xValues[i] * yValues[i];
+                sumXX += xValues[i] * xValues[i];
+            }
+            
+            const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+            const intercept = (sumY - slope * sumX) / n;
+            
+            const regressionY = xValues.map(x => slope * x + intercept);
+            
+            traces.push({
+                x: dates,
+                y: regressionY,
+                type: 'scatter',
+                mode: 'lines',
+                name: 'Linia trendu (Regresja)',
+                line: {
+                    color: 'rgba(255, 255, 255, 0.3)',
+                    width: 2,
+                    dash: 'dash'
+                },
+                hoverinfo: 'skip'
+            });
         }
-    };
-    
-    const config = {
-        responsive: true,
-        displayModeBar: true,
-        modeBarButtonsToRemove: ['lasso2d', 'select2d'],
-        displaylogo: false
-    };
-    
-    Plotly.newPlot('confidenceHistogram', [trace], layout, config);
-    
-    // Dodaj statystyki podsumowujące
-    const mean = confidenceValues.reduce((a, b) => a + b, 0) / confidenceValues.length;
-    const sortedValues = [...confidenceValues].sort((a, b) => a - b);
-    const median = sortedValues.length % 2 === 0 
-        ? (sortedValues[sortedValues.length/2 - 1] + sortedValues[sortedValues.length/2]) / 2
-        : sortedValues[Math.floor(sortedValues.length/2)];
-    
-    const statsDiv = document.createElement('div');
-    statsDiv.className = 'confidence-stats';
-    statsDiv.innerHTML = `
-        <div class="confidence-stat-item">
-            <span class="stat-label">Średnia pewność:</span>
-            <span class="stat-value">${(mean * 100).toFixed(1)}%</span>
-        </div>
-        <div class="confidence-stat-item">
-            <span class="stat-label">Mediana:</span>
-            <span class="stat-value">${(median * 100).toFixed(1)}%</span>
-        </div>
-        <div class="confidence-stat-item">
-            <span class="stat-label">Liczba próbek:</span>
-            <span class="stat-value">${confidenceValues.length}</span>
-        </div>
-    `;
-    
-    const chartContainer = document.querySelector('.chart-container');
-    if (chartContainer && !chartContainer.querySelector('.confidence-stats')) {
-        chartContainer.appendChild(statsDiv);
+
+        // Linie dla kategorii (opcjonalnie)
+        if (dailyCategoryTrend) {
+            const colors = ['#2ea043', '#f85149', '#db61a2', '#d29922', '#8b949e'];
+            let i = 0;
+            for (const [cat, trend] of Object.entries(dailyCategoryTrend)) {
+                const catCounts = dates.map(d => trend[d] || 0);
+                traces.push({
+                    x: dates,
+                    y: catCounts,
+                    type: 'scatter',
+                    mode: 'lines',
+                    name: cat,
+                    line: {
+                        width: 2,
+                        dash: 'dot',
+                        color: colors[i % colors.length]
+                    },
+                    visible: 'legendonly' // Domyślnie ukryte
+                });
+                i++;
+            }
+        }
+
+        const layout = {
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            font: { 
+                family: 'Inter, sans-serif',
+                color: '#c9d1d9' 
+            },
+            xaxis: {
+                title: 'Data',
+                gridcolor: '#30363d',
+                zerolinecolor: '#30363d',
+                tickfont: { color: '#8b949e' }
+            },
+            yaxis: {
+                title: 'Liczba zgłoszeń',
+                gridcolor: '#30363d',
+                zerolinecolor: '#30363d',
+                tickfont: { color: '#8b949e' }
+            },
+            legend: {
+                orientation: 'h',
+                y: -0.2,
+                font: { color: '#c9d1d9' }
+            },
+            margin: { t: 20, r: 20, l: 50, b: 50 },
+            hovermode: 'x unified'
+        };
+        
+        const config = { responsive: true, displayModeBar: false };
+        Plotly.newPlot('trendChart', traces, layout, config);
+    } else {
+        console.warn("Brak danych dla Trend Chart");
+        document.getElementById('trendChart').innerHTML = '<div style="text-align:center; padding: 20px; color: #888;">Brak danych historycznych do wyświetlenia trendu (sprawdź czy plik zawiera kolumnę "created")</div>';
     }
 }
 
 // Wywołaj renderowanie histogramu po załadowaniu strony
 document.addEventListener('DOMContentLoaded', function() {
-    renderConfidenceHistogram();
+    // renderConfidenceHistogram(); // Usunięte
+    renderDashboardCharts();
 });
 </script>
 {% endblock %}

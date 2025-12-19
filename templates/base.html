@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style_new.css') }}">
     
     <!-- Plotly.js for charts -->
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="{{ url_for('static', filename='js/plotly.min.js') }}" nonce="{{ csp_nonce }}"></script>
     
     <!-- Favicon - lupka podobna do emoji 🔍 -->
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='emoji_favicon.ico') }}">
@@ -60,7 +60,7 @@
                             {% endif %}
                         </span>
                         <span class="flash-text">{{ message|e }}</span>
-                        <button class="flash-close" onclick="this.parentElement.style.display='none'">×</button>
+                        <button class="flash-close">×</button>
                     </div>
                 {% endfor %}
             </div>
@@ -73,7 +73,7 @@
     </main>
     
     <!-- JavaScript -->
-    <script src="{{ url_for('static', filename='charts.js') }}"></script>
+    <script src="{{ url_for('static', filename='charts.js') }}" nonce="{{ csp_nonce }}"></script>
     
     <!-- Additional Scripts -->
     <script nonce="{{ csp_nonce }}">
@@ -82,6 +82,21 @@
         
         // Auto-hide flash messages after 5 seconds
         document.addEventListener('DOMContentLoaded', function() {
+            // Handle flash message close buttons
+            document.querySelectorAll('.flash-close').forEach(button => {
+                button.addEventListener('click', function() {
+                    const message = this.closest('.flash-message');
+                    if (message) {
+                        message.style.opacity = '0';
+                        setTimeout(() => {
+                            if (message.parentElement) {
+                                message.parentElement.removeChild(message);
+                            }
+                        }, 300);
+                    }
+                });
+            });
+
             const flashMessages = document.querySelectorAll('.flash-message');
             flashMessages.forEach(function(message) {
                 setTimeout(function() {

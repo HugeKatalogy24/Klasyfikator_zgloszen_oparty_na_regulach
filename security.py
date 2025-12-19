@@ -83,7 +83,7 @@ class SecurityManager:
             if nonce:
                 response.headers['Content-Security-Policy'] = (
                     f"default-src 'self'; "
-                    f"script-src 'self' 'nonce-{nonce}' https://cdn.plot.ly; "
+                    f"script-src 'self' 'unsafe-eval' 'nonce-{nonce}' https://cdn.plot.ly; "
                     f"style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
                     f"img-src 'self' data:; "
                     f"font-src 'self' https://fonts.gstatic.com; "
