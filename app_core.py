@@ -21,9 +21,10 @@ logger = logging.getLogger(__name__)
 # Globalny słownik do śledzenia postępu analiz
 analysis_progress = {}
 
-def perform_analysis_background(analysis_id, start_dt, end_dt, start_date_str, end_date_str, jira_api, classifier, app_logger):
+def perform_analysis_background(analysis_id, start_dt, end_dt, start_date_str, end_date_str, jira_api, classifier, logger):
     """Wykonuje analizę w wątku w tle z raportowaniem postępu."""
     try:
+        
         data_file = f'data/jira_data_{start_date_str}_{end_date_str}.csv'
         os.makedirs('data', exist_ok=True)
         
@@ -40,11 +41,11 @@ def perform_analysis_background(analysis_id, start_dt, end_dt, start_date_str, e
         })
         
         # Pobranie dokładnej liczby zgłoszeń
-        app_logger.info("Pobieranie dokładnej liczby zgłoszeń...")
+        logger.info("Pobieranie dokładnej liczby zgłoszeń...")
         estimated_count = jira_api.get_total_issues_count(start_dt, end_dt)
         
         if estimated_count is not None and estimated_count > 0:
-            app_logger.info(f"✓ Dokładna liczba zgłoszeń do pobrania: {estimated_count}")
+            logger.info(f"✓ Dokładna liczba zgłoszeń do pobrania: {estimated_count}")
             # Zaktualizuj frontend z dokładną liczbą
             analysis_progress[analysis_id].update({
                 'progress': 1,
@@ -53,7 +54,7 @@ def perform_analysis_background(analysis_id, start_dt, end_dt, start_date_str, e
                 'total_count': estimated_count
             })
         else:
-            app_logger.warning("Nie udało się pobrać dokładnej liczby zgłoszeń")
+            logger.warning("Nie udało się pobrać dokładnej liczby zgłoszeń")
             analysis_progress[analysis_id].update({
                 'progress': 1,
                 'status': 'Rozpoczynam pobieranie zgłoszeń...',
@@ -62,7 +63,7 @@ def perform_analysis_background(analysis_id, start_dt, end_dt, start_date_str, e
             })
         
         if refresh_data or not os.path.exists(data_file):
-            app_logger.info(f"Pobieranie danych z Jira dla okresu {start_date_str} - {end_date_str}")
+            logger.info(f"Pobieranie danych z Jira dla okresu {start_date_str} - {end_date_str}")
             
             # KROK 2: Pobieranie danych z raportowaniem postępu
             df = jira_api.fetch_issues_with_progress(start_dt, end_dt, analysis_id, analysis_progress, estimated_count)
@@ -84,7 +85,7 @@ def perform_analysis_background(analysis_id, start_dt, end_dt, start_date_str, e
                 'eta_seconds': 0
             })
             
-            app_logger.info(f"Rozpoczynam klasyfikację {len(df)} problemów")
+            logger.info(f"Rozpoczynam klasyfikację {len(df)} problemów")
             classified_data = classifier.classify_issues(df)
             
             # Aktualizacja postępu: zapisywanie
@@ -110,29 +111,29 @@ def perform_analysis_background(analysis_id, start_dt, end_dt, start_date_str, e
                     if os.path.exists(data_file):
                         try:
                             os.remove(data_file)
-                            app_logger.info(f"Usunięto istniejący plik: {data_file}")
+                            logger.info(f"Usunięto istniejący plik: {data_file}")
                         except OSError as e:
-                            app_logger.warning(f"Nie można usunąć istniejącego pliku {data_file}: {e}")
+                            logger.warning(f"Nie można usunąć istniejącego pliku {data_file}: {e}")
                     
                     # Zapisz nowy plik
                     classified_data.to_csv(data_file, index=False, encoding='utf-8-sig')
-                    app_logger.info(f"Dane zapisane do pliku: {data_file}")
+                    logger.info(f"Dane zapisane do pliku: {data_file}")
                     break  # Sukces - wyjdź z pętli
                     
                 except (PermissionError, OSError) as e:
                     retry_count += 1
-                    app_logger.warning(f"Błąd zapisu pliku (próba {retry_count}/{max_retries}): {e}")
+                    logger.warning(f"Błąd zapisu pliku (próba {retry_count}/{max_retries}): {e}")
                     
                     if retry_count < max_retries:
                         time.sleep(1)  # Czekaj sekundę przed ponowną próbą
                         # Spróbuj z inną nazwą pliku
                         data_file = f'data/jira_data_{start_date_str}_{end_date_str}_{int(time.time())}.csv'
-                        app_logger.info(f"Próba zapisu z nową nazwą: {data_file}")
+                        logger.info(f"Próba zapisu z nową nazwą: {data_file}")
                     else:
                         # Ostatnia próba nie powiodła się
                         raise Exception(f"Nie można zapisać pliku po {max_retries} próbach: {e}")
         else:
-            app_logger.info(f"Ładowanie danych z pliku: {data_file}")
+            logger.info(f"Ładowanie danych z pliku: {data_file}")
             classified_data = pd.read_csv(data_file)
         
         # Zakończenie analizy
@@ -153,7 +154,7 @@ def perform_analysis_background(analysis_id, start_dt, end_dt, start_date_str, e
             'redirect_url': f'/results?period={start_date_str}_{end_date_str}&file={data_file}'
         })
         
-        app_logger.info(f"Analiza {analysis_id} zakończona pomyślnie w {elapsed_time:.1f}s")
+        logger.info(f"Analiza {analysis_id} zakończona pomyślnie w {elapsed_time:.1f}s")
         
         # Oczyszczenie starych analiz z pamięci (zostaw tylko ostatnie 10)
         if len(analysis_progress) > 10:
@@ -162,14 +163,14 @@ def perform_analysis_background(analysis_id, start_dt, end_dt, start_date_str, e
                 del analysis_progress[key]
         
     except Exception as e:
-        app_logger.exception(f"Błąd podczas analizy w tle {analysis_id}: {e}")
+        logger.exception(f"Błąd podczas analizy w tle {analysis_id}: {e}")
         analysis_progress[analysis_id].update({
             'completed': True,
             'error': f'Błąd podczas analizy: {str(e)}',
             'progress': 100
         })
 
-def register_routes(app, security, limiter, jira_api, classifier, app_logger):
+def register_routes(app, security, limiter, jira_api, classifier, logger):
     """Rejestracja wszystkich route'ów aplikacji."""
     
     @app.context_processor
@@ -219,7 +220,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
     def index():
         """Renderuje stronę główną z formularzem."""
         if app.debug:
-            app_logger.debug("index() endpoint called")
+            logger.debug("index() endpoint called")
         
         # Delikatna walidacja parametrów URL dla endpointu głównego
         if request.args:
@@ -227,7 +228,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
             if not query_validation['valid']:
                 # Loguj podejrzane parametry, ale nie przerywaj działania
                 for error in query_validation['errors']:
-                    app_logger.warning(f"Suspicious query parameter in index: {error}")
+                    logger.warning(f"Suspicious query parameter in index: {error}")
         
         # Przekaż dzisiejszą datę i wczorajszą do template dla walidacji
         today = date.today().strftime('%Y-%m-%d')
@@ -262,8 +263,8 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                 del analysis_progress[aid]
             
             if analysis_id not in analysis_progress:
-                app_logger.warning(f"Nieznany identyfikator analizy: {analysis_id}")
-                app_logger.info(f"Dostępne identyfikatory: {list(analysis_progress.keys())}")
+                logger.warning(f"Nieznany identyfikator analizy: {analysis_id}")
+                logger.info(f"Dostępne identyfikatory: {list(analysis_progress.keys())}")
                 return jsonify({
                     'success': False,
                     'error': 'Analiza nie została znaleziona lub wygasła. Uruchom nową analizę.',
@@ -347,7 +348,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
             
             # Sprawdź czy reguły są dostępne
             if rules_manager.get_rules_count() == 0:
-                app_logger.warning('Brak reguł klasyfikacji. Dodaj reguły w panelu administratora.')
+                logger.warning('Brak reguł klasyfikacji. Dodaj reguły w panelu administratora.')
             
             # Generowanie unikalnego ID analizy
             analysis_id = f"analysis_{int(time.time() * 1000)}"
@@ -365,7 +366,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
             # Uruchomienie analizy w tle
             thread = threading.Thread(
                 target=perform_analysis_background,
-                args=(analysis_id, start_dt, end_dt, start_date_str, end_date_str, jira_api, classifier, app_logger)
+                args=(analysis_id, start_dt, end_dt, start_date_str, end_date_str, jira_api, classifier, logger)
             )
             thread.daemon = True
             thread.start()
@@ -378,7 +379,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
             })
         
         except Exception as e:
-            app_logger.exception(f"Wystąpił błąd krytyczny podczas uruchamiania analizy: {e}")
+            logger.exception(f"Wystąpił błąd krytyczny podczas uruchamiania analizy: {e}")
             return jsonify({
                 'success': False,
                 'errors': [f'Wystąpił błąd podczas analizy: {str(e)}']
@@ -457,11 +458,11 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
             
             # Debugowanie kolumn w trybie development
             if os.getenv('FLASK_ENV') == 'development':
-                app_logger.debug(f"Dostępne kolumny w DataFrame: {list(df.columns)}")
-                app_logger.debug(f"Wybrane kolumny do eksportu: {export_columns}")
+                logger.debug(f"Dostępne kolumny w DataFrame: {list(df.columns)}")
+                logger.debug(f"Wybrane kolumny do eksportu: {export_columns}")
                 if 'confidence' in df.columns:
-                    app_logger.debug(f"Confidence column dtype: {df['confidence'].dtype}")
-                    app_logger.debug(f"Confidence sample values: {df['confidence'].head().tolist()}")
+                    logger.debug(f"Confidence column dtype: {df['confidence'].dtype}")
+                    logger.debug(f"Confidence sample values: {df['confidence'].head().tolist()}")
 
             # Jeśli nie ma kolumny 'site', spróbuj ją wygenerować z 'reporter'
             if 'site' not in df.columns:
@@ -471,7 +472,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                         jira = JiraAPI()
                         df['site'] = df['reporter'].apply(lambda x: jira.extract_site_from_reporter(str(x)))
                     except Exception as site_error:
-                        app_logger.warning(f"Problem z generowaniem kolumny 'site': {site_error}")
+                        logger.warning(f"Problem z generowaniem kolumny 'site': {site_error}")
                         df['site'] = 'Nieznany'
                 else:
                     df['site'] = 'Nieznany'
@@ -486,7 +487,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                         jira = JiraAPI()
                         df['site_name'] = df['reporter'].apply(lambda x: jira.extract_site_name_from_reporter(str(x)))
                     except Exception as site_name_error:
-                        app_logger.warning(f"Problem z generowaniem kolumny 'site_name': {site_name_error}")
+                        logger.warning(f"Problem z generowaniem kolumny 'site_name': {site_name_error}")
                         df['site_name'] = 'Nieznana'
                 else:
                     df['site_name'] = 'Nieznana'
@@ -535,23 +536,23 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                     export_columns.append('jira_link')
                 
                 function_name = "HIPERŁĄCZE" if is_polish else "HYPERLINK"
-                app_logger.info(f"Dodano kolumnę 'jira_link' z {len(df)} linkami do Jira (funkcja: {function_name}, język: {excel_language})")
+                logger.info(f"Dodano kolumnę 'jira_link' z {len(df)} linkami do Jira (funkcja: {function_name}, język: {excel_language})")
 
             # Przygotowanie danych do eksportu z sanityzacją
             export_df = df[export_columns].copy()
             
             # Debug: sprawdź czy kolumna jira_link istnieje przed renaming
             if 'jira_link' in export_df.columns:
-                app_logger.info("Kolumna 'jira_link' istnieje przed renaming")
-                app_logger.info(f"Przykład linków: {export_df['jira_link'].head(3).tolist()}")
+                logger.info("Kolumna 'jira_link' istnieje przed renaming")
+                logger.info(f"Przykład linków: {export_df['jira_link'].head(3).tolist()}")
             else:
-                app_logger.warning("Kolumna 'jira_link' nie istnieje przed renaming")
+                logger.warning("Kolumna 'jira_link' nie istnieje przed renaming")
             
             # BEZPIECZEŃSTWO: Sanityzacja danych CSV przed eksportem - z obsługą błędów
             try:
                 export_df = security.sanitize_csv_dataframe(export_df)
             except Exception as sanitize_error:
-                app_logger.warning(f"Problem z sanityzacją danych CSV: {sanitize_error}")
+                logger.warning(f"Problem z sanityzacją danych CSV: {sanitize_error}")
                 # Fallback - podstawowa sanityzacja
                 for col in export_df.select_dtypes(include=['object']).columns:
                     export_df[col] = export_df[col].astype(str).str.replace(r'[^\w\s\-.,:/()áćęłńóśźżĄĆĘŁŃÓŚŹŻ]', '', regex=True)
@@ -606,7 +607,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                         export_df[date_col] = export_df[date_col].dt.tz_convert('Europe/Warsaw').dt.strftime('%Y-%m-%d %H:%M:%S')
                         
                     except Exception as date_error:
-                        app_logger.warning(f"Problem z formatowaniem dat w kolumnie {date_col}: {date_error}")
+                        logger.warning(f"Problem z formatowaniem dat w kolumnie {date_col}: {date_error}")
                         # Fallback - spróbuj podstawowego formatowania
                         try:
                             export_df[date_col] = pd.to_datetime(
@@ -616,21 +617,21 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                             ).dt.strftime('%Y-%m-%d %H:%M:%S')
                         except:
                             # Jeśli wszystko zawiedzie, zostaw oryginalne dane
-                            app_logger.warning(f"Nie udało się sformatować dat w kolumnie {date_col} - pozostawiam oryginalne")
+                            logger.warning(f"Nie udało się sformatować dat w kolumnie {date_col} - pozostawiam oryginalne")
                             pass
             
             # Tworzenie dodatkowych kolumn daty i godziny z "Data utworzenia"
             if 'Data utworzenia' in export_df.columns:
                 try:
-                    app_logger.info(f"Kolumna 'Data utworzenia' zawiera {len(export_df)} rekordów")
-                    app_logger.info(f"Przykład wartości: {export_df['Data utworzenia'].head(3).tolist()}")
+                    logger.info(f"Kolumna 'Data utworzenia' zawiera {len(export_df)} rekordów")
+                    logger.info(f"Przykład wartości: {export_df['Data utworzenia'].head(3).tolist()}")
                     
                     # Skonwertuj kolumnę "Data utworzenia" na datetime jeśli jeszcze nie jest
                     date_series = pd.to_datetime(export_df['Data utworzenia'], errors='coerce')
                     
                     # Sprawdź ile dat udało się skonwertować
                     valid_dates = date_series.notna().sum()
-                    app_logger.info(f"Pomyślnie skonwertowano {valid_dates} z {len(date_series)} dat")
+                    logger.info(f"Pomyślnie skonwertowano {valid_dates} z {len(date_series)} dat")
                     
                     # Tworzenie kolumny "Data" w formacie DD.MM.YYYY
                     export_df['Data'] = date_series.dt.strftime('%d.%m.%Y')
@@ -638,11 +639,11 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                     # Tworzenie kolumny "Godzina" w formacie HH:MM
                     export_df['Godzina'] = date_series.dt.strftime('%H:%M')
                         
-                    app_logger.info("Dodano kolumny 'Data' i 'Godzina' na podstawie 'Data utworzenia'")
-                    app_logger.info(f"Przykład nowych kolumn - Data: {export_df['Data'].head(3).tolist()}, Godzina: {export_df['Godzina'].head(3).tolist()}")
+                    logger.info("Dodano kolumny 'Data' i 'Godzina' na podstawie 'Data utworzenia'")
+                    logger.info(f"Przykład nowych kolumn - Data: {export_df['Data'].head(3).tolist()}, Godzina: {export_df['Godzina'].head(3).tolist()}")
                     
                 except Exception as date_split_error:
-                    app_logger.warning(f"Problem z tworzeniem kolumn daty i godziny: {date_split_error}")
+                    logger.warning(f"Problem z tworzeniem kolumn daty i godziny: {date_split_error}")
                     # W przypadku błędu, kontynuuj bez dodatkowych kolumn
             
             # Formatowanie pewności klasyfikacji - z obsługą błędów
@@ -654,7 +655,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                         errors='coerce'  # Zastąp nieprawidłowe wartości przez NaN
                     ).fillna(0.0).round(2)  # Zastąp NaN przez 0.0 i zaokrąglij
                 except Exception as conf_error:
-                    app_logger.warning(f"Problem z formatowaniem pewności klasyfikacji: {conf_error}")
+                    logger.warning(f"Problem z formatowaniem pewności klasyfikacji: {conf_error}")
                     # Fallback - ustaw wszystkie wartości na 0.0
                     export_df['Pewność klasyfikacji'] = 0.0
             
@@ -669,12 +670,12 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
             
             # Debug: sprawdź czy nowe kolumny zostały uwzględnione
             if 'Data' in export_df.columns:
-                app_logger.info("Kolumna 'Data' jest dostępna w DataFrame")
+                logger.info("Kolumna 'Data' jest dostępna w DataFrame")
             if 'Godzina' in export_df.columns:
-                app_logger.info("Kolumna 'Godzina' jest dostępna w DataFrame")
+                logger.info("Kolumna 'Godzina' jest dostępna w DataFrame")
             if 'Link do Jira' in export_df.columns:
-                app_logger.info("Kolumna 'Link do Jira' jest dostępna w DataFrame")
-            app_logger.info(f"Kolumny do eksportu: {existing_columns}")
+                logger.info("Kolumna 'Link do Jira' jest dostępna w DataFrame")
+            logger.info(f"Kolumny do eksportu: {existing_columns}")
             
             export_df = export_df[existing_columns]
             
@@ -689,10 +690,10 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                         # Upewnij się, że inne kolumny są tekstowe
                         export_df[col] = export_df[col].astype(str)
                         
-                app_logger.info(f"Przygotowano {len(export_df)} rekordów do eksportu CSV")
+                logger.info(f"Przygotowano {len(export_df)} rekordów do eksportu CSV")
                 
             except Exception as validation_error:
-                app_logger.warning(f"Problem z walidacją danych przed eksportem: {validation_error}")
+                logger.warning(f"Problem z walidacją danych przed eksportem: {validation_error}")
                 # Fallback - konwertuj wszystko na string oprócz confidence
                 for col in export_df.columns:
                     try:
@@ -719,7 +720,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                 analysis_period = session.get('analysis_period', datetime.now().strftime('%Y-%m-%d'))
                 filename = f'analiza_problemow_{analysis_period}.csv'
                 
-                app_logger.info(f"Pomyślnie przygotowano plik CSV: {filename} ({len(csv_content)} znaków)")
+                logger.info(f"Pomyślnie przygotowano plik CSV: {filename} ({len(csv_content)} znaków)")
                 
                 return send_file(
                     csv_bytes,
@@ -729,7 +730,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                 )
                 
             except Exception as csv_error:
-                app_logger.exception(f"Błąd podczas tworzenia pliku CSV: {csv_error}")
+                logger.exception(f"Błąd podczas tworzenia pliku CSV: {csv_error}")
                 
                 # Fallback - spróbuj z podstawowymi ustawieniami
                 try:
@@ -749,7 +750,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                     analysis_period = session.get('analysis_period', datetime.now().strftime('%Y-%m-%d'))
                     filename = f'analiza_problemow_{analysis_period}_simple.csv'
                     
-                    app_logger.info(f"Używam fallback CSV: {filename}")
+                    logger.info(f"Używam fallback CSV: {filename}")
                     
                     return send_file(
                         csv_bytes,
@@ -759,11 +760,11 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                     )
                     
                 except Exception as fallback_error:
-                    app_logger.exception(f"Błąd nawet z fallback CSV: {fallback_error}")
+                    logger.exception(f"Błąd nawet z fallback CSV: {fallback_error}")
                     raise csv_error  # Pokaż oryginalny błąd
             
         except Exception as e:
-            app_logger.exception(f"Błąd eksportu danych do CSV: {e}")
+            logger.exception(f"Błąd eksportu danych do CSV: {e}")
             flash(escape(f'Błąd podczas eksportu: {str(e)}'), 'error')
             return redirect(url_for('index'))
 
@@ -823,7 +824,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                 unique_dates = data['created'].dt.date.nunique()
                 actual_days = max(1, unique_dates)  # Minimum 1 dzień
             except Exception as e:
-                app_logger.exception(f"Błąd konwersji daty w przygotowaniu statystyk: {e}")
+                logger.exception(f"Błąd konwersji daty w przygotowaniu statystyk: {e}")
                 actual_days = 1
         else:
             actual_days = 1
@@ -928,7 +929,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                         daily_category_trend[cat] = {str(k): int(v) for k, v in cat_daily.items()}
                         
             except Exception as e:
-                app_logger.exception(f"Błąd generowania trendów czasowych: {e}")
+                logger.exception(f"Błąd generowania trendów czasowych: {e}")
 
         return {
             'total_issues': total_issues,
@@ -1005,7 +1006,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
     def admin_login():
         """Logowanie administratora z rozszerzoną walidacją"""
         if app.debug:
-            app_logger.debug(f"admin_login called with method: {request.method}")
+            logger.debug(f"admin_login called with method: {request.method}")
         
         if request.method == 'GET':
             # Jeśli już zalogowany, przekieruj do panelu
@@ -1015,7 +1016,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
         
         try:
             if app.debug:
-                app_logger.debug("POST data received")
+                logger.debug("POST data received")
             
             # Sanityzacja i walidacja danych formularza
             form_validation = security.sanitize_and_validate_form_data(request.form)
@@ -1031,12 +1032,12 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
             session_csrf = session.get('csrf_token')
             
             if app.debug:
-                app_logger.debug(f"CSRF token from form: {csrf_token[:20] if csrf_token else 'None'}...")
-                app_logger.debug(f"CSRF token from session: {session_csrf[:20] if session_csrf else 'None'}...")
+                logger.debug(f"CSRF token from form: {csrf_token[:20] if csrf_token else 'None'}...")
+                logger.debug(f"CSRF token from session: {session_csrf[:20] if session_csrf else 'None'}...")
             
             if not security.validate_csrf_token(csrf_token):
                 if app.debug:
-                    app_logger.debug("CSRF validation failed")
+                    logger.debug("CSRF validation failed")
                 flash(escape('Błąd bezpieczeństwa. Spróbuj ponownie.'), 'error')
                 return render_template('admin_login.html')
             
@@ -1063,22 +1064,22 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                 return render_template('admin_login.html')
             
             if app.debug:
-                app_logger.debug(f"Username: {username}, Password length: {len(password)}")
+                logger.debug(f"Username: {username}, Password length: {len(password)}")
             
             # Próba uwierzytelnienia
             if security.authenticate_admin(username, password):
                 flash(escape('Pomyślnie zalogowano jako administrator.'), 'success')
                 if app.debug:
-                    app_logger.debug("Admin authenticated successfully")
+                    logger.debug("Admin authenticated successfully")
                 return redirect(url_for('index', show_admin='true'))
             else:
                 flash(escape('Nieprawidłowa nazwa użytkownika lub hasło.'), 'error')
                 if app.debug:
-                    app_logger.debug("Admin authentication failed")
+                    logger.debug("Admin authentication failed")
                 return render_template('admin_login.html')
                 
         except Exception as e:
-            app_logger.exception(f"Błąd podczas procesu logowania administratora: {e}")
+            logger.exception(f"Błąd podczas procesu logowania administratora: {e}")
             flash(escape(f'Błąd logowania: {str(e)}'), 'error')
             return render_template('admin_login.html')
 
@@ -1096,15 +1097,15 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
     def get_rules():
         """Zwraca aktualne reguły klasyfikacji w formacie JSON"""
         try:
-            app_logger.debug(f"get_rules endpoint called by {security.get_client_ip()}")
+            logger.debug(f"get_rules endpoint called by {security.get_client_ip()}")
             rules_dict = rules_manager.get_rules()
-            app_logger.debug(f"Loaded {len(rules_dict)} rules successfully")
+            logger.debug(f"Loaded {len(rules_dict)} rules successfully")
             return jsonify({
                 'success': True,
                 'rules': rules_dict
             })
         except Exception as e:
-            app_logger.exception(f"Błąd pobierania reguł klasyfikacji: {e}")
+            logger.exception(f"Błąd pobierania reguł klasyfikacji: {e}")
             return jsonify({
                 'success': False,
                 'error': str(e)
@@ -1230,7 +1231,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
             flash(escape(f'Nieprawidłowa wartość: {str(e)}'), 'error')
             return redirect(url_for('index'))
         except Exception as e:
-            app_logger.exception(f"Błąd podczas dodawania reguły klasyfikacji: {e}")
+            logger.exception(f"Błąd podczas dodawania reguły klasyfikacji: {e}")
             flash(escape(f'Błąd podczas dodawania reguły: {str(e)}'), 'error')
             return redirect(url_for('index'))
 
@@ -1366,7 +1367,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
             flash(escape('Nieprawidłowa wartość minimalnego wyniku.'), 'error')
             return redirect(url_for('index'))
         except Exception as e:
-            app_logger.exception(f"Błąd podczas edycji reguły klasyfikacji: {e}")
+            logger.exception(f"Błąd podczas edycji reguły klasyfikacji: {e}")
             flash(escape(f'Błąd podczas edycji reguły: {str(e)}'), 'error')
             return redirect(url_for('index'))
 
@@ -1390,7 +1391,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                 flash(escape('Błąd podczas przeładowania reguł.'), 'error')
                 
         except Exception as e:
-            app_logger.exception(f"Błąd podczas przeładowania reguł klasyfikacji: {e}")
+            logger.exception(f"Błąd podczas przeładowania reguł klasyfikacji: {e}")
             flash(escape(f'Błąd podczas przeładowania reguł: {str(e)}'), 'error')
         
         return redirect(url_for('index'))
@@ -1468,7 +1469,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
             })
             
         except Exception as e:
-            app_logger.exception(f"Błąd pobierania typów zgłoszeń: {e}")
+            logger.exception(f"Błąd pobierania typów zgłoszeń: {e}")
             return jsonify({
                 'success': False,
                 'error': str(e)
@@ -1496,7 +1497,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
             })
             
         except Exception as e:
-            app_logger.exception(f"Błąd pobierania typów żądań: {e}")
+            logger.exception(f"Błąd pobierania typów żądań: {e}")
             return jsonify({
                 'success': False,
                 'error': str(e)
@@ -1569,7 +1570,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
             })
             
         except Exception as e:
-            app_logger.exception(f"Błąd walidacji zgłoszeń: {e}")
+            logger.exception(f"Błąd walidacji zgłoszeń: {e}")
             return jsonify({
                 'success': False,
                 'error': str(e)
@@ -1636,7 +1637,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                     results['failed_issues'].append(issue_key)
             
             # Logowanie wyników
-            app_logger.info(f"Aktualizacja typów zgłoszeń - powodzenie: {results['success_count']}, błędy: {results['failed_count']}")
+            logger.info(f"Aktualizacja typów zgłoszeń - powodzenie: {results['success_count']}, błędy: {results['failed_count']}")
             security.log_security_event('issue_types_updated', security.get_client_ip(), 
                                        f"Updated {results['success_count']} issue types, {results['failed_count']} failed")
             
@@ -1646,7 +1647,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
             })
             
         except Exception as e:
-            app_logger.exception(f"Błąd aktualizacji typów zgłoszeń: {e}")
+            logger.exception(f"Błąd aktualizacji typów zgłoszeń: {e}")
             return jsonify({
                 'success': False,
                 'error': str(e)
@@ -1713,7 +1714,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                     results['failed_issues'].append(issue_key)
             
             # Logowanie wyników
-            app_logger.info(f"Aktualizacja typów żądań - powodzenie: {results['success_count']}, błędy: {results['failed_count']}")
+            logger.info(f"Aktualizacja typów żądań - powodzenie: {results['success_count']}, błędy: {results['failed_count']}")
             security.log_security_event('request_types_updated', security.get_client_ip(), 
                                        f"Updated {results['success_count']} request types, {results['failed_count']} failed")
             
@@ -1723,7 +1724,7 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
             })
             
         except Exception as e:
-            app_logger.exception(f"Błąd aktualizacji typów żądań: {e}")
+            logger.exception(f"Błąd aktualizacji typów żądań: {e}")
             return jsonify({
                 'success': False,
                 'error': str(e)
@@ -1740,5 +1741,5 @@ def register_routes(app, security, limiter, jira_api, classifier, app_logger):
                 mimetype='image/x-icon'
             )
         except Exception as e:
-            app_logger.warning(f"Błąd serwowania favicon: {e}")
+            logger.warning(f"Błąd serwowania favicon: {e}")
             abort(404)

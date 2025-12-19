@@ -23,16 +23,17 @@ def setup_logging():
     """Konfiguruje logowanie aplikacji."""
     os.makedirs('logs', exist_ok=True)
     
-    app_logger = logging.getLogger('app')
+    # Konfiguracja Root Loggera
+    root_logger = logging.getLogger()
     
     flask_env = os.getenv('FLASK_ENV', 'development').lower()
     if flask_env == 'production':
         log_level = logging.WARNING
-        app_logger.warning("Aplikacja uruchomiona w trybie produkcyjnym - poziom logowania: WARNING")
+        root_logger.warning("Aplikacja uruchomiona w trybie produkcyjnym - poziom logowania: WARNING")
     else:
         log_level = logging.INFO
         
-    app_logger.setLevel(log_level)
+    root_logger.setLevel(log_level)
     
     # Format logów
     formatter = logging.Formatter(
@@ -68,12 +69,12 @@ def setup_logging():
             console_handler.setLevel(log_level)
             console_handler.setFormatter(formatter)
     
-    app_logger.addHandler(file_handler)
-    app_logger.addHandler(console_handler)
+    # Wyczyść stare handlery i dodaj nowe do Root Loggera
+    root_logger.handlers.clear()
+    root_logger.addHandler(file_handler)
+    root_logger.addHandler(console_handler)
     
-    logging.getLogger().handlers.clear()
-    
-    return app_logger
+    return root_logger
 
 def get_limiter_key():
     """Pobiera klucz dla limitera (obsługuje proxy)."""

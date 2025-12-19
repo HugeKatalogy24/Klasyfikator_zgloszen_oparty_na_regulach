@@ -426,7 +426,7 @@
                             <span class="btn-icon">💾</span>
                             Dodaj nową regułę
                         </button>
-                        <button type="button" class="btn-secondary" onclick="resetForm()">
+                        <button type="button" class="btn-secondary" id="resetRuleFormBtn">
                             <span class="btn-icon">🔄</span>
                         </button>
                     </div>
@@ -443,7 +443,7 @@
                     <div class="admin-actions">
                         <form method="POST" action="/admin/reload-rules" style="display: inline-block;">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                            <button type="submit" class="btn-secondary" onclick="return confirm('Czy na pewno chcesz przeładować reguły klasyfikacji?')">
+                            <button type="submit" class="btn-secondary" id="reloadRulesBtn">
                                 <span class="btn-icon">🔄</span>
                                 Przeładuj reguły
                             </button>
@@ -657,6 +657,42 @@ document.addEventListener('DOMContentLoaded', function() {
     // Załaduj istniejące reguły tylko jeśli użytkownik jest zalogowany jako admin
     {% if session.get('admin_authenticated') %}
         loadExistingRules();
+        
+        // Obsługa zdarzeń dla dynamicznie ładowanych przycisków (Event Delegation)
+        const rulesList = document.getElementById('rulesList');
+        if (rulesList) {
+            rulesList.addEventListener('click', function(e) {
+                const btn = e.target.closest('button');
+                if (!btn) return;
+                
+                const action = btn.dataset.action;
+                const ruleName = btn.dataset.rule;
+                
+                if (action === 'edit' && ruleName) {
+                    e.preventDefault();
+                    editRule(ruleName);
+                } else if (action === 'delete' && ruleName) {
+                    e.preventDefault();
+                    deleteRule(ruleName);
+                }
+            });
+        }
+        
+        // Obsługa przycisku resetowania formularza
+        const resetRuleFormBtn = document.getElementById('resetRuleFormBtn');
+        if (resetRuleFormBtn) {
+            resetRuleFormBtn.addEventListener('click', resetForm);
+        }
+        
+        // Obsługa przycisku przeładowania reguł
+        const reloadRulesBtn = document.getElementById('reloadRulesBtn');
+        if (reloadRulesBtn) {
+            reloadRulesBtn.addEventListener('click', function(e) {
+                if (!confirm('Czy na pewno chcesz przeładować reguły klasyfikacji?')) {
+                    e.preventDefault();
+                }
+            });
+        }
     {% endif %}
 });
 
@@ -692,11 +728,11 @@ function loadExistingRules() {
                     <div class="rule-header">
                         <h4>${ruleName}</h4>
                         <div class="rule-actions">
-                            <button class="btn-small btn-edit" onclick="editRule('${ruleName}')">
+                            <button class="btn-small btn-edit" data-action="edit" data-rule="${ruleName}">
                                 <span class="btn-icon">✏️</span>
                                 Edytuj
                             </button>
-                            <button class="btn-small btn-delete" onclick="deleteRule('${ruleName}')">
+                            <button class="btn-small btn-delete" data-action="delete" data-rule="${ruleName}">
                                 <span class="btn-icon">🗑️</span>
                                 Usuń
                             </button>
@@ -796,13 +832,13 @@ function editRule(ruleName) {
                 cancelBtn.style.display = 'flex';
                 
                 // Przejdź do zakładki administratora i przewiń do formularza
-                const adminTabButton = document.querySelector('[onclick*="admin-tab"]');
+                const adminTabButton = document.querySelector('[data-tab="admin-tab"]');
                 if (adminTabButton) {
                     // Symuluj kliknięcie na przycisk zakładki admin
                     adminTabButton.click();
                 } else {
                     // Fallback - bezpośrednie wywołanie funkcji showTab z mockiem event
-                    const mockEvent = { currentTarget: document.querySelector('.tab-button[onclick*="admin-tab"]') };
+                    const mockEvent = { currentTarget: document.querySelector('.tab-button[data-tab="admin-tab"]') };
                     showTab(mockEvent, 'admin-tab');
                 }
                 document.getElementById('ruleForm').scrollIntoView({ behavior: 'smooth' });
