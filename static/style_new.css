@@ -308,7 +308,7 @@
     color: var(--text-secondary);
 }
 
-/* Licznik zgłoszeń - wyświetla "Pobrano: X z Y zgłoszeń" */
+/* Licznik zgłoszeń */
 .progress-counter {
     display: flex;
     align-items: center;
