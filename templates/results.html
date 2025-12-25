@@ -5,16 +5,17 @@
 {% block content %}
 <style>
 .refresh-progress-container {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 15px;
-    margin: -20px -20px 20px -20px;
-    border-radius: 0 0 10px 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    background: var(--primary-card-bg, #161b22);
+    border: 1px solid var(--border-color, #30363d);
+    color: var(--text-primary, #c9d1d9);
+    padding: 24px;
+    margin: 0 0 30px 0;
+    border-radius: 12px;
+    box-shadow: var(--shadow-medium, 0 8px 24px rgba(0, 0, 0, 0.4));
 }
 
 .refresh-progress-content {
-    max-width: 800px;
+    max-width: 100%;
     margin: 0 auto;
 }
 
@@ -22,35 +23,42 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 16px;
 }
 
 .refresh-progress-container .progress-header h3 {
     margin: 0;
-    font-size: 1.2em;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--text-primary, #c9d1d9);
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .refresh-progress-container .progress-bar {
-    background: rgba(255,255,255,0.3);
-    border-radius: 10px;
-    height: 8px;
+    background: var(--bg-secondary, #0d1117);
+    border: 1px solid var(--border-color, #30363d);
+    border-radius: 6px;
+    height: 12px;
     overflow: hidden;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 
 .refresh-progress-container .progress-fill {
-    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    background: linear-gradient(90deg, var(--accent-blue, #58a6ff), var(--accent-green, #2ea043));
     height: 100%;
-    border-radius: 10px;
+    border-radius: 6px;
     transition: width 0.3s ease;
     width: 0%;
+    box-shadow: 0 0 10px rgba(88, 166, 255, 0.3);
 }
 
 .refresh-progress-container .progress-details {
     display: flex;
     justify-content: space-between;
     font-size: 0.9em;
-    opacity: 0.9;
+    color: var(--text-secondary, #8b949e);
 }
 
 /* Sekcja wykresu pewności klasyfikacji */

@@ -505,8 +505,9 @@ class JiraAPI:
         return reporter_name[:50]
     
     def get_issue_types(self):
-        """Pobiera dostępne typy zgłoszeń z Jira."""
-        url = f"{self.domain}/rest/api/3/issuetype"
+        """Pobiera dostępne typy zgłoszeń z Jira dla projektu SD."""
+        # Pobieramy typy zgłoszeń specyficzne dla projektu SD, aby uniknąć błędów 400
+        url = f"{self.domain}/rest/api/3/project/SD"
         headers = {"Accept": "application/json"}
         auth = (self.email, self.token)
         
@@ -514,24 +515,49 @@ class JiraAPI:
             response = requests.get(url, headers=headers, auth=auth, timeout=30)
             
             if response.status_code != 200:
-                jira_logger.error(f"Błąd pobierania typów zgłoszeń: Status {response.status_code}")
-                return []
+                jira_logger.error(f"Błąd pobierania typów zgłoszeń dla projektu SD: Status {response.status_code}")
+                # Fallback do globalnej listy jeśli projekt nie zostanie znaleziony
+                return self._get_global_issue_types()
             
-            issue_types = response.json()
+            project_data = response.json()
+            issue_types = project_data.get('issueTypes', [])
+            
             relevant_types = []
             for issue_type in issue_types:
-                if issue_type.get('id') in ['10004', '10011', '10066']:
-                    relevant_types.append({
-                        'id': issue_type['id'],
-                        'name': issue_type['name'],
-                        'description': issue_type.get('description', '')
-                    })
+                relevant_types.append({
+                    'id': issue_type['id'],
+                    'name': issue_type['name'],
+                    'description': issue_type.get('description', '')
+                })
             
-            jira_logger.info(f"Pobrano {len(relevant_types)} typów zgłoszeń")
+            jira_logger.info(f"Pobrano {len(relevant_types)} typów zgłoszeń dla projektu SD")
             return relevant_types
             
         except Exception as e:
             jira_logger.exception(f"Błąd podczas pobierania typów zgłoszeń: {e}")
+            return []
+
+    def _get_global_issue_types(self):
+        """Metoda pomocnicza do pobierania globalnych typów zgłoszeń (fallback)."""
+        url = f"{self.domain}/rest/api/3/issuetype"
+        headers = {"Accept": "application/json"}
+        auth = (self.email, self.token)
+        
+        try:
+            response = requests.get(url, headers=headers, auth=auth, timeout=30)
+            if response.status_code != 200:
+                return []
+                
+            issue_types = response.json()
+            relevant_types = []
+            for issue_type in issue_types:
+                relevant_types.append({
+                    'id': issue_type['id'],
+                    'name': issue_type['name'],
+                    'description': issue_type.get('description', '')
+                })
+            return relevant_types
+        except Exception:
             return []
     
     def get_request_types(self, issue_type_id=None):
@@ -590,7 +616,7 @@ class JiraAPI:
             return []
     
     def update_issue_type(self, issue_key, new_issue_type_id):
-        """Aktualizuje typ zgłoszenia."""
+        """Aktualizuje typ zgłoszenia. Zwraca (success, error_message)."""
         url = f"{self.domain}/rest/api/3/issue/{issue_key}"
         headers = {
             "Accept": "application/json",
@@ -611,15 +637,46 @@ class JiraAPI:
             
             if response.status_code == 204:
                 jira_logger.info(f"Pomyślnie zaktualizowano typ zgłoszenia dla {issue_key}")
-                return True
+                return True, None
             else:
-                jira_logger.error(f"Błąd aktualizacji typu zgłoszenia {issue_key}: Status {response.status_code}")
-                jira_logger.error(f"Response: {response.text}")
-                return False
+                error_msg = f"Status {response.status_code}"
+                try:
+                    error_data = response.json()
+                    if 'errors' in error_data:
+                        error_msg = f"{error_msg}: {error_data['errors']}"
+                    elif 'errorMessages' in error_data:
+                        error_msg = f"{error_msg}: {error_data['errorMessages']}"
+                except:
+                    error_msg = f"{error_msg}: {response.text[:100]}"
+                    
+                jira_logger.error(f"Błąd aktualizacji typu zgłoszenia {issue_key}: {error_msg}")
+                return False, error_msg
                 
         except Exception as e:
             jira_logger.exception(f"Błąd podczas aktualizacji typu zgłoszenia {issue_key}: {e}")
-            return False
+            return False, str(e)
+
+    def get_allowed_issue_types(self, issue_key):
+        """Pobiera dozwolone typy zgłoszeń, na które można zmienić dane zgłoszenie."""
+        url = f"{self.domain}/rest/api/3/issue/{issue_key}/editmeta"
+        headers = {"Accept": "application/json"}
+        auth = (self.email, self.token)
+        
+        try:
+            response = requests.get(url, headers=headers, auth=auth, timeout=15)
+            if response.status_code != 200:
+                return []
+            
+            data = response.json()
+            if 'fields' in data and 'issuetype' in data['fields']:
+                return [
+                    {'id': val['id'], 'name': val['name']} 
+                    for val in data['fields']['issuetype'].get('allowedValues', [])
+                ]
+            return []
+        except Exception as e:
+            jira_logger.error(f"Błąd pobierania editmeta dla {issue_key}: {e}")
+            return []
     
     def update_request_type(self, issue_key, new_request_type_id):
         """Aktualizuje typ żądania (customfield_10010)."""

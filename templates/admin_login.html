@@ -3,76 +3,185 @@
 {% block title %}Panel Administratora - Logowanie{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-4">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">
-                        <i class="fas fa-shield-alt me-2"></i>
-                        Panel Administratora
-                    </h4>
-                </div>
-                <div class="card-body">
-                    {% with messages = get_flashed_messages(with_categories=true) %}
-                        {% if messages %}
-                            {% for category, message in messages %}
-                                <div class="alert alert-{% if category == 'error' %}danger{% else %}{{ category|e }}{% endif %} alert-dismissible fade show" role="alert">
-                                    {{ message|e }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-                    {% endwith %}
+<style>
+    .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        padding: 1rem;
+    }
 
-                    <form method="POST" action="{{ url_for('admin_login') }}" id="adminLoginForm">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                        
-                        <div class="mb-3">
-                            <label for="username" class="form-label">
-                                <i class="fas fa-user me-1"></i>
-                                Nazwa użytkownika
-                            </label>
-                            <input type="text" 
-                                   class="form-control" 
-                                   id="username" 
-                                   name="username" 
-                                   required
-                                   autocomplete="username"
-                                   maxlength="50">
+    .login-card {
+        background-color: var(--primary-card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        box-shadow: var(--shadow-medium);
+        width: 100%;
+        max-width: 420px;
+        overflow: hidden;
+        transition: var(--transition-medium);
+    }
+
+    .login-header {
+        background-color: rgba(255, 255, 255, 0.03);
+        border-bottom: 1px solid var(--border-color);
+        padding: 2rem 1.5rem;
+        text-align: center;
+    }
+
+    .login-header h2 {
+        color: var(--text-primary);
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0;
+        letter-spacing: 0.5px;
+    }
+
+    .login-body {
+        padding: 2.5rem 2rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .form-label {
+        display: block;
+        color: var(--text-secondary);
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+        font-weight: 500;
+    }
+
+    .form-control {
+        width: 100%;
+        background-color: var(--bg-color);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        padding: 0.9rem 1rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        text-align: center;
+        transition: var(--transition-fast);
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--accent-blue);
+        box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.15);
+    }
+
+    .btn-login {
+        width: 100%;
+        background-color: var(--accent-blue);
+        color: #ffffff;
+        border: none;
+        padding: 1rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition-fast);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 1rem;
+    }
+
+    .btn-login:hover {
+        background-color: #4f94e6;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(88, 166, 255, 0.3);
+    }
+
+    .btn-login:active {
+        transform: translateY(0);
+    }
+
+    .btn-back {
+        display: inline-block;
+        margin-top: 1.5rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        transition: var(--transition-fast);
+        border: 1px solid transparent;
+    }
+
+    .btn-back:hover {
+        color: var(--text-primary);
+        background-color: rgba(255, 255, 255, 0.05);
+        border-color: var(--border-color);
+    }
+
+    .alert-custom {
+        background-color: rgba(248, 81, 73, 0.1);
+        border: 1px solid var(--accent-red);
+        color: var(--accent-red);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        font-size: 0.95rem;
+    }
+</style>
+
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <h2>Panel Administratora</h2>
+        </div>
+        
+        <div class="login-body">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert-custom">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            {{ message|e }}
                         </div>
-                        
-                        <div class="mb-3">
-                            <label for="password" class="form-label">
-                                <i class="fas fa-lock me-1"></i>
-                                Hasło
-                            </label>
-                            <input type="password" 
-                                   class="form-control" 
-                                   id="password" 
-                                   name="password" 
-                                   required
-                                   autocomplete="current-password"
-                                   maxlength="200">
-                        </div>
-                        
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-sign-in-alt me-2"></i>
-                                Zaloguj się
-                            </button>
-                        </div>
-                    </form>
-                    
-                    <hr class="my-4">
-                    
-                    <div class="text-center">
-                        <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
-                            <i class="fas fa-arrow-left me-2"></i>
-                            Powrót do strony głównej
-                        </a>
-                    </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="{{ url_for('admin_login') }}" id="adminLoginForm">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                
+                <div class="form-group">
+                    <label for="username" class="form-label">Nazwa użytkownika</label>
+                    <input type="text" 
+                           class="form-control" 
+                           id="username" 
+                           name="username" 
+                           required
+                           autocomplete="username"
+                           placeholder="Wpisz login"
+                           value="admin">
                 </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">Hasło</label>
+                    <input type="password" 
+                           class="form-control" 
+                           id="password" 
+                           name="password" 
+                           required
+                           autocomplete="current-password"
+                           placeholder="••••••••">
+                </div>
+                
+                <button type="submit" class="btn-login">
+                    Zaloguj się
+                </button>
+            </form>
+            
+            <div class="text-center" style="text-align: center;">
+                <a href="{{ url_for('index') }}" class="btn-back">
+                    <i class="fas fa-arrow-left me-2"></i>Powrót do strony głównej
+                </a>
             </div>
         </div>
     </div>
@@ -83,37 +192,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('adminLoginForm');
     const submitBtn = form.querySelector('button[type="submit"]');
     
-    // Nie blokuj przycisku submit - pozwól na nieskończone próby
     form.addEventListener('submit', function(e) {
-        // Bardzo krótka blokada tylko wizualnie
+        const originalText = submitBtn.innerText;
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Logowanie...';
         
-        // Szybko przywróć przycisk
+        // Reset button after delay (in case of error or just visual feedback)
         setTimeout(function() {
             submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Zaloguj się';
-        }, 1000);  // Tylko 1 sekunda
+            submitBtn.innerText = originalText;
+        }, 2000);
     });
-    
-    // Clear error messages when typing
-    const inputs = form.querySelectorAll('input');
-    inputs.forEach(input => {
-        input.addEventListener('input', function() {
-            const alerts = document.querySelectorAll('.alert-danger');
-            alerts.forEach(alert => {
-                alert.style.opacity = '0.5';
-            });
-        });
-    });
-    
-    // Dodatkowe zabezpieczenie - przywróć przycisk co sekundę jeśli jest zablokowany
-    setInterval(function() {
-        if (submitBtn.disabled) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="fas fa-sign-in-alt me-2"></i>Zaloguj się';
-        }
-    }, 1000);
 });
 </script>
 {% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Błąd - Aplikacja{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow" style="background-color: var(--primary-card-bg); border: 1px solid var(--border-color);">
+                <div class="card-header text-white" style="background-color: var(--primary-card-bg); border-bottom: 1px solid var(--border-color); padding: 1.5rem 1rem;">
+                    <h4 class="mb-0 text-center" style="color: var(--accent-red);">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Wystąpił błąd
+                    </h4>
+                </div>
+                <div class="card-body p-4 text-center">
+                    <div class="mb-4">
+                        <p class="lead" style="color: var(--text-primary);">
+                            {{ error }}
+                        </p>
+                    </div>
+                    
+                    <div class="d-grid gap-2 col-6 mx-auto">
+                        <a href="{{ url_for('index') }}" class="btn btn-primary" style="background-color: var(--accent-blue); border: none;">
+                            Powrót do strony głównej
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

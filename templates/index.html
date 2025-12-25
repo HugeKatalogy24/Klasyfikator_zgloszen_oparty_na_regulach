@@ -37,7 +37,7 @@
             </button>
             <button class="tab-button" data-tab="admin-tab">
                 <span class="tab-icon">⚙️</span>
-                Panel Administratora
+                Zarządzanie Regułami
             </button>
         </div>
 
@@ -102,7 +102,7 @@
                     </div>
                     <div class="error-message" id="errorMessage"></div>
                     <div class="error-actions">
-                        <button type="button" class="btn-primary" onclick="resetAnalysis()">
+                        <button type="button" class="btn-primary" id="resetAnalysisBtn">
                             <span class="btn-icon">🔄</span>
                             Spróbuj ponownie
                         </button>
@@ -190,11 +190,11 @@
                     </div>
                     
                     <div class="form-actions">
-                        <button type="button" class="btn-primary" onclick="validateIssues()">
+                        <button type="button" class="btn-primary" id="validateIssuesBtn">
                             <span class="btn-icon">✅</span>
                             Sprawdź zgłoszenia
                         </button>
-                        <button type="button" class="btn-secondary" onclick="clearForm()">
+                        <button type="button" class="btn-secondary" id="clearFormBtn">
                             <span class="btn-icon">🗑️</span>
                             Wyczyść
                         </button>
@@ -221,11 +221,11 @@
                     </div>
 
                     <div class="form-actions">
-                        <button type="button" class="btn-primary" onclick="updateIssueTypes()">
+                        <button type="button" class="btn-primary" id="updateIssueTypesBtn">
                             <span class="btn-icon">🔄</span>
                             Zaktualizuj typ zgłoszenia
                         </button>
-                        <button type="button" class="btn-secondary" onclick="goBackToStep1()">
+                        <button type="button" class="btn-secondary" id="goBackToStep1Btn">
                             <span class="btn-icon">⬅️</span>
                             Wróć do kroku 1
                         </button>
@@ -240,11 +240,11 @@
                     </div>
                     
                     <div class="form-actions">
-                        <button type="button" class="btn-primary" onclick="proceedToRequestType()">
+                        <button type="button" class="btn-primary" id="proceedToRequestTypeBtn">
                             <span class="btn-icon">➡️</span>
                             Przejdź do zmiany typu żądania
                         </button>
-                        <button type="button" class="btn-secondary" onclick="startNewUpdate()">
+                        <button type="button" class="btn-secondary" id="startNewUpdateBtn1">
                             <span class="btn-icon">🔄</span>
                             Nowa aktualizacja
                         </button>
@@ -263,11 +263,11 @@
                     </div>
 
                     <div class="form-actions">
-                        <button type="button" class="btn-primary" onclick="updateRequestTypes()">
+                        <button type="button" class="btn-primary" id="updateRequestTypesBtn">
                             <span class="btn-icon">🚀</span>
                             Zaktualizuj typ żądania
                         </button>
-                        <button type="button" class="btn-secondary" onclick="skipRequestType()">
+                        <button type="button" class="btn-secondary" id="skipRequestTypeBtn">
                             <span class="btn-icon">⏭️</span>
                             Pomiń zmianę typu żądania
                         </button>
@@ -282,7 +282,7 @@
                     </div>
                     
                     <div class="form-actions">
-                        <button type="button" class="btn-primary" onclick="startNewUpdate()">
+                        <button type="button" class="btn-primary" id="startNewUpdateBtn2">
                             <span class="btn-icon">🔄</span>
                             Nowa aktualizacja
                         </button>
@@ -350,8 +350,8 @@
                 {% else %}
                     <!-- Panel logowania -->
                     <div class="admin-login-prompt">
-                        <h2>🔒 Panel Administratora</h2>
-                        <p class="admin-description">Dostęp do panelu administratora jest ograniczony.</p>
+                        <h2>🔒 Zarządzanie Regułami</h2>
+                        <p class="admin-description">Dostęp do zarządzania regułami jest ograniczony.</p>
                         <div class="login-card">
                             <div class="login-icon">
                                 <i class="fas fa-shield-alt"></i>
@@ -583,6 +583,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Obsługa przycisku resetowania analizy (w przypadku błędu)
+    const resetAnalysisBtn = document.getElementById('resetAnalysisBtn');
+    if (resetAnalysisBtn) {
+        resetAnalysisBtn.addEventListener('click', resetAnalysis);
+    }
+    
     // Walidacja zakresu dat z lepszymi komunikatami - umożliwiamy dzisiejszą datę
     function validateDateRange() {
         const startDate = new Date(startDateInput.value);
@@ -658,7 +664,7 @@ document.addEventListener('DOMContentLoaded', function() {
     {% if session.get('admin_authenticated') %}
         loadExistingRules();
         
-        // Obsługa zdarzeń dla dynamicznie ładowanych przycisków (Event Delegation)
+        // Event Delegation dla przycisków - musimy tak robić, bo elementy są dodawane dynamicznie do DOM i zwykły onclick gryzie się z CSP
         const rulesList = document.getElementById('rulesList');
         if (rulesList) {
             rulesList.addEventListener('click', function(e) {
@@ -694,6 +700,41 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     {% endif %}
+
+    // ===== Obsługa przycisków Zmiany Typu Zgłoszenia (CSP Fix) =====
+    
+    // Krok 1
+    const validateIssuesBtn = document.getElementById('validateIssuesBtn');
+    if (validateIssuesBtn) validateIssuesBtn.addEventListener('click', validateIssues);
+    
+    const clearFormBtn = document.getElementById('clearFormBtn');
+    if (clearFormBtn) clearFormBtn.addEventListener('click', clearForm);
+    
+    // Krok 3
+    const updateIssueTypesBtn = document.getElementById('updateIssueTypesBtn');
+    if (updateIssueTypesBtn) updateIssueTypesBtn.addEventListener('click', updateIssueTypes);
+    
+    const goBackToStep1Btn = document.getElementById('goBackToStep1Btn');
+    if (goBackToStep1Btn) goBackToStep1Btn.addEventListener('click', goBackToStep1);
+    
+    // Krok 4
+    const proceedToRequestTypeBtn = document.getElementById('proceedToRequestTypeBtn');
+    if (proceedToRequestTypeBtn) proceedToRequestTypeBtn.addEventListener('click', proceedToRequestType);
+    
+    const startNewUpdateBtn1 = document.getElementById('startNewUpdateBtn1');
+    if (startNewUpdateBtn1) startNewUpdateBtn1.addEventListener('click', startNewUpdate);
+    
+    // Krok 5
+    const updateRequestTypesBtn = document.getElementById('updateRequestTypesBtn');
+    if (updateRequestTypesBtn) updateRequestTypesBtn.addEventListener('click', updateRequestTypes);
+    
+    const skipRequestTypeBtn = document.getElementById('skipRequestTypeBtn');
+    if (skipRequestTypeBtn) skipRequestTypeBtn.addEventListener('click', skipRequestType);
+    
+    // Krok 6
+    const startNewUpdateBtn2 = document.getElementById('startNewUpdateBtn2');
+    if (startNewUpdateBtn2) startNewUpdateBtn2.addEventListener('click', startNewUpdate);
+
 });
 
 // Funkcja ładowania istniejących reguł
@@ -831,13 +872,13 @@ function editRule(ruleName) {
                 }
                 cancelBtn.style.display = 'flex';
                 
-                // Przejdź do zakładki administratora i przewiń do formularza
+                // Przełączamy na zakładkę admina i scrollujemy do formularza
                 const adminTabButton = document.querySelector('[data-tab="admin-tab"]');
                 if (adminTabButton) {
-                    // Symuluj kliknięcie na przycisk zakładki admin
+                    // Klikamy programowo w zakładkę
                     adminTabButton.click();
                 } else {
-                    // Fallback - bezpośrednie wywołanie funkcji showTab z mockiem event
+                    // Jak nie ma przycisku (dziwne), to wołamy funkcję ręcznie z udawanym eventem
                     const mockEvent = { currentTarget: document.querySelector('.tab-button[data-tab="admin-tab"]') };
                     showTab(mockEvent, 'admin-tab');
                 }
@@ -1189,6 +1230,58 @@ function populateIssueTypeSelect() {
     });
 }
 
+function filterIssueTypes(allowedIds) {
+    const select = document.getElementById('new_issue_type');
+    if (!select) return;
+    
+    // Zapisz aktualnie wybraną wartość
+    const currentValue = select.value;
+    
+    // Wyczyść opcje
+    while (select.children.length > 1) {
+        select.removeChild(select.lastChild);
+    }
+    
+    // Dodaj tylko dozwolone opcje
+    let hasCurrentValue = false;
+    issueTypes.forEach(type => {
+        if (allowedIds.includes(type.id)) {
+            const option = document.createElement('option');
+            option.value = type.id;
+            option.textContent = type.name;
+            if (type.description) {
+                option.title = type.description;
+            }
+            select.appendChild(option);
+            
+            if (type.id === currentValue) {
+                hasCurrentValue = true;
+            }
+        }
+    });
+    
+    // Przywróć wybór jeśli nadal jest dostępny
+    if (hasCurrentValue) {
+        select.value = currentValue;
+    } else {
+        select.selectedIndex = 0;
+    }
+    
+    // Pokaż informację o filtrowaniu
+    const helpText = document.getElementById('issueTypeHelpText');
+    if (!helpText) {
+        const p = document.createElement('p');
+        p.id = 'issueTypeHelpText';
+        p.className = 'help-text';
+        p.style.fontSize = '0.85em';
+        p.style.color = '#aaa';
+        p.style.marginTop = '5px';
+        select.parentNode.appendChild(p);
+    }
+    document.getElementById('issueTypeHelpText').textContent = 
+        `Pokazano ${select.children.length - 1} typów zgłoszeń dostępnych dla wybranych zgłoszeń (ograniczenia Jira).`;
+}
+
 function populateRequestTypeSelect() {
     const select = document.getElementById('new_request_type');
     if (!select) return;
@@ -1220,7 +1313,7 @@ function validateIssues() {
     // Sprawdź uwierzytelnienie administratora
     if (!checkAdminAuth()) {
         console.log('Admin auth failed');
-        alert('Wymagane uwierzytelnienie administratora');
+        // Zamiast alertu, przekieruj bezpośrednio do logowania
         window.location.href = "{{ url_for('admin_login') }}";
         return;
     }
@@ -1269,6 +1362,14 @@ function validateIssues() {
             displayValidationResults(data);
             
             if (data.valid_count > 0) {
+                // Filtruj listę typów zgłoszeń jeśli otrzymaliśmy listę dozwolonych typów
+                if (data.allowed_target_types && data.allowed_target_types.length > 0) {
+                    filterIssueTypes(data.allowed_target_types);
+                } else if (data.allowed_target_types && data.allowed_target_types.length === 0) {
+                    // Jeśli lista jest pusta, to znaczy że nie ma wspólnych dozwolonych typów
+                    alert('UWAGA: Wybrane zgłoszenia nie mogą zostać zmienione na żaden inny typ zgłoszenia w ich obecnym stanie (ograniczenia Jira).');
+                }
+                
                 showStep2();
                 showStep3();
             } else {
@@ -1375,7 +1476,7 @@ function updateIssueTypes() {
     
     // Sprawdź autoryzację administratora
     if (!checkAdminAuth()) {
-        alert('Ta operacja wymaga uprawnień administratora. Zaloguj się w panelu administratora.');
+        window.location.href = "{{ url_for('admin_login') }}";
         return;
     }
     
@@ -1520,10 +1621,23 @@ function displayIssueTypeResults(results) {
             <div class="failed-issues-section">
                 <h4>❌ Błędy aktualizacji typu zgłoszenia (${results.failed_count})</h4>
                 <div class="failed-issues">
-                    ${results.failed_issues.map(key => 
-                        `<span class="failed-issue">${key}</span>`
-                    ).join('')}
+                    ${results.failed_issues.map(item => {
+                        const key = typeof item === 'string' ? item : item.key;
+                        const error = typeof item === 'string' ? '' : (item.error || '');
+                        return `<span class="failed-issue" title="${error}">${key}</span>`;
+                    }).join('')}
                 </div>
+                ${results.failed_issues.some(i => typeof i !== 'string' && i.error) ? 
+                    `<div class="error-details" style="margin-top: 10px; font-size: 0.9em; color: #ff6b6b;">
+                        <p>Szczegóły błędów (najedź na klucz zgłoszenia aby zobaczyć):</p>
+                        <ul style="list-style: none; padding: 0;">
+                            ${results.failed_issues.filter(i => typeof i !== 'string' && i.error).slice(0, 5).map(i => 
+                                `<li><strong>${i.key}:</strong> ${i.error}</li>`
+                            ).join('')}
+                            ${results.failed_issues.length > 5 ? `<li>... i ${results.failed_issues.length - 5} więcej</li>` : ''}
+                        </ul>
+                    </div>` : ''
+                }
             </div>
         `;
     }

@@ -173,6 +173,22 @@ def perform_analysis_background(analysis_id, start_dt, end_dt, start_date_str, e
 def register_routes(app, security, limiter, jira_api, classifier, logger):
     """Rejestracja wszystkich route'ów aplikacji."""
     
+    @app.errorhandler(429)
+    def ratelimit_handler(e):
+        # Logowanie błędu limitu
+        logger.warning(f"Rate limit exceeded: {e.description} at {request.path}")
+        
+        # Jeśli to żądanie API lub AJAX (JSON)
+        if request.is_json or request.path.startswith('/api/'):
+            return jsonify({
+                "success": False,
+                "error": f"Przekroczono limit zapytań: {e.description}",
+                "rate_limit_exceeded": True
+            }), 429
+            
+        # Domyślnie zwracaj HTML dla przeglądarki
+        return render_template('error.html', error=f"Przekroczono limit zapytań: {e.description}"), 429
+
     @app.context_processor
     def inject_security_context():
         """Tokeny bezpieczeństwa dostępne we wszystkich szablonach."""
@@ -298,7 +314,7 @@ def register_routes(app, security, limiter, jira_api, classifier, logger):
 
     @app.route('/analyze', methods=['POST'])
     @security.require_csrf
-    @limiter.limit("10 per 10 minutes")  # 10 analiz na 10 minut
+    @limiter.limit("100 per 10 minutes")  # Zwiększony limit analiz
     def analyze():
         """Uruchamia analizę w tle i zwraca JSON z identyfikatorem do śledzenia postępu."""
         try:
@@ -1002,7 +1018,7 @@ def register_routes(app, security, limiter, jira_api, classifier, logger):
     # ===== UWIERZYTELNIENIE ADMINISTRATORA =====
 
     @app.route('/admin/login', methods=['GET', 'POST'])
-    @limiter.limit("5 per 15 minutes")  # 5 prób logowania na 15 minut
+    @limiter.limit("1000 per hour")  # Bardzo wysoki limit dla wygody
     def admin_login():
         """Logowanie administratora z rozszerzoną walidacją"""
         if app.debug:
@@ -1452,7 +1468,7 @@ def register_routes(app, security, limiter, jira_api, classifier, logger):
     # ===== ENDPOINTY ZMIANY TYPU ZGŁOSZENIA =====
 
     @app.route('/api/get-issue-types')
-    @limiter.limit("30 per 5 minutes")  # 30 zapytań na 5 minut
+    @limiter.limit("100 per 5 minutes")  # 100 zapytań na 5 minut
     def get_issue_types():
         """Zwraca dostępne typy zgłoszeń z Jira"""
         try:
@@ -1476,7 +1492,7 @@ def register_routes(app, security, limiter, jira_api, classifier, logger):
             })
 
     @app.route('/api/get-request-types')
-    @limiter.limit("30 per 5 minutes")  # 30 zapytań na 5 minut
+    @limiter.limit("100 per 5 minutes")  # 100 zapytań na 5 minut
     def get_request_types():
         """Zwraca dostępne typy żądań z Jira Service Desk, opcjonalnie filtrowane po typie zgłoszenia"""
         try:
@@ -1504,7 +1520,7 @@ def register_routes(app, security, limiter, jira_api, classifier, logger):
             })
 
     @app.route('/api/validate-issues', methods=['POST'])
-    @limiter.limit("10 per 5 minutes")  # 10 walidacji na 5 minut
+    @limiter.limit("100 per 5 minutes")  # 100 walidacji na 5 minut
     def validate_issues():
         """Waliduje klucze zgłoszeń i zwraca informacje o nich"""
         try:
@@ -1560,13 +1576,41 @@ def register_routes(app, security, limiter, jira_api, classifier, logger):
             # Waliduj klucze w Jira
             valid_issues, invalid_issues = jira_api.validate_issue_keys(unique_keys)
             
+            # Sprawdź dozwolone typy zgłoszeń dla pierwszego poprawnego zgłoszenia
+            # (zakładamy, że wszystkie zgłoszenia są w podobnym stanie, co jest uproszczeniem, ale praktycznym)
+            allowed_target_types = []
+            if valid_issues:
+                # Grupuj zgłoszenia po typie
+                issues_by_type = {}
+                for issue in valid_issues:
+                    current_type = issue.get('issue_type_name', 'Unknown')
+                    if current_type not in issues_by_type:
+                        issues_by_type[current_type] = issue['key']
+                
+                # Pobierz allowedValues dla jednego zgłoszenia z każdego typu
+                all_allowed_ids = None
+                
+                for type_name, key in issues_by_type.items():
+                    allowed = jira_api.get_allowed_issue_types(key)
+                    allowed_ids = {t['id'] for t in allowed}
+                    
+                    if all_allowed_ids is None:
+                        all_allowed_ids = allowed_ids
+                    else:
+                        # Część wspólna - typ musi być dozwolony dla WSZYSTKICH grup
+                        all_allowed_ids = all_allowed_ids.intersection(allowed_ids)
+                
+                if all_allowed_ids:
+                    allowed_target_types = list(all_allowed_ids)
+            
             return jsonify({
                 'success': True,
                 'total_keys': len(unique_keys),
                 'valid_count': len(valid_issues),
                 'invalid_count': len(invalid_issues),
                 'valid_issues': valid_issues,
-                'invalid_issues': invalid_issues
+                'invalid_issues': invalid_issues,
+                'allowed_target_types': allowed_target_types
             })
             
         except Exception as e:
@@ -1579,7 +1623,7 @@ def register_routes(app, security, limiter, jira_api, classifier, logger):
     @app.route('/api/update-issue-types', methods=['POST'])
     @security.require_admin
     @security.require_csrf
-    @limiter.limit("5 per 10 minutes")  # 5 aktualizacji na 10 minut
+    @limiter.limit("100 per 10 minutes")  # 100 aktualizacji na 10 minut
     def update_issue_types():
         """Aktualizuje typ zgłoszenia dla podanych kluczy"""
         try:
@@ -1629,12 +1673,17 @@ def register_routes(app, security, limiter, jira_api, classifier, logger):
             
             # Aktualizuj każde zgłoszenie
             for issue_key in issue_keys:
-                if jira_api.update_issue_type(issue_key, new_issue_type_id):
+                success, error_msg = jira_api.update_issue_type(issue_key, new_issue_type_id)
+                if success:
                     results['success_count'] += 1
                     results['success_issues'].append(issue_key)
                 else:
                     results['failed_count'] += 1
-                    results['failed_issues'].append(issue_key)
+                    # Zapisz obiekt z kluczem i błędem
+                    results['failed_issues'].append({
+                        'key': issue_key,
+                        'error': error_msg
+                    })
             
             # Logowanie wyników
             logger.info(f"Aktualizacja typów zgłoszeń - powodzenie: {results['success_count']}, błędy: {results['failed_count']}")
@@ -1656,7 +1705,7 @@ def register_routes(app, security, limiter, jira_api, classifier, logger):
     @app.route('/api/update-request-types', methods=['POST'])
     @security.require_admin
     @security.require_csrf
-    @limiter.limit("5 per 10 minutes")  # 5 aktualizacji na 10 minut
+    @limiter.limit("100 per 10 minutes")  # 100 aktualizacji na 10 minut
     def update_request_types():
         """Aktualizuje typ żądania dla podanych kluczy"""
         try:

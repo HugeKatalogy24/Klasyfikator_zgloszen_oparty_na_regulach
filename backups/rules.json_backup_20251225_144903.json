@@ -642,11 +642,20 @@
         "czytnik",
         "błąd rcp"
       ]
+    },
+    "czesc": {
+      "keywords": [
+        "dsadsa"
+      ],
+      "min_score": 2,
+      "forbidden": [
+        "dasda"
+      ]
     }
   },
   "metadata": {
-    "last_updated": "2025-12-25T14:49:03.680400",
+    "last_updated": "2025-12-25T14:48:57.618890",
     "version": "2.0",
-    "rules_count": 17
+    "rules_count": 18
   }
 }
